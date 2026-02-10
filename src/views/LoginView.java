@@ -17,7 +17,7 @@ public class LoginView extends JPanel {
 	public LoginView() {
 		
 		fuente = new Font("Arial", Font.ITALIC, 20);
-		setBackground(Color.BLUE);
+		setBackground(Color.WHITE);
 		setLayout(null);
 		
 		inicializarComponentes();
@@ -33,7 +33,7 @@ public class LoginView extends JPanel {
 		
 		JButton boton = new JButton("Iniciar");
 		boton.setBounds(215,315,160,40);
-		boton.setBackground(Color.RED);
+		boton.setBackground(Color.BLUE);
 		boton.setForeground(Color.WHITE);
 		boton.setToolTipText("Haz click aquí");
 		boton.setFont(fuente);
@@ -45,14 +45,14 @@ public class LoginView extends JPanel {
 	}
 	
 	private void crearFormulario() {
-		JLabel lblSaludo = new JLabel("Bienvenido!");
-		lblSaludo.setForeground(Color.WHITE);
+		JLabel lblSaludo = new JLabel("¡Bienvenido! Inicie Sesion");
+		lblSaludo.setForeground(Color.BLACK);
 		lblSaludo.setFont(fuente);
-		lblSaludo.setBounds(10,0,200,40);
+		lblSaludo.setBounds(10,0,400,40);
 		add(lblSaludo);
 		
-		JLabel lblEmail = new JLabel("Email: ");
-		lblEmail.setForeground(Color.WHITE);
+		JLabel lblEmail = new JLabel("Correo: ");
+		lblEmail.setForeground(Color.BLACK);
 		lblEmail.setFont(fuente);
 		lblEmail.setBounds(10,100,200,40);
 		add(lblEmail);
@@ -64,13 +64,13 @@ public class LoginView extends JPanel {
 		add(texto);
 		
 		JLabel lblContrasena = new JLabel("Contraseña: ");
-		lblContrasena.setForeground(Color.WHITE);
+		lblContrasena.setForeground(Color.BLACK);
 		lblContrasena.setFont(fuente);
 		lblContrasena.setBounds(10,150,200,40);
 		add(lblContrasena);
 		
 		JPasswordField contrasena = new JPasswordField();
-		contrasena.setForeground(Color.BLUE);
+		contrasena.setForeground(Color.BLACK);
 		contrasena.setFont(fuente);
 		contrasena.setBounds(150,150,200,40);
 		add(contrasena);

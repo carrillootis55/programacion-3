@@ -12,7 +12,7 @@ public class LoginWindow extends JFrame {
 		setLocation(100,100);
 		//setBounds(100,100,500,500);
 		setResizable(false);
-		setTitle("Mi Aplicación V2.0");
+		setTitle("SISTEMA DE CALIFICACIONES");
 		setLocationRelativeTo(null);
 		
 		Toolkit tk = Toolkit.getDefaultToolkit();
