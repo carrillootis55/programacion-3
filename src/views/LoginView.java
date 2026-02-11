@@ -63,6 +63,13 @@ public class LoginView extends JPanel {
 		texto.setBounds(150,100,200,40);
 		add(texto);
 		
+		JLabel lblEmailCorreccion = new JLabel ("Ingrese el correo correctamente");
+		lblEmailCorreccion.setForeground(Color.RED);
+		lblEmailCorreccion.setFont(fuente);
+		lblEmailCorreccion.setBounds(200,120,220,50);
+		//lblEmailCorreccion.setBounds(150,100,200,40);
+		add(lblEmailCorreccion);
+		
 		JLabel lblContrasena = new JLabel("Contraseña: ");
 		lblContrasena.setForeground(Color.BLACK);
 		lblContrasena.setFont(fuente);
@@ -74,6 +81,12 @@ public class LoginView extends JPanel {
 		contrasena.setFont(fuente);
 		contrasena.setBounds(150,150,200,40);
 		add(contrasena);
+		
+		JLabel lblContrasenaCorreccion = new JLabel ("Contraseña Incorrecta");
+		lblContrasenaCorreccion.setForeground(Color.RED);
+		lblContrasenaCorreccion.setFont(fuente);
+		lblContrasenaCorreccion.setBounds(200,170,220,60);
+		add(lblContrasenaCorreccion);
 	}
 	
 	private void colocarIcono(JButton boton, String ruta) { 

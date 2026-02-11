@@ -13,7 +13,6 @@ public class Main {
 		//MiVentana ventanita= new MiVentana();
 		LoginWindow ventanita = new LoginWindow();
 		//showOnScreen(1, ventanita);
-
 	}
 	
 	public static void showOnScreen(int screen, JFrame frame ) {
