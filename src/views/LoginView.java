@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 public class LoginView extends JPanel {
 	Font fuente;
@@ -18,9 +19,9 @@ public class LoginView extends JPanel {
 		
 		fuente = new Font("Times New Roman", Font.ITALIC , 17);
 		setBackground(Color.WHITE);
-		setLayout(null);
+		setLayout(new SpringLayout());
 		
-		inicializarComponentes();
+	inicializarComponentes();
 		//setBackground(new Color(210,165,35));
 	}
 	
@@ -39,14 +40,21 @@ public class LoginView extends JPanel {
 		boton.setFont(fuente);
 		
 		colocarIcono(boton, "../img/icono.png");
-		
 		add(boton);
 		
 	}
 	
 	private void crearFormulario() {
-		JLabel lblSaludo = new JLabel("Inicio de sesion");
+		JPanel panelito = new JPanel (new SpringLayout());
+		add(panelito);
+		for(int i= 0; i< numPairs;i++) {
+			JLabel  i= new JLabel(labels[i]);
+			panelito.add(1);
+			
+		}
+
 		
+		JLabel lblSaludo = new JLabel("Inicio de sesion");
 		lblSaludo.setForeground(Color.BLACK);
 		lblSaludo.setFont(fuente);
 		lblSaludo.setBounds(140,2,400,70);
@@ -64,17 +72,19 @@ public class LoginView extends JPanel {
 		texto.setBounds(150,100,200,40);
 		add(texto);
 		
+		add(new JLabel());
+		
 		JLabel lblEmailCorreccion = new JLabel ("Correo obligatorio");
 		lblEmailCorreccion.setForeground(Color.RED);
 		lblEmailCorreccion.setFont(fuente);
 		lblEmailCorreccion.setBounds(155,125,220,50);
-		
+		//Tamano de un texto especifico
 		lblEmailCorreccion.setFont(
 				lblEmailCorreccion.getFont().deriveFont(14f)	
 				);
-		
 		//lblEmailCorreccion.setBounds(150,100,200,40);
 		add(lblEmailCorreccion);
+		
 		
 		JLabel lblContrasena = new JLabel("*Contraseña: ");
 		lblContrasena.setForeground(Color.BLACK);
@@ -87,6 +97,8 @@ public class LoginView extends JPanel {
 		contrasena.setFont(fuente);
 		contrasena.setBounds(150,160,200,40);
 		add(contrasena);
+		
+		add(new JLabel());
 		
 		JLabel lblContrasenaCorreccion = new JLabel ("Contraseña obligatoria");
 		lblContrasenaCorreccion.setForeground(Color.RED);
