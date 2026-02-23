@@ -10,7 +10,7 @@ import java.awt.Color;
  * 7. Para que respete el tamano correcto el textfield porque lo de poner el tamano no funciono se tienen que limitar
  * 
  */
-
+import java.awt.Dimension;
 
 import lib.SpringUtilities;
 import java.awt.Font;
@@ -33,16 +33,29 @@ public class LoginView extends JPanel {
 		fuente = new Font("Times New Roman", Font.ITALIC , 17);
 		setBackground(Color.WHITE);
 		//setLayout(new SpringLayout());
-		setLayout(new java.awt.BorderLayout());
+		setLayout(new java.awt.BorderLayout(0, 15)); //ESPACIO ENTRE ZONAS
 		
-	inicializarComponentes();
+		inicializarComponentes();
 		//setBackground(new Color(210,165,35));
 	}
 	
 	private void inicializarComponentes() {
-		crearBotones();
+		crearTitulo();
 		crearFormulario();
+		crearBotones();
 	}
+	
+    //METODO PARA CENTRAR INICIO DE SESION
+    private void crearTitulo() {
+
+        JLabel lblSaludo = new JLabel("Inicio de sesión", JLabel.CENTER);
+        lblSaludo.setFont(fuente);
+        lblSaludo.setHorizontalAlignment(JLabel.CENTER); 
+        //Se centra el texto
+
+        add(lblSaludo, BorderLayout.NORTH); 
+        //Se ubicara en el norte 
+    }
 	
 	private void crearBotones() {
 
@@ -50,7 +63,7 @@ public class LoginView extends JPanel {
 	    panelBoton.setBackground(Color.WHITE);
 
 	    JButton boton = new JButton("Iniciar");
-	    boton.setBackground(Color.BLUE);
+	    boton.setBackground(Color.WHITE);
 	    boton.setForeground(Color.BLACK);
 	    boton.setFont(fuente);
 
@@ -67,17 +80,32 @@ public class LoginView extends JPanel {
 		JPanel panelito = new JPanel (new SpringLayout());
 		panelito.setBackground(Color.WHITE);
 		
-		JLabel lblSaludo = new JLabel("Inicio de sesion", JLabel.CENTER);
+		//SE DEBE QUITAR PORQUE LO HICE METODO APARTE
+		/*JLabel lblSaludo = new JLabel("Inicio de sesion", JLabel.CENTER);
 		lblSaludo.setFont(fuente);
 		
 		panelito.add(lblSaludo);
-		panelito.add(new JLabel());
+		panelito.add(new JLabel());*/
 		
 		JLabel lblEmail = new JLabel("*Correo: ");
 		lblEmail.setFont(fuente);
 		
+		//LO COMENTO 22/02/2026
+		/*
 		JTextField texto = new JTextField(5);
-		texto.setFont(fuente);
+		texto.setFont(fuente);*/
+		
+		//CAMBIOS PARA REDUCIR TAMAÑO DEL CAMPO DE TEXTO QUE ABARCA CASI TODA LA PANTALLA
+		JTextField texto = new JTextField();
+        texto.setFont(fuente);
+        texto.setPreferredSize(new Dimension(180, 30));
+
+        JLabel lblContrasena = new JLabel("*Contraseña: ");
+        lblContrasena.setFont(fuente);
+        
+        JPasswordField contrasena = new JPasswordField();
+        contrasena.setFont(fuente);
+        contrasena.setPreferredSize(new java.awt.Dimension(180, 30));
 
 		
 		
@@ -93,12 +121,12 @@ public class LoginView extends JPanel {
 		add(lblEmailCorreccion);
 		*/
 		
-		JLabel lblContrasena = new JLabel("*Contraseña: ");
+        //LO COMENTO 22/02/2026
+		/*JLabel lblContrasena = new JLabel("*Contraseña: ");
 		lblContrasena.setFont(fuente);
 		
-		
 		JPasswordField contrasena = new JPasswordField(5);
-		contrasena.setFont(fuente);
+		contrasena.setFont(fuente);*/
 	
 		panelito.add(lblEmail);
 		panelito.add(texto);
@@ -106,10 +134,17 @@ public class LoginView extends JPanel {
 		panelito.add(lblContrasena);
 		panelito.add(contrasena);
 		//Iguala el ancho de todas las columnas al componente mas grande
-		SpringUtilities.makeCompactGrid(panelito, 3, 2, 20, 20, 15, 15);
+		SpringUtilities.makeCompactGrid(panelito, 2, 2, 20, 10, 15, 15);
 		//add(panelito);
 		add(panelito, BorderLayout.CENTER);
+		
+		//NUEVO 22/02/2026
+		/*JPanel contenedor = new JPanel();
+		contenedor.setBackground(Color.WHITE);
+		contenedor.add(panelito);*/
 
+		//LO COMENTO 22/02/2026
+		//add(contenedor, BorderLayout.CENTER);
 		
 		/*JLabel lblContrasenaCorreccion = new JLabel ("Contraseña obligatoria");
 		lblContrasenaCorreccion.setForeground(Color.RED);
