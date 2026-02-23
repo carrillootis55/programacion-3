@@ -1,5 +1,18 @@
 package views;
+import java.awt.BorderLayout;
 import java.awt.Color;
+/*1. Se importa la paqueteria lib
+ * 2. TODOS los setBounds se van a eliminar
+ * 3.Los add que agregan cosas directo al panel principal tambien se eliminan
+ * 4. Agregamos en orden la tablita
+ * 5. Se va a usar borderLayout porque necesitamos definir las restricciones de pantalla para que no se mire feo
+ * 6. MODIFICAR los textfield con un tamano especifico para que no salga el jtextfield micro chiquito
+ * 7. Para que respete el tamano correcto el textfield porque lo de poner el tamano no funciono se tienen que limitar
+ * 
+ */
+
+
+import lib.SpringUtilities;
 import java.awt.Font;
 import java.awt.Image;
 
@@ -19,7 +32,8 @@ public class LoginView extends JPanel {
 		
 		fuente = new Font("Times New Roman", Font.ITALIC , 17);
 		setBackground(Color.WHITE);
-		setLayout(new SpringLayout());
+		//setLayout(new SpringLayout());
+		setLayout(new java.awt.BorderLayout());
 		
 	inicializarComponentes();
 		//setBackground(new Color(210,165,35));
@@ -31,50 +45,43 @@ public class LoginView extends JPanel {
 	}
 	
 	private void crearBotones() {
-		
-		JButton boton = new JButton("Iniciar");
-		boton.setBounds(215,315,160,40);
-		boton.setBackground(Color.BLUE);
-		boton.setForeground(Color.BLACK);
-		boton.setToolTipText("Haz click aquí");
-		boton.setFont(fuente);
-		
-		colocarIcono(boton, "../img/icono.png");
-		add(boton);
-		
+
+	    JPanel panelBoton = new JPanel();
+	    panelBoton.setBackground(Color.WHITE);
+
+	    JButton boton = new JButton("Iniciar");
+	    boton.setBackground(Color.BLUE);
+	    boton.setForeground(Color.BLACK);
+	    boton.setFont(fuente);
+
+	    colocarIcono(boton, "../img/icono.png");
+
+	    panelBoton.add(boton);
+
+	    add(panelBoton, BorderLayout.SOUTH);
 	}
+
 	
 	private void crearFormulario() {
-		JPanel panelito = new JPanel (new SpringLayout());
-		add(panelito);
-		for(int i= 0; i< numPairs;i++) {
-			JLabel  i= new JLabel(labels[i]);
-			panelito.add(1);
-			
-		}
-
 		
-		JLabel lblSaludo = new JLabel("Inicio de sesion");
-		lblSaludo.setForeground(Color.BLACK);
+		JPanel panelito = new JPanel (new SpringLayout());
+		panelito.setBackground(Color.WHITE);
+		
+		JLabel lblSaludo = new JLabel("Inicio de sesion", JLabel.CENTER);
 		lblSaludo.setFont(fuente);
-		lblSaludo.setBounds(140,2,400,70);
-		add(lblSaludo);
+		
+		panelito.add(lblSaludo);
+		panelito.add(new JLabel());
 		
 		JLabel lblEmail = new JLabel("*Correo: ");
-		lblEmail.setForeground(Color.BLACK);
 		lblEmail.setFont(fuente);
-		lblEmail.setBounds(10,100,200,40);
-		add(lblEmail);
 		
-		JTextField texto = new JTextField();
-		texto.setForeground(Color.BLACK);
+		JTextField texto = new JTextField(5);
 		texto.setFont(fuente);
-		texto.setBounds(150,100,200,40);
-		add(texto);
+
 		
-		add(new JLabel());
 		
-		JLabel lblEmailCorreccion = new JLabel ("Correo obligatorio");
+		/*JLabel lblEmailCorreccion = new JLabel ("Correo obligatorio");
 		lblEmailCorreccion.setForeground(Color.RED);
 		lblEmailCorreccion.setFont(fuente);
 		lblEmailCorreccion.setBounds(155,125,220,50);
@@ -84,23 +91,27 @@ public class LoginView extends JPanel {
 				);
 		//lblEmailCorreccion.setBounds(150,100,200,40);
 		add(lblEmailCorreccion);
-		
+		*/
 		
 		JLabel lblContrasena = new JLabel("*Contraseña: ");
-		lblContrasena.setForeground(Color.BLACK);
 		lblContrasena.setFont(fuente);
-		lblContrasena.setBounds(10,160,200,40);
-		add(lblContrasena);
 		
-		JPasswordField contrasena = new JPasswordField();
-		contrasena.setForeground(Color.BLACK);
+		
+		JPasswordField contrasena = new JPasswordField(5);
 		contrasena.setFont(fuente);
-		contrasena.setBounds(150,160,200,40);
-		add(contrasena);
+	
+		panelito.add(lblEmail);
+		panelito.add(texto);
 		
-		add(new JLabel());
+		panelito.add(lblContrasena);
+		panelito.add(contrasena);
+		//Iguala el ancho de todas las columnas al componente mas grande
+		SpringUtilities.makeCompactGrid(panelito, 3, 2, 20, 20, 15, 15);
+		//add(panelito);
+		add(panelito, BorderLayout.CENTER);
+
 		
-		JLabel lblContrasenaCorreccion = new JLabel ("Contraseña obligatoria");
+		/*JLabel lblContrasenaCorreccion = new JLabel ("Contraseña obligatoria");
 		lblContrasenaCorreccion.setForeground(Color.RED);
 		lblContrasenaCorreccion.setFont(fuente);
 		lblContrasenaCorreccion.setBounds(155,185,220,50);
@@ -109,7 +120,7 @@ public class LoginView extends JPanel {
 				lblEmailCorreccion.getFont().deriveFont(14f)	
 				);
 		
-		add(lblContrasenaCorreccion);
+		add(lblContrasenaCorreccion);*/
 	}
 	
 	private void colocarIcono(JButton boton, String ruta) { 
