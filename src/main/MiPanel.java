@@ -11,5 +11,8 @@ public class MiPanel extends JPanel{
 		//setBackground(new Color(210,65,35));
 		
 	}
+	
+	
+	
 
 }

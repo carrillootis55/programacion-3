@@ -14,7 +14,11 @@ import java.awt.Dimension;
 
 import lib.SpringUtilities;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -31,7 +35,7 @@ public class LoginView extends JPanel {
 	public LoginView() {
 		
 		fuente = new Font("Times New Roman", Font.ITALIC , 17);
-		setBackground(Color.WHITE);
+		setBackground(Color.GRAY); 
 		//setLayout(new SpringLayout());
 		setLayout(new java.awt.BorderLayout(0, 15)); //ESPACIO ENTRE ZONAS
 		
@@ -167,5 +171,23 @@ public class LoginView extends JPanel {
 			System.out.println("No está la imagen del ícono");
 		}
 	}
-
+	
+	//NUEVO 23/02/2026
+	/*public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2= (Graphics2D) g;
+		Image fondo=null;
+		try {
+			fondo =ImageIO.read(new File("src/img/fondo.jpg"));
+			g2.drawImage(fondo,0,0,getWidth(), getHeight(),null);
+		}catch(IOException ex){
+			System.out.println("La imagen no existe");
+		}
+		
+	}*/
+	
+	
+	
+	
+	
 }

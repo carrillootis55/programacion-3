@@ -4,6 +4,7 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 
+import views.Formulario;
 import views.LoginWindow;
 
 public class Main {
@@ -11,7 +12,9 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//MiVentana ventanita= new MiVentana();
-		LoginWindow ventanita = new LoginWindow();
+		//LoginWindow ventanita = new LoginWindow(); //ES QUE SE USA PARA QUE SE VEA LOGIN
+		Formulario formulario= new Formulario();
+		
 		//showOnScreen(1, ventanita);
 	}
 	
