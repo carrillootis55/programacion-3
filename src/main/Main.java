@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import views.Formulario;
 import views.LoginWindow;
+import views.MainView;
 
 public class Main {
 
@@ -13,9 +14,9 @@ public class Main {
 		
 		//MiVentana ventanita= new MiVentana();
 		//LoginWindow ventanita = new LoginWindow(); //ES QUE SE USA PARA QUE SE VEA LOGIN
-		Formulario formulario= new Formulario();
-		
-		//showOnScreen(1, ventanita);
+		Formulario formulario= new Formulario();//COMENTADO 25/02/2026
+		MainView ventana = new MainView();
+		showOnScreen(1, ventana);
 	}
 	
 	public static void showOnScreen(int screen, JFrame frame ) {
