@@ -1,5 +1,7 @@
 package views;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -10,9 +12,12 @@ public class MainView extends JFrame {
 	 public MainView() {
 		 
 		 setSize(500,500);
-		 setTitle("SISTEMA");
+		 setTitle("PRIMARIA");
 		 setLocationRelativeTo(null);
 		 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 
+		 setLayout(new BorderLayout());
+		 
 		 setMenu();
 		 setVisible(true);
 	 }
@@ -21,28 +26,45 @@ public class MainView extends JFrame {
 		 JMenuBar mb= new JMenuBar();
 		 setJMenuBar(mb);
 		 
-		 JMenu menu= new JMenu("Menu");
-		 mb.add(menu);
-		 menu.addSeparator();
+		 // MENU ARCHIVO
+		 JMenu archivo = new JMenu("ARCHIVO");
+		 mb.add(archivo);
+
+		 JMenuItem cerrarSesion = new JMenuItem("Cerrar sesión");
+		 JMenuItem salir = new JMenuItem("Salir");
+
+		 archivo.add(cerrarSesion);
+		 archivo.addSeparator();
+		 archivo.add(salir);
 		 
-		 JMenuItem perfilMaestro= new JMenuItem("Perfil");
-		 menu.add(perfilMaestro);
+		 //MAESTRO
+		 JMenu maestro = new JMenu("MAESTRO");
+		 mb.add(maestro);
 		 
-		 JMenu alumnos= new JMenu("Alumnos");
+		 maestro.addSeparator();
+		 
+		 JMenuItem perfil = new JMenuItem("Perfil");
+		 maestro.add(perfil);
+
+		 //ALUMNOS
+		 JMenu alumnos = new JMenu("ALUMNOS");
 		 mb.add(alumnos);
-		 menu.addSeparator();
-		 
-		 JMenuItem registrarAlumno = new JMenuItem("Registrar Alumno");
-		 alumnos.add(registrarAlumno);
+
+		 JMenuItem registrar = new JMenuItem("Registrar alumno");
+		 JMenuItem lista = new JMenuItem("Lista de alumnos");
+
+		 alumnos.add(registrar);
 		 alumnos.addSeparator();
-		 
-		 JMenuItem lista = new JMenuItem("Lista Alumnos");
 		 alumnos.add(lista);
-		 alumnos.addSeparator();
+
+		 //CALIFICACIONES
+		 JMenu calificaciones = new JMenu("CALIFICACIONES");
+		 mb.add(calificaciones);
 		 
-		 JMenuItem calificacion= new JMenuItem("Ingresar Calificaciones");
-		 alumnos.add(calificacion);
-		 alumnos.addSeparator();
+		 calificaciones.addSeparator();
+		 
+		 JMenuItem ingresar = new JMenuItem("Ingresar calificaciones");
+		 calificaciones.add(ingresar);
 		 
 		 
 	 }
