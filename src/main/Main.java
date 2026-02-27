@@ -16,7 +16,7 @@ public class Main {
 		LoginWindow ventanita = new LoginWindow(); //ES QUE SE USA PARA QUE SE VEA LOGIN
 		Formulario formulario= new Formulario();//COMENTADO 25/02/2026
 		MainView ventana = new MainView();
-		showOnScreen(1, ventana);
+		showOnScreen(0, ventana);
 	}
 	
 	public static void showOnScreen(int screen, JFrame frame ) {

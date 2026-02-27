@@ -23,6 +23,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -35,12 +36,12 @@ public class LoginView extends JPanel {
 	public LoginView() {
 		
 		fuente = new Font("Times New Roman", Font.ITALIC , 17);
-		setBackground(Color.GRAY); 
-		//setLayout(new SpringLayout());
-		setLayout(new java.awt.BorderLayout(0, 15)); //ESPACIO ENTRE ZONAS
-		
+		setBackground(Color.WHITE);
+		setOpaque(true);
+
+		setLayout(new BorderLayout());
 		inicializarComponentes();
-		//setBackground(new Color(210,165,35));
+		
 	}
 	
 	private void inicializarComponentes() {
@@ -52,7 +53,7 @@ public class LoginView extends JPanel {
     //METODO PARA CENTRAR INICIO DE SESION
     private void crearTitulo() {
 
-        JLabel lblSaludo = new JLabel("Inicio de sesión", JLabel.CENTER);
+        JLabel lblSaludo = new JLabel("Iniciar sesión", JLabel.CENTER);
         lblSaludo.setFont(fuente);
         lblSaludo.setHorizontalAlignment(JLabel.CENTER); 
         //Se centra el texto
@@ -61,10 +62,12 @@ public class LoginView extends JPanel {
         //Se ubicara en el norte 
     }
 	
+    //BOTON
 	private void crearBotones() {
 
 	    JPanel panelBoton = new JPanel();
 	    panelBoton.setBackground(Color.WHITE);
+	    panelBoton.setOpaque(true); 
 
 	    JButton boton = new JButton("Iniciar");
 	    boton.setBackground(Color.WHITE);
@@ -83,85 +86,68 @@ public class LoginView extends JPanel {
 		
 		JPanel panelito = new JPanel (new SpringLayout());
 		panelito.setBackground(Color.WHITE);
+		panelito.setOpaque(true);
 		
-		//SE DEBE QUITAR PORQUE LO HICE METODO APARTE
-		/*JLabel lblSaludo = new JLabel("Inicio de sesion", JLabel.CENTER);
-		lblSaludo.setFont(fuente);
-		
-		panelito.add(lblSaludo);
-		panelito.add(new JLabel());*/
-		
-		JLabel lblEmail = new JLabel("*Correo: ");
+		//USUARIO
+		JLabel lblEmail = new JLabel("*Usuario: ");
 		lblEmail.setFont(fuente);
-		
-		//LO COMENTO 22/02/2026
-		/*
-		JTextField texto = new JTextField(5);
-		texto.setFont(fuente);*/
 		
 		//CAMBIOS PARA REDUCIR TAMAÑO DEL CAMPO DE TEXTO QUE ABARCA CASI TODA LA PANTALLA
 		JTextField texto = new JTextField();
         texto.setFont(fuente);
         texto.setPreferredSize(new Dimension(180, 30));
-
+        
+        JLabel lblUsuarioCorreccion = new JLabel("*Usuario obligatorio");
+        lblUsuarioCorreccion.setForeground(Color.RED);
+        lblUsuarioCorreccion.setFont(fuente.deriveFont(13f));
+        
+        //CONTRASEÑA
         JLabel lblContrasena = new JLabel("*Contraseña: ");
         lblContrasena.setFont(fuente);
         
         JPasswordField contrasena = new JPasswordField();
         contrasena.setFont(fuente);
         contrasena.setPreferredSize(new java.awt.Dimension(180, 30));
-
+        
+        JLabel lblContrasenaCorreccion = new JLabel("*Contraseña obligatoria");
+        lblContrasenaCorreccion.setForeground(Color.RED);
+        lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));
+        
+        //CheckBox para recordar al usuario
+        JCheckBox chkRecordar = new JCheckBox("Recordar usuario", false);
+        chkRecordar.setBackground(Color.WHITE);
+        chkRecordar.setFont(fuente.deriveFont(14f));
 		
 		
-		/*JLabel lblEmailCorreccion = new JLabel ("Correo obligatorio");
-		lblEmailCorreccion.setForeground(Color.RED);
-		lblEmailCorreccion.setFont(fuente);
-		lblEmailCorreccion.setBounds(155,125,220,50);
-		//Tamano de un texto especifico
-		lblEmailCorreccion.setFont(
-				lblEmailCorreccion.getFont().deriveFont(14f)	
-				);
-		//lblEmailCorreccion.setBounds(150,100,200,40);
-		add(lblEmailCorreccion);
-		*/
-		
-        //LO COMENTO 22/02/2026
-		/*JLabel lblContrasena = new JLabel("*Contraseña: ");
-		lblContrasena.setFont(fuente);
-		
-		JPasswordField contrasena = new JPasswordField(5);
-		contrasena.setFont(fuente);*/
-	
+        //SE AGREGA LO CREADO
 		panelito.add(lblEmail);
 		panelito.add(texto);
-		
+
+		//Se agrega debajo del correo
+		panelito.add(new JLabel());
+		panelito.add(lblUsuarioCorreccion);
+
 		panelito.add(lblContrasena);
 		panelito.add(contrasena);
+
+		//Se agrega debajo de la contraseña
+		panelito.add(new JLabel());
+		panelito.add(lblContrasenaCorreccion);
+		
+		//Se agrega el Recordar Usuario
+		panelito.add(new JLabel());
+        panelito.add(chkRecordar);
+		
 		//Iguala el ancho de todas las columnas al componente mas grande
-		SpringUtilities.makeCompactGrid(panelito, 2, 2, 20, 10, 15, 15);
+		SpringUtilities.makeCompactGrid(panelito, 5, 2, 20, 10, 15, 15);
+		
 		//add(panelito);
+		
 		add(panelito, BorderLayout.CENTER);
 		
-		//NUEVO 22/02/2026
-		/*JPanel contenedor = new JPanel();
-		contenedor.setBackground(Color.WHITE);
-		contenedor.add(panelito);*/
-
-		//LO COMENTO 22/02/2026
-		//add(contenedor, BorderLayout.CENTER);
-		
-		/*JLabel lblContrasenaCorreccion = new JLabel ("Contraseña obligatoria");
-		lblContrasenaCorreccion.setForeground(Color.RED);
-		lblContrasenaCorreccion.setFont(fuente);
-		lblContrasenaCorreccion.setBounds(155,185,220,50);
-		
-		lblContrasenaCorreccion.setFont(
-				lblEmailCorreccion.getFont().deriveFont(14f)	
-				);
-		
-		add(lblContrasenaCorreccion);*/
 	}
 	
+	//ICONO DEL BOTON
 	private void colocarIcono(JButton boton, String ruta) { 
 		try {
 			Image icono = ImageIO.read(getClass().getResource(ruta));
@@ -172,22 +158,6 @@ public class LoginView extends JPanel {
 		}
 	}
 	
-	//NUEVO 23/02/2026
-	/*public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2= (Graphics2D) g;
-		Image fondo=null;
-		try {
-			fondo =ImageIO.read(new File("src/img/fondo.jpg"));
-			g2.drawImage(fondo,0,0,getWidth(), getHeight(),null);
-		}catch(IOException ex){
-			System.out.println("La imagen no existe");
-		}
 		
-	}*/
-	
-	
-	
-	
 	
 }
