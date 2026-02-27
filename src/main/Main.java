@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//MiVentana ventanita= new MiVentana();
-		//LoginWindow ventanita = new LoginWindow(); //ES QUE SE USA PARA QUE SE VEA LOGIN
+		LoginWindow ventanita = new LoginWindow(); //ES QUE SE USA PARA QUE SE VEA LOGIN
 		Formulario formulario= new Formulario();//COMENTADO 25/02/2026
 		MainView ventana = new MainView();
 		showOnScreen(1, ventana);
