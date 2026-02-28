@@ -2,10 +2,13 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -60,7 +63,7 @@ public class Formulario extends JFrame{
 		matricula.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(matricula);
 
-		JTextField txt1 = new JTextField(20);
+		JTextField txt1 = new JTextField(35);
 		txt1.setMaximumSize(txt1.getPreferredSize()); 
 		txt1.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(txt1);
@@ -71,7 +74,7 @@ public class Formulario extends JFrame{
 		apellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(apellidoPaterno);
 		
-		JTextField txt2 = new JTextField(20);
+		JTextField txt2 = new JTextField(35);
 		txt2.setMaximumSize(txt2.getPreferredSize()); 
 		txt2.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(txt2);
@@ -80,57 +83,64 @@ public class Formulario extends JFrame{
 		apellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(apellidoMaterno);
 		
-		JTextField txt3 = new JTextField(20);
+		JTextField txt3 = new JTextField(35);
 		txt3.setMaximumSize(txt3.getPreferredSize()); 
 		txt3.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(txt3);
 		
-		JLabel alumno= new JLabel("Nombre del alumno:");
+		JLabel alumno= new JLabel("Nombre");
 		alumno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(alumno);
 		
-		JTextField txt = new JTextField(20);
+		JTextField txt = new JTextField(35);
 		txt.setMaximumSize(txt.getPreferredSize()); 
 		txt.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(txt);
 		
-		JLabel sexo = new JLabel("Sexo");
-		panelComponentes.add(sexo);
-	
+		JPanel panelSexo = new JPanel();
+		panelSexo.setLayout(new BoxLayout(panelSexo, BoxLayout.Y_AXIS));
+
+		JPanel panelSexoGrupo = new JPanel();
+		panelSexoGrupo.setLayout(new GridLayout(3, 2, 10, 5));
+
+		JLabel sexo = new JLabel("Sexo:");
+		JLabel grupo = new JLabel("Grupo:");
+
 		JRadioButton rbMujer = new JRadioButton("Mujer");
-		add(rbMujer);
-		panelComponentes.add(rbMujer);
-		
 		JRadioButton rbHombre = new JRadioButton("Hombre");
-		add(rbHombre);
-		panelComponentes.add(rbHombre);
-		
-		ButtonGroup bgSexo = new ButtonGroup();
-		bgSexo.add(rbHombre);
-		bgSexo.add(rbMujer);
-		
-		
-		JLabel grupo= new JLabel("Grupo:");//OPCION
-		panelComponentes.add(grupo);
-		
+
 		JRadioButton rbA = new JRadioButton("A");
-		add(rbA);
-		panelComponentes.add(rbA);
-		
 		JRadioButton rbB = new JRadioButton("B");
-		add(rbB);
-		panelComponentes.add(rbB);
-		
+
+		ButtonGroup bgSexo = new ButtonGroup();
+		bgSexo.add(rbMujer);
+		bgSexo.add(rbHombre);
+
 		ButtonGroup bgGrupo = new ButtonGroup();
 		bgGrupo.add(rbA);
 		bgGrupo.add(rbB);
 
+		panelSexoGrupo.add(sexo);
+		panelSexoGrupo.add(grupo);
+
+		panelSexoGrupo.add(rbMujer);
+		panelSexoGrupo.add(rbA);
+
+		panelSexoGrupo.add(rbHombre);
+		panelSexoGrupo.add(rbB);
+
+		panelSexoGrupo.setAlignmentX(LEFT_ALIGNMENT);
+
+		panelComponentes.add(panelSexoGrupo);
+		panelSexoGrupo.setMaximumSize(panelSexoGrupo.getPreferredSize());
+		panelComponentes.add(Box.createVerticalStrut(15));
+		
 		
 		JLabel nombreContacto= new JLabel("Nombre del Contacto de Emergencia:");
 		nombreContacto.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(nombreContacto);
 		
-		JTextField txt5 = new JTextField(5);
+		JTextField txt5 = new JTextField(35);
 		txt5.setMaximumSize(txt5.getPreferredSize()); 
 		txt5.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(txt5);
@@ -139,20 +149,26 @@ public class Formulario extends JFrame{
 		contacto.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(contacto);
 		
-		JTextField txt4 = new JTextField(5);
+		JTextField txt4 = new JTextField(35);
+		txt4.setMaximumSize(txt4.getPreferredSize()); 
+		txt4.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(txt4);
 		
 		JLabel parentesco= new JLabel("Parentesco con el alumno:");
+		parentesco.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(parentesco);
 		
 		String[] opcionesParentesco = {"Padre","Madre","Hermana/Hermano",
 				"Tio/Tia", "Abuelo/Abuela"};
 		
 		JComboBox<String> parentescoAlumno = new JComboBox<String>(opcionesParentesco);
-		parentescoAlumno.setSelectedIndex(2);
+		parentescoAlumno.setSelectedIndex(0);
+		parentescoAlumno.setMaximumSize(txt4.getPreferredSize()); 
+		parentescoAlumno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(parentescoAlumno);
 		
 		JLabel direccion= new JLabel("Domicilio (calle y numero):");
+		direccion.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(direccion);
 		
 		String[] opcionesDomicilio = {"Calle Altamirano Allende 1398","Calle Gomez Farias 4367","Calle Rosa Maria 2345",
@@ -160,7 +176,9 @@ public class Formulario extends JFrame{
 				"Calle 3 de Mayo 9757"};
 		
 		JComboBox<String> domicilio = new JComboBox<String>(opcionesDomicilio);
-		domicilio.setSelectedIndex(2);
+		domicilio.setSelectedIndex(0);
+		domicilio.setMaximumSize(txt4.getPreferredSize()); 
+		domicilio.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(domicilio);
 		
 		
