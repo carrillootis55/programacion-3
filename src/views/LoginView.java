@@ -17,14 +17,18 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -32,6 +36,10 @@ import javax.swing.SpringLayout;
 
 public class LoginView extends JPanel {
 	Font fuente;
+	JTextField textoUsuario;
+	JPasswordField contrasena;
+	JLabel lblUsuarioCorreccion;
+	JLabel lblContrasenaCorreccion;
 	
 	public LoginView() {
 		
@@ -79,6 +87,9 @@ public class LoginView extends JPanel {
 	    panelBoton.add(boton);
 
 	    add(panelBoton, BorderLayout.SOUTH);
+	    
+	    boton.addActionListener(e->login());
+	   
 	}
 
 	
@@ -93,25 +104,35 @@ public class LoginView extends JPanel {
 		lblEmail.setFont(fuente);
 		
 		//CAMBIOS PARA REDUCIR TAMAÑO DEL CAMPO DE TEXTO QUE ABARCA CASI TODA LA PANTALLA
-		JTextField texto = new JTextField();
-        texto.setFont(fuente);
-        texto.setPreferredSize(new Dimension(180, 30));
+		textoUsuario = new JTextField();
+		textoUsuario.setFont(fuente);
+		textoUsuario.setPreferredSize(new Dimension(180, 30));
         
-        JLabel lblUsuarioCorreccion = new JLabel("*Usuario obligatorio");
+        /*lblUsuarioCorreccion = new JLabel("*Usuario obligatorio");
+        lblUsuarioCorreccion.setForeground(Color.RED);
+        lblUsuarioCorreccion.setFont(fuente.deriveFont(13f));*/
+        
+        lblUsuarioCorreccion = new JLabel(" ");
         lblUsuarioCorreccion.setForeground(Color.RED);
         lblUsuarioCorreccion.setFont(fuente.deriveFont(13f));
+     
         
         //CONTRASEÑA
         JLabel lblContrasena = new JLabel("*Contraseña: ");
         lblContrasena.setFont(fuente);
         
-        JPasswordField contrasena = new JPasswordField();
+        contrasena = new JPasswordField();
         contrasena.setFont(fuente);
         contrasena.setPreferredSize(new java.awt.Dimension(180, 30));
         
-        JLabel lblContrasenaCorreccion = new JLabel("*Contraseña obligatoria");
+        /*lblContrasenaCorreccion = new JLabel("*Contraseña obligatoria");
+        lblContrasenaCorreccion.setForeground(Color.RED);
+        lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));*/
+        
+        lblContrasenaCorreccion = new JLabel(" ");
         lblContrasenaCorreccion.setForeground(Color.RED);
         lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));
+
         
         //CheckBox para recordar al usuario
         JCheckBox chkRecordar = new JCheckBox("Recordar usuario", false);
@@ -121,7 +142,7 @@ public class LoginView extends JPanel {
 		
         //SE AGREGA LO CREADO
 		panelito.add(lblEmail);
-		panelito.add(texto);
+		panelito.add(textoUsuario);
 
 		//Se agrega debajo del correo
 		panelito.add(new JLabel());
@@ -158,6 +179,105 @@ public class LoginView extends JPanel {
 		}
 	}
 	
+	//Metodo que actua cuando presionamos INICIAR
+	/*private void login() {
+		String resultado = validarCredenciales(textoUsuario.getText(),String.valueOf(contrasena.getPassword()));
 		
+		//Si el metodo validarCredenciales regresa OK, es porque no hay errores y se  indica que la sesion se inicio
+        if(resultado.equals("OK")) {
+            //JOptionPane.showMessageDialog( this,"Se inició sesión","Sesión iniciada",JOptionPane.INFORMATION_MESSAGE);
+        	System.out.println("Sesión iniciada correctamente");
+        	//Limpia los campos despues de iniciar sesión correctamente
+        	textoUsuario.setText("");
+            contrasena.setText("");
+        }
+
+	}*/
+	
+	//Metodo que actua cuando presionamos INICIAR
+	private void login() {
+	    //Si es true no hay errores
+	    if(validarCredenciales( textoUsuario.getText(),String.valueOf(contrasena.getPassword()))) {
+	    	//JOptionPane.showMessageDialog( this,"Se inició sesión","Sesión iniciada",JOptionPane.INFORMATION_MESSAGE);
+	    	System.out.println("Sesión iniciada correctamente");
+	    	
+	        //Limpia los campos despues de iniciar sesión correctamente
+	        textoUsuario.setText("");
+	        contrasena.setText("");
+	    }
+	}
+	
+	//METODO PARA MOSTRAR ERROR DE USUARIO
+    private void usuarioError(String mensaje) {
+        lblUsuarioCorreccion.setText(mensaje);
+    }
+
+    //METODO PARA MOSTRAR ERROR DE CONTRASEÑA
+    private void contrasenaError(String mensaje) {
+        lblContrasenaCorreccion.setText(mensaje);
+    }
+
+    //Limpia errores
+    private void limpiarErrorMensaje() {
+        lblUsuarioCorreccion.setText(" ");
+        lblContrasenaCorreccion.setText(" ");
+    }
+	
+    //Metodo string para validar los campos del login que son usuario y contraseña
+	/*public String validarCredenciales(String usuario, String password) {
+		limpiarErrorMensaje(); //Se limpian errores anteriores
+	    
+	    boolean hayError = false; //Con esto se evalua si ambos estan vacios, para que aparezcan ambos mensajes
+
+	    if(usuario.trim().isEmpty()) {
+	        usuarioError("*Usuario obligatorio");
+	        hayError = true; 
+	    }
+
+	    if(password.trim().isEmpty()) {
+	        contrasenaError("*Contraseña obligatoria");
+	        hayError = true; 
+	    }
+
+	    if(hayError) {
+	        return "ERROR";
+	    }
+	    
+	    //Se devuelve OK si todo esta bien
+	    return "OK";
+	}*/
+	
+    //Metodo booleano para validar los campos del login que son usuario y contraseña
+	public boolean validarCredenciales(String usuario, String password) {
+
+	    limpiarErrorMensaje(); //Se limpian errores anteriores
+	    
+	    boolean hayError = false; //Con esto se evalua si ambos estan vacios, para que aparezcan ambos mensajes
+
+	    if(usuario.trim().isEmpty()) {
+	        usuarioError("*Usuario obligatorio");
+	        hayError = true; 
+	    }
+
+	    if(password.trim().isEmpty()) {
+	        contrasenaError("*Contraseña obligatoria");
+	        hayError = true; 
+	    }
+
+	    //Si hay error devuelve false
+	    if(hayError) {
+	        return false;
+	    }
+	    
+	    //Devuelve true si todo esta correcto
+	    return true;
+	}
+	
 	
 }
+		
+	
+	
+	
+		
+	

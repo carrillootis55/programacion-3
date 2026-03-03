@@ -13,9 +13,9 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//MiVentana ventanita= new MiVentana();
-		LoginWindow ventanita = new LoginWindow(); //ES QUE SE USA PARA QUE SE VEA LOGIN
-		Formulario formulario= new Formulario();//COMENTADO 25/02/2026
-		MainView ventana = new MainView();
+		LoginWindow ventanita = new LoginWindow(); //SE USA PARA QUE SE VEA LOGIN
+		Formulario formulario= new Formulario();//SE VE EL FORMULARIO
+		MainView ventana = new MainView();//SE VE VENTANA
 		showOnScreen(0, ventana);
 	}
 	
