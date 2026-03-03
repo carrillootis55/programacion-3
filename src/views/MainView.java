@@ -101,7 +101,7 @@ public class MainView extends JFrame {
 	    panel.setBackground(Color.WHITE);
 	    panel.setLayout(new GridBagLayout()); //centra vertical y horizontal
 	    
-	    panel.setPreferredSize(new Dimension(600, 300));//tamaño de la ventana
+	    panel.setPreferredSize(new Dimension(500, 600));//tamaño de la ventana
 
 	    JPanel contenido = new JPanel();
 	    contenido.setBackground(Color.WHITE);
