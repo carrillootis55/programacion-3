@@ -62,7 +62,7 @@ public class Formulario extends JFrame{
 	public Formulario() {
 		setSize(500, 600); //lo reemplazo por pack
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocation(100,100);
 		setResizable(false);
 		setTitle("LISTA DE ALUMNOS");
@@ -455,6 +455,23 @@ public class Formulario extends JFrame{
 	    panelBoton.add(boton);
 	    boton.addActionListener(e -> validarFormulario());
 	    add(panelBoton, BorderLayout.SOUTH);
+	    
+	    JButton btnRegresar = new JButton("REGRESAR");
+	    btnRegresar.setBackground(Color.WHITE);
+	    btnRegresar.setForeground(Color.BLACK);
+	    btnRegresar.addActionListener(e -> {
+			
+			int opcion = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas regresar? Se perderán todos los datos");
+			
+			if(opcion == JOptionPane.YES_OPTION) {
+				new LoginWindow();
+				dispose();
+			}
+			
+		});
+	    
+	    panelBoton.add(btnRegresar);
+	    
 	}
 
 	

@@ -21,7 +21,7 @@ public class LoginWindow extends JFrame {
 		Image icono = tk.getImage("src/img/icono.png");
 		setIconImage(icono);
 		
-		LoginView panelito = new LoginView();
+		LoginView panelito = new LoginView(this);
 		add(panelito);
 		
 		pack();//Se usa pack para que se ajuste al tamaño real del texto que se tiene

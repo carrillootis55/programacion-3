@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -35,14 +36,15 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 public class LoginView extends JPanel {
+	LoginWindow window;
 	Font fuente;
 	JTextField textoUsuario;
 	JPasswordField contrasena;
 	JLabel lblUsuarioCorreccion;
 	JLabel lblContrasenaCorreccion;
 	
-	public LoginView() {
-		
+	public LoginView(LoginWindow window) {
+		this.window= window;
 		fuente = new Font("Times New Roman", Font.ITALIC , 17);
 		setBackground(Color.WHITE);
 		setOpaque(true);
@@ -50,7 +52,7 @@ public class LoginView extends JPanel {
 		setLayout(new BorderLayout());
 		inicializarComponentes();
 		
-	}
+	} 
 	
 	private void inicializarComponentes() {
 		crearTitulo();
@@ -76,19 +78,30 @@ public class LoginView extends JPanel {
 	    JPanel panelBoton = new JPanel();
 	    panelBoton.setBackground(Color.WHITE);
 	    panelBoton.setOpaque(true); 
-
+	    
+	    
 	    JButton boton = new JButton("Iniciar");
 	    boton.setBackground(Color.WHITE);
 	    boton.setForeground(Color.BLACK);
 	    boton.setFont(fuente);
+	    boton.addActionListener(e->login());
+	    
+	    JButton btnRegister = new JButton("Regístrate");
+	    btnRegister.setBackground(Color.WHITE);
+	    btnRegister.setForeground(Color.BLACK);
+	    btnRegister.setFont(fuente);
+		btnRegister.setToolTipText("¿No tienes cuenta? Créala aquí");
+		
+		btnRegister.addActionListener(e-> registro());
+
 
 	    colocarIcono(boton, "../img/icono.png");
 
 	    panelBoton.add(boton);
-
+	    panelBoton.add(btnRegister);
+	    
 	    add(panelBoton, BorderLayout.SOUTH);
 	    
-	    boton.addActionListener(e->login());
 	   
 	}
 
@@ -200,11 +213,19 @@ public class LoginView extends JPanel {
 	    if(validarCredenciales( textoUsuario.getText(),String.valueOf(contrasena.getPassword()))) {
 	    	//JOptionPane.showMessageDialog( this,"Se inició sesión","Sesión iniciada",JOptionPane.INFORMATION_MESSAGE);
 	    	System.out.println("Sesión iniciada correctamente");
+	    	MainView ventana = new MainView();//SE VE VENTANA
+	    	
+	    	window.dispose();
 	    	
 	        //Limpia los campos despues de iniciar sesión correctamente
 	        textoUsuario.setText("");
 	        contrasena.setText("");
 	    }
+	}
+	
+	private void registro() {
+		new Formulario();
+		window.dispose();
 	}
 	
 	//METODO PARA MOSTRAR ERROR DE USUARIO

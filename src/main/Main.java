@@ -14,9 +14,9 @@ public class Main {
 		
 		//MiVentana ventanita= new MiVentana();
 		LoginWindow ventanita = new LoginWindow(); //SE USA PARA QUE SE VEA LOGIN
-		Formulario formulario= new Formulario();//SE VE EL FORMULARIO
-		MainView ventana = new MainView();//SE VE VENTANA
-		showOnScreen(0, ventana);
+		//Formulario formulario= new Formulario();//SE VE EL FORMULARIO
+		//MainView ventana = new MainView();//SE VE VENTANA
+		showOnScreen(0, ventanita);
 	}
 	
 	public static void showOnScreen(int screen, JFrame frame ) {
