@@ -3,6 +3,7 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -17,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -27,6 +29,36 @@ import javax.swing.SwingConstants;
 
 public class Formulario extends JFrame{
 	
+	private JTextField txtMatricula;
+	private JTextField txtApellidoMaterno;
+	private JTextField txtApellidoPaterno;
+	private JTextField txtNombre;
+	
+	private JTextField txtContactoEmergencia;
+	private JTextField txtNumeroEmergencia;
+	
+	private JRadioButton rbMujer;
+	private JRadioButton rbHombre;
+	private ButtonGroup bgSexo;
+	
+	private JRadioButton rbA;
+	private JRadioButton rbB;
+	private ButtonGroup bgGrupo;
+	
+	private JComboBox<String> parentescoAlumno;
+	private JComboBox<String> domicilio;
+
+	private JLabel lblErrorMatricula;
+	private JLabel lblErrorApellidoMaterno;
+	private JLabel lblErrorApellidoPaterno;
+	private JLabel lblErrorNombre;
+	
+	private JLabel lblErrorContactoEmergencia;
+	private JLabel lblErrorNumeroContacto;
+	private JLabel lblErrorSexo;
+	private JLabel lblErrorGrupo;
+	
+	
 	public Formulario() {
 		setSize(500, 600); //lo reemplazo por pack
 		
@@ -34,6 +66,7 @@ public class Formulario extends JFrame{
 		setLocation(100,100);
 		setResizable(false);
 		setTitle("LISTA DE ALUMNOS");
+
 		setLocationRelativeTo(null);
 		
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -45,12 +78,98 @@ public class Formulario extends JFrame{
 		setVisible(true);
 	}
 	
+	private boolean validateMatricula() {
+
+	    if (txtMatricula.getText().trim().isEmpty()) {
+	        lblErrorMatricula.setText("La matrícula es obligatoria");
+	        return false;
+	    }
+	    
+	    return true;
+	}
+	
+	private boolean validateApellidoMaterno() {
+	    if (txtApellidoMaterno.getText().trim().isEmpty()) {
+	        lblErrorApellidoMaterno.setText("El apellido materno es obligatorio");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateApellidoPaterno() {
+	    if (txtApellidoPaterno.getText().trim().isEmpty()) {
+	        lblErrorApellidoPaterno.setText("El apellido paterno es obligatorio");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateNombre() {
+	    if (txtNombre.getText().trim().isEmpty()) {
+	        lblErrorNombre.setText("El nombre es obligatorio");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateSexo() {
+	    if (bgSexo.getSelection() == null) {
+	        lblErrorSexo.setText("Debe seleccionar un sexo");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateGrupo() {
+	    if (bgGrupo.getSelection() == null) {
+	        lblErrorGrupo.setText("Debe seleccionar un grupo");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateParentesco() {
+	    if (parentescoAlumno.getSelectedItem() == null) {
+	        JOptionPane.showMessageDialog(this, "Debe seleccionar un parentesco");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateDomicilio() {
+	    if (domicilio.getSelectedItem() == null) {
+	        JOptionPane.showMessageDialog(this, "Debe seleccionar un domicilio");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateContactoEmergencia() {
+	    if (txtContactoEmergencia.getText().trim().isEmpty()) {
+	        lblErrorContactoEmergencia.setText("El contacto es obligatorio");
+	        return false;
+	    }
+	    return true;
+	}
+	
+	private boolean validateNumeroEmergencia() {
+	    String numero = txtNumeroEmergencia.getText().trim();
+
+	    if (numero.isEmpty()) {
+	        lblErrorNumeroContacto.setText("El número es obligatorio");
+	        return false;
+	    }
+
+	    return true;
+	}
 	
 	public void inicializarComponentes() {
+		
 		
 		JLabel lblTitulo = new JLabel("REGISTRO DEL ALUMNO");
 		add(lblTitulo, BorderLayout.NORTH);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblTitulo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 
 		JPanel panelComponentes = new JPanel();
@@ -62,40 +181,71 @@ public class Formulario extends JFrame{
 		JLabel matricula = new JLabel("Matricula:");
 		matricula.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(matricula);
+	    matricula.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		JTextField txt1 = new JTextField(35);
-		txt1.setMaximumSize(txt1.getPreferredSize()); 
-		txt1.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txt1);
 		
-		//AGREGAR TURNO, FECHA DE NACIMIENTO, GENERO, DEJAR POR DEFECTO TURNO MATUTINO
+		txtMatricula = new JTextField(35);
 		
+		lblErrorMatricula = new JLabel();
+		lblErrorMatricula.setForeground(Color.RED);
+		lblErrorMatricula.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorMatricula);
+		
+		txtMatricula.setMaximumSize(txtMatricula.getPreferredSize()); 
+		txtMatricula.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtMatricula);
+				
 		JLabel apellidoPaterno= new JLabel("Apellido Paterno:");
 		apellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(apellidoPaterno);
+	    apellidoPaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 		
-		JTextField txt2 = new JTextField(35);
-		txt2.setMaximumSize(txt2.getPreferredSize()); 
-		txt2.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txt2);
+		txtApellidoPaterno = new JTextField(35);
+		
+		lblErrorApellidoPaterno = new JLabel();
+		lblErrorApellidoPaterno.setForeground(Color.RED);
+		lblErrorApellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorApellidoPaterno);
+		
+		txtApellidoPaterno.setMaximumSize(txtApellidoPaterno.getPreferredSize()); 
+		txtApellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtApellidoPaterno);
 		
 		JLabel apellidoMaterno= new JLabel("Apellido Materno:");
 		apellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(apellidoMaterno);
+	    apellidoMaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 		
-		JTextField txt3 = new JTextField(35);
-		txt3.setMaximumSize(txt3.getPreferredSize()); 
-		txt3.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txt3);
+		txtApellidoMaterno = new JTextField(35);
 		
+		lblErrorApellidoMaterno = new JLabel();
+		lblErrorApellidoMaterno.setForeground(Color.RED);
+		lblErrorApellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorApellidoMaterno);
+		
+		txtApellidoMaterno.setMaximumSize(txtApellidoMaterno.getPreferredSize()); 
+		txtApellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtApellidoMaterno);
+		
+	
 		JLabel alumno= new JLabel("Nombre");
 		alumno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(alumno);
+	    alumno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 		
-		JTextField txt = new JTextField(35);
-		txt.setMaximumSize(txt.getPreferredSize()); 
-		txt.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txt);
+		txtNombre = new JTextField(35);
+		
+		lblErrorNombre = new JLabel();
+		lblErrorNombre.setForeground(Color.RED);
+		lblErrorNombre.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorNombre);
+		
+		txtNombre.setMaximumSize(txtNombre.getPreferredSize()); 
+		txtNombre.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtNombre);
 		
 		JPanel panelSexo = new JPanel();
 		panelSexo.setLayout(new BoxLayout(panelSexo, BoxLayout.Y_AXIS));
@@ -105,18 +255,24 @@ public class Formulario extends JFrame{
 
 		JLabel sexo = new JLabel("Sexo:");
 		JLabel grupo = new JLabel("Grupo:");
+	    sexo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    grupo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		JRadioButton rbMujer = new JRadioButton("Mujer");
-		JRadioButton rbHombre = new JRadioButton("Hombre");
+		rbMujer = new JRadioButton("Mujer");
+		rbHombre = new JRadioButton("Hombre");
+	    rbMujer.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    rbHombre.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		JRadioButton rbA = new JRadioButton("A");
-		JRadioButton rbB = new JRadioButton("B");
+		rbA = new JRadioButton("A");
+		rbB = new JRadioButton("B");
+	    rbA.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    rbB.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		ButtonGroup bgSexo = new ButtonGroup();
+		bgSexo = new ButtonGroup();
 		bgSexo.add(rbMujer);
 		bgSexo.add(rbHombre);
 
-		ButtonGroup bgGrupo = new ButtonGroup();
+		bgGrupo = new ButtonGroup();
 		bgGrupo.add(rbA);
 		bgGrupo.add(rbB);
 
@@ -132,55 +288,86 @@ public class Formulario extends JFrame{
 		panelSexoGrupo.setAlignmentX(LEFT_ALIGNMENT);
 
 		panelComponentes.add(panelSexoGrupo);
+		lblErrorSexo = new JLabel();
+		lblErrorSexo.setForeground(Color.RED);
+		lblErrorSexo.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorSexo);
+
+		lblErrorGrupo = new JLabel();
+		lblErrorGrupo.setForeground(Color.RED);
+		lblErrorGrupo.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorGrupo);
+		
 		panelSexoGrupo.setMaximumSize(panelSexoGrupo.getPreferredSize());
 		panelComponentes.add(Box.createVerticalStrut(15));
-		
 		
 		JLabel nombreContacto= new JLabel("Nombre del Contacto de Emergencia:");
 		nombreContacto.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(nombreContacto);
+	    nombreContacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
+		txtContactoEmergencia = new JTextField(35);
 		
-		JTextField txt5 = new JTextField(35);
-		txt5.setMaximumSize(txt5.getPreferredSize()); 
-		txt5.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txt5);
+		lblErrorContactoEmergencia = new JLabel();
+		lblErrorContactoEmergencia.setForeground(Color.RED);
+		lblErrorContactoEmergencia.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorContactoEmergencia);
+		
+		txtContactoEmergencia.setMaximumSize(txtContactoEmergencia.getPreferredSize()); 
+		txtContactoEmergencia.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtContactoEmergencia);
 		
 		JLabel contacto= new JLabel("Numero del Contacto de Emergencia:");
 		contacto.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(contacto);
+	    contacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
+		txtNumeroEmergencia = new JTextField(35);
 		
-		JTextField txt4 = new JTextField(35);
-		txt4.setMaximumSize(txt4.getPreferredSize()); 
-		txt4.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txt4);
+		lblErrorNumeroContacto = new JLabel();
+		lblErrorNumeroContacto.setForeground(Color.RED);
+		lblErrorNumeroContacto.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorNumeroContacto);
+		
+		txtNumeroEmergencia.setMaximumSize(txtNumeroEmergencia.getPreferredSize()); 
+		txtNumeroEmergencia.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtNumeroEmergencia);
 		
 		JLabel parentesco= new JLabel("Parentesco con el alumno:");
 		parentesco.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(parentesco);
-		
+	    parentesco.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 		String[] opcionesParentesco = {"Padre","Madre","Hermana/Hermano",
 				"Tio/Tia", "Abuelo/Abuela"};
 		
-		JComboBox<String> parentescoAlumno = new JComboBox<String>(opcionesParentesco);
+		parentescoAlumno = new JComboBox<String>(opcionesParentesco);
+
 		parentescoAlumno.setSelectedIndex(0);
-		parentescoAlumno.setMaximumSize(txt4.getPreferredSize()); 
+	    parentescoAlumno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
+		parentescoAlumno.setMaximumSize(txtNumeroEmergencia.getPreferredSize()); 
 		parentescoAlumno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(parentescoAlumno);
 		
 		JLabel direccion= new JLabel("Domicilio (calle y numero):");
 		direccion.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(direccion);
-		
+	    direccion.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 		String[] opcionesDomicilio = {"Calle Altamirano Allende 1398","Calle Gomez Farias 4367","Calle Rosa Maria 2345",
 				"Calle Diana Laura 2365", "Calle Ficus 3489", "Calle Aquiles Serdan 1993", "Calle Francisco y Madero 3740", "Calle Colosio 2521",
 				"Calle 3 de Mayo 9757"};
 		
-		JComboBox<String> domicilio = new JComboBox<String>(opcionesDomicilio);
+		domicilio = new JComboBox<String>(opcionesDomicilio);
+	    domicilio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 		domicilio.setSelectedIndex(0);
-		domicilio.setMaximumSize(txt4.getPreferredSize()); 
+		domicilio.setMaximumSize(txtNumeroEmergencia.getPreferredSize()); 
 		domicilio.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(domicilio);
 		
+		//private boolean validate
 		
 		
 		//ESTAS OPCIONES SON PARA VER CUAL SE VE MEJOR
@@ -205,6 +392,57 @@ public class Formulario extends JFrame{
 		add(scroll);
 		
 	}
+		private void validarFormulario() {
+
+		    lblErrorMatricula.setText("");
+		    lblErrorApellidoMaterno.setText("");
+		    lblErrorApellidoPaterno.setText("");
+		    lblErrorNombre.setText("");
+		    lblErrorNumeroContacto.setText("");
+		    lblErrorSexo.setText("");
+		    lblErrorGrupo.setText("");
+		    lblErrorContactoEmergencia.setText("");
+
+		    boolean validacion = true;
+
+		    if (!validateMatricula()) {
+		    	validacion = false;
+		    } 
+		    
+		    if (!validateApellidoPaterno()) {
+		    	validacion = false;
+		    } 
+		    
+		    if (!validateApellidoMaterno()) {
+		    	validacion = false;
+		    }
+		    if (!validateSexo()) {
+		    	validacion = false;
+		    }
+		    if (!validateGrupo()) {
+		    	validacion = false;
+		    }
+		    if (!validateNumeroEmergencia()) {
+		    	validacion = false;
+		    }
+		    if (!validateParentesco()) {
+		    	validacion = false;
+		    }
+		    if (!validateDomicilio()) {
+		    	validacion = false;
+		    }
+		    
+		    if (!validateNombre()) {
+		    	validacion = false;
+		    }
+		    if (!validateContactoEmergencia()) {
+		    	validacion = false;
+		    }
+		    
+		    if (validacion) {
+		        JOptionPane.showMessageDialog(this, "Alumno registrado correctamente");
+		    }
+		}
 	
 	private void crearBotones() {
 	    JPanel panelBoton = new JPanel();
@@ -215,7 +453,7 @@ public class Formulario extends JFrame{
 	    boton.setForeground(Color.BLACK);
 
 	    panelBoton.add(boton);
-
+	    boton.addActionListener(e -> validarFormulario());
 	    add(panelBoton, BorderLayout.SOUTH);
 	}
 
