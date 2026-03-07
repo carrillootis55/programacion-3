@@ -58,6 +58,8 @@ public class Formulario extends JFrame{
 	private JLabel lblErrorSexo;
 	private JLabel lblErrorGrupo;
 	
+	private JLabel lblErrorParentesco;
+	private JLabel lblErrorDomicilio;
 	
 	public Formulario() {
 		setSize(500, 600); //lo reemplazo por pack
@@ -81,6 +83,8 @@ public class Formulario extends JFrame{
 	private boolean validateMatricula() {
 
 	    if (txtMatricula.getText().trim().isEmpty()) {
+		    lblErrorMatricula.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 	        lblErrorMatricula.setText("La matrícula es obligatoria");
 	        return false;
 	    }
@@ -90,6 +94,8 @@ public class Formulario extends JFrame{
 	
 	private boolean validateApellidoMaterno() {
 	    if (txtApellidoMaterno.getText().trim().isEmpty()) {
+		    lblErrorApellidoMaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 	        lblErrorApellidoMaterno.setText("El apellido materno es obligatorio");
 	        return false;
 	    }
@@ -98,6 +104,8 @@ public class Formulario extends JFrame{
 	
 	private boolean validateApellidoPaterno() {
 	    if (txtApellidoPaterno.getText().trim().isEmpty()) {
+		    lblErrorApellidoPaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 	        lblErrorApellidoPaterno.setText("El apellido paterno es obligatorio");
 	        return false;
 	    }
@@ -106,22 +114,29 @@ public class Formulario extends JFrame{
 	
 	private boolean validateNombre() {
 	    if (txtNombre.getText().trim().isEmpty()) {
+		    lblErrorNombre.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 	        lblErrorNombre.setText("El nombre es obligatorio");
 	        return false;
 	    }
 	    return true;
 	}
 	
-	private boolean validateSexo() {
-	    if (bgSexo.getSelection() == null) {
+	private boolean validateGrupo() {
+	    if (!rbA.isSelected() && !rbB.isSelected()) {
+		    lblErrorSexo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
+	    	
 	        lblErrorSexo.setText("Debe seleccionar un sexo");
 	        return false;
 	    }
 	    return true;
 	}
 	
-	private boolean validateGrupo() {
-	    if (bgGrupo.getSelection() == null) {
+	private boolean validateSexo() {
+	    if (!rbMujer.isSelected() && !rbHombre.isSelected()) {
+		    lblErrorGrupo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 	        lblErrorGrupo.setText("Debe seleccionar un grupo");
 	        return false;
 	    }
@@ -129,16 +144,20 @@ public class Formulario extends JFrame{
 	}
 	
 	private boolean validateParentesco() {
-	    if (parentescoAlumno.getSelectedItem() == null) {
-	        JOptionPane.showMessageDialog(this, "Debe seleccionar un parentesco");
+	    if (parentescoAlumno.getSelectedIndex()== 0) {
+		    lblErrorParentesco.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
+	        lblErrorParentesco.setText("Debe seleccionar un parentesco");
 	        return false;
 	    }
 	    return true;
 	}
 	
 	private boolean validateDomicilio() {
-	    if (domicilio.getSelectedItem() == null) {
-	        JOptionPane.showMessageDialog(this, "Debe seleccionar un domicilio");
+	    if (domicilio.getSelectedIndex() == 0) {
+	    	lblErrorDomicilio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
+	        lblErrorDomicilio.setText("Debe seleccionar un domicilio");
 	        return false;
 	    }
 	    return true;
@@ -146,6 +165,8 @@ public class Formulario extends JFrame{
 	
 	private boolean validateContactoEmergencia() {
 	    if (txtContactoEmergencia.getText().trim().isEmpty()) {
+		    lblErrorContactoEmergencia.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 	        lblErrorContactoEmergencia.setText("El contacto es obligatorio");
 	        return false;
 	    }
@@ -156,6 +177,8 @@ public class Formulario extends JFrame{
 	    String numero = txtNumeroEmergencia.getText().trim();
 
 	    if (numero.isEmpty()) {
+		    lblErrorNumeroContacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 	        lblErrorNumeroContacto.setText("El número es obligatorio");
 	        return false;
 	    }
@@ -338,13 +361,17 @@ public class Formulario extends JFrame{
 		panelComponentes.add(parentesco);
 	    parentesco.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		String[] opcionesParentesco = {"Padre","Madre","Hermana/Hermano",
+		String[] opcionesParentesco = {"Seleccione","Padre","Madre","Hermana/Hermano",
 				"Tio/Tia", "Abuelo/Abuela"};
 		
 		parentescoAlumno = new JComboBox<String>(opcionesParentesco);
 
 		parentescoAlumno.setSelectedIndex(0);
 	    parentescoAlumno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorParentesco = new JLabel();
+	    lblErrorParentesco.setForeground(Color.RED);
+	    lblErrorParentesco.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorParentesco);
 
 		parentescoAlumno.setMaximumSize(txtNumeroEmergencia.getPreferredSize()); 
 		parentescoAlumno.setAlignmentX(LEFT_ALIGNMENT);
@@ -355,13 +382,18 @@ public class Formulario extends JFrame{
 		panelComponentes.add(direccion);
 	    direccion.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		String[] opcionesDomicilio = {"Calle Altamirano Allende 1398","Calle Gomez Farias 4367","Calle Rosa Maria 2345",
+		String[] opcionesDomicilio = {"Seleccione","Calle Altamirano Allende 1398","Calle Gomez Farias 4367","Calle Rosa Maria 2345",
 				"Calle Diana Laura 2365", "Calle Ficus 3489", "Calle Aquiles Serdan 1993", "Calle Francisco y Madero 3740", "Calle Colosio 2521",
 				"Calle 3 de Mayo 9757"};
 		
 		domicilio = new JComboBox<String>(opcionesDomicilio);
 	    domicilio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
+	    lblErrorDomicilio = new JLabel();
+	    lblErrorDomicilio.setForeground(Color.RED);
+	    lblErrorDomicilio.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(	    lblErrorDomicilio);
+	    
 		domicilio.setSelectedIndex(0);
 		domicilio.setMaximumSize(txtNumeroEmergencia.getPreferredSize()); 
 		domicilio.setAlignmentX(LEFT_ALIGNMENT);
@@ -402,6 +434,9 @@ public class Formulario extends JFrame{
 		    lblErrorSexo.setText("");
 		    lblErrorGrupo.setText("");
 		    lblErrorContactoEmergencia.setText("");
+		    
+		    lblErrorParentesco.setText("");
+		    lblErrorDomicilio.setText("");
 
 		    boolean validacion = true;
 
@@ -438,6 +473,15 @@ public class Formulario extends JFrame{
 		    if (!validateContactoEmergencia()) {
 		    	validacion = false;
 		    }
+		    
+		    if (!validateDomicilio()) {
+		    	validacion = false;
+		    }
+		    
+		    if(!validateParentesco()) {
+		    	validacion = false;
+		    }
+		    
 		    
 		    if (validacion) {
 		        JOptionPane.showMessageDialog(this, "Alumno registrado correctamente");
