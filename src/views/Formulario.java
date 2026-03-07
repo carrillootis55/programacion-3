@@ -62,7 +62,7 @@ public class Formulario extends JFrame{
 	private JLabel lblErrorDomicilio;
 	
 	public Formulario() {
-		setSize(500, 600); //lo reemplazo por pack
+		setSize(400, 600); //lo reemplazo por pack
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setLocation(100,100);
@@ -207,7 +207,7 @@ public class Formulario extends JFrame{
 	    matricula.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		
-		txtMatricula = new JTextField(35);
+		txtMatricula = new JTextField(30);
 		
 		lblErrorMatricula = new JLabel();
 		lblErrorMatricula.setForeground(Color.RED);
@@ -224,7 +224,7 @@ public class Formulario extends JFrame{
 	    apellidoPaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		
-		txtApellidoPaterno = new JTextField(35);
+		txtApellidoPaterno = new JTextField(30);
 		
 		lblErrorApellidoPaterno = new JLabel();
 		lblErrorApellidoPaterno.setForeground(Color.RED);
@@ -241,7 +241,7 @@ public class Formulario extends JFrame{
 	    apellidoMaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		
-		txtApellidoMaterno = new JTextField(35);
+		txtApellidoMaterno = new JTextField(30);
 		
 		lblErrorApellidoMaterno = new JLabel();
 		lblErrorApellidoMaterno.setForeground(Color.RED);
@@ -259,7 +259,7 @@ public class Formulario extends JFrame{
 	    alumno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		
-		txtNombre = new JTextField(35);
+		txtNombre = new JTextField(30);
 		
 		lblErrorNombre = new JLabel();
 		lblErrorNombre.setForeground(Color.RED);
@@ -329,7 +329,7 @@ public class Formulario extends JFrame{
 		panelComponentes.add(nombreContacto);
 	    nombreContacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		txtContactoEmergencia = new JTextField(35);
+		txtContactoEmergencia = new JTextField(30);
 		
 		lblErrorContactoEmergencia = new JLabel();
 		lblErrorContactoEmergencia.setForeground(Color.RED);
@@ -345,7 +345,7 @@ public class Formulario extends JFrame{
 		panelComponentes.add(contacto);
 	    contacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-		txtNumeroEmergencia = new JTextField(35);
+		txtNumeroEmergencia = new JTextField(30);
 		
 		lblErrorNumeroContacto = new JLabel();
 		lblErrorNumeroContacto.setForeground(Color.RED);
@@ -485,19 +485,26 @@ public class Formulario extends JFrame{
 		    
 		    if (validacion) {
 		        JOptionPane.showMessageDialog(this, "Alumno registrado correctamente");
+		        int opcion = JOptionPane.showConfirmDialog(this, "¿Deseas registrar otro alumno?");
+
+		    	if(opcion == JOptionPane.YES_OPTION) {
+					new Formulario();
+					dispose();
+				}		}
 		    }
-		}
+	    	
 	
 	private void crearBotones() {
 	    JPanel panelBoton = new JPanel();
 	    panelBoton.setBackground(Color.WHITE);
 	    
-	    JButton boton = new JButton("REGISTRAR ALUMNO");
-	    boton.setBackground(Color.WHITE);
-	    boton.setForeground(Color.BLACK);
-
-	    panelBoton.add(boton);
-	    boton.addActionListener(e -> validarFormulario());
+	    JButton botonRegistro = new JButton("REGISTRAR ALUMNO");
+	    botonRegistro.setBackground(Color.WHITE);
+	    botonRegistro.setForeground(Color.BLACK);
+	    
+	   
+	    panelBoton.add(botonRegistro);
+	    botonRegistro.addActionListener(e -> validarFormulario());
 	    add(panelBoton, BorderLayout.SOUTH);
 	    
 	    JButton btnRegresar = new JButton("REGRESAR");
@@ -505,16 +512,33 @@ public class Formulario extends JFrame{
 	    btnRegresar.setForeground(Color.BLACK);
 	    btnRegresar.addActionListener(e -> {
 			
-			int opcion = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas regresar? Se perderán todos los datos");
-			
-			if(opcion == JOptionPane.YES_OPTION) {
-				new LoginWindow();
-				dispose();
-			}
-			
+		int opcion = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas regresar? Se perderán todos los datos");
+		
+		if(opcion == JOptionPane.YES_OPTION) {
+			new LoginWindow();
+			dispose();
+		}
+		
+		});	
+	    
+		JButton botonCierre = new JButton("CERRAR");
+		botonCierre.setBackground(Color.WHITE);
+		botonCierre.setForeground(Color.BLACK);
+		botonCierre.setToolTipText("Cierre de ventana");
+		botonCierre.addActionListener(e ->{
+		
+		int opcionCierre = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas cerrar?");
+		
+		if(opcionCierre == JOptionPane.YES_OPTION) {
+			dispose();
+		}
+
 		});
 	    
+
 	    panelBoton.add(btnRegresar);
+	    panelBoton.add(botonCierre);
+	    
 	    
 	}
 
