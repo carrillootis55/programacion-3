@@ -135,6 +135,8 @@ public class LoginView extends JPanel {
         lblContrasena.setFont(fuente);
         
         contrasena = new JPasswordField();
+        
+        
         contrasena.setFont(fuente);
         contrasena.setPreferredSize(new java.awt.Dimension(180, 30));
         
@@ -143,6 +145,7 @@ public class LoginView extends JPanel {
         lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));*/
         
         lblContrasenaCorreccion = new JLabel(" ");
+        
         lblContrasenaCorreccion.setForeground(Color.RED);
         lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));
 

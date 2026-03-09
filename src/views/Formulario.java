@@ -26,6 +26,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class Formulario extends JFrame{
 	
@@ -77,7 +79,130 @@ public class Formulario extends JFrame{
 		
 		inicializarComponentes();
 		crearBotones();
+		
+		assignListeners();
+
 		setVisible(true);
+	}
+	
+	private void assignListeners() {
+
+		txtMatricula.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validateMatricula();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validateMatricula();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validateMatricula();
+			}
+		});
+
+		txtNombre.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validateNombre();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validateNombre();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validateNombre();
+			}
+		});
+
+		txtApellidoPaterno.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validateApellidoPaterno();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validateApellidoPaterno();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validateApellidoPaterno();
+			}
+		});
+		
+		txtApellidoMaterno.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validateApellidoMaterno();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validateApellidoMaterno();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validateApellidoMaterno();
+			}
+		});
+		
+		txtApellidoMaterno.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validateApellidoMaterno();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validateApellidoMaterno();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validateApellidoMaterno();
+			}
+		});
+		
+		txtContactoEmergencia.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validateContactoEmergencia();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validateContactoEmergencia();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validateContactoEmergencia();
+			}
+		});
+		
+		
+		txtNumeroEmergencia.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validateNumeroEmergencia();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validateNumeroEmergencia();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validateNumeroEmergencia();
+			}
+		});
+		
+		parentescoAlumno.addActionListener(e -> validateParentesco());
+
+		domicilio.addActionListener(e -> validateDomicilio());
+
+		rbMujer.addActionListener(e -> validateSexo());
+		rbHombre.addActionListener(e -> validateSexo());
+
+		rbA.addActionListener(e -> validateGrupo());
+		rbB.addActionListener(e -> validateGrupo());
+				
 	}
 	
 	private boolean validateMatricula() {
@@ -88,7 +213,7 @@ public class Formulario extends JFrame{
 	        lblErrorMatricula.setText("La matrícula es obligatoria");
 	        return false;
 	    }
-	    
+	    lblErrorMatricula.setText("");
 	    return true;
 	}
 	
@@ -99,6 +224,7 @@ public class Formulario extends JFrame{
 	        lblErrorApellidoMaterno.setText("El apellido materno es obligatorio");
 	        return false;
 	    }
+	    lblErrorApellidoMaterno.setText("");
 	    return true;
 	}
 	
@@ -109,6 +235,7 @@ public class Formulario extends JFrame{
 	        lblErrorApellidoPaterno.setText("El apellido paterno es obligatorio");
 	        return false;
 	    }
+	    lblErrorApellidoPaterno.setText("");
 	    return true;
 	}
 	
@@ -119,6 +246,7 @@ public class Formulario extends JFrame{
 	        lblErrorNombre.setText("El nombre es obligatorio");
 	        return false;
 	    }
+	    lblErrorNombre.setText("");
 	    return true;
 	}
 	
@@ -126,10 +254,10 @@ public class Formulario extends JFrame{
 	    if (!rbA.isSelected() && !rbB.isSelected()) {
 		    lblErrorSexo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-	    	
 	        lblErrorSexo.setText("Debe seleccionar un sexo");
 	        return false;
 	    }
+	    lblErrorSexo.setText("");
 	    return true;
 	}
 	
@@ -140,6 +268,8 @@ public class Formulario extends JFrame{
 	        lblErrorGrupo.setText("Debe seleccionar un grupo");
 	        return false;
 	    }
+	    
+	    lblErrorGrupo.setText("");
 	    return true;
 	}
 	
@@ -150,6 +280,7 @@ public class Formulario extends JFrame{
 	        lblErrorParentesco.setText("Debe seleccionar un parentesco");
 	        return false;
 	    }
+	    lblErrorParentesco.setText("");
 	    return true;
 	}
 	
@@ -160,6 +291,9 @@ public class Formulario extends JFrame{
 	        lblErrorDomicilio.setText("Debe seleccionar un domicilio");
 	        return false;
 	    }
+	    
+		lblErrorDomicilio.setText("");
+
 	    return true;
 	}
 	
@@ -170,6 +304,7 @@ public class Formulario extends JFrame{
 	        lblErrorContactoEmergencia.setText("El contacto es obligatorio");
 	        return false;
 	    }
+	    lblErrorContactoEmergencia.setText("");
 	    return true;
 	}
 	
@@ -182,6 +317,7 @@ public class Formulario extends JFrame{
 	        lblErrorNumeroContacto.setText("El número es obligatorio");
 	        return false;
 	    }
+	    lblErrorNumeroContacto.setText("");
 
 	    return true;
 	}
@@ -424,6 +560,8 @@ public class Formulario extends JFrame{
 		add(scroll);
 		
 	}
+	
+	
 		private void validarFormulario() {
 
 		    lblErrorMatricula.setText("");
