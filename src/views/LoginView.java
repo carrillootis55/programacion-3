@@ -19,6 +19,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -42,6 +43,7 @@ public class LoginView extends JPanel {
 	JPasswordField contrasena;
 	JLabel lblUsuarioCorreccion;
 	JLabel lblContrasenaCorreccion;
+	Color defaultButtonColor;
 	
 	public LoginView(LoginWindow window) {
 		this.window= window;
@@ -58,6 +60,7 @@ public class LoginView extends JPanel {
 		crearTitulo();
 		crearFormulario();
 		crearBotones();
+		
 	}
 	
     //METODO PARA CENTRAR INICIO DE SESION
@@ -80,11 +83,15 @@ public class LoginView extends JPanel {
 	    panelBoton.setOpaque(true); 
 	    
 	    
+	    
+	    
 	    JButton boton = new JButton("Iniciar");
+	    defaultButtonColor = boton.getBackground();
 	    boton.setBackground(Color.WHITE);
 	    boton.setForeground(Color.BLACK);
 	    boton.setFont(fuente);
 	    boton.addActionListener(e->login());
+	    
 	    
 	    JButton btnRegister = new JButton("Regístrate");
 	    btnRegister.setBackground(Color.WHITE);
@@ -92,7 +99,25 @@ public class LoginView extends JPanel {
 	    btnRegister.setFont(fuente);
 		btnRegister.setToolTipText("¿No tienes cuenta? Créala aquí");
 		
+		
 		btnRegister.addActionListener(e-> registro());
+		
+		btnRegister.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				handleRegistration();
+			}
+			public void mouseEntered(MouseEvent e) {
+				btnRegister.setForeground(Color.BLACK);
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				btnRegister.setForeground(Color.WHITE);
+			}
+		});
+			
+		panelBoton.add(btnRegister);
+		
+		btnRegister.addActionListener(e-> handleLogin());
 
 
 	    colocarIcono(boton, "../img/icono.png");
