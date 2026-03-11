@@ -19,6 +19,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -34,6 +36,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class LoginView extends JPanel {
 	LoginWindow window;
@@ -84,7 +88,19 @@ public class LoginView extends JPanel {
 	    boton.setBackground(Color.WHITE);
 	    boton.setForeground(Color.BLACK);
 	    boton.setFont(fuente);
+	    
 	    boton.addActionListener(e->login());
+	    //Uso de mouse para cambiar color el boton
+	    boton.addMouseListener(new MouseAdapter() {
+	        public void mouseEntered(MouseEvent e) {
+	            boton.setForeground(Color.BLUE);
+	        }
+	
+	        public void mouseExited(MouseEvent e) {
+	            boton.setForeground(Color.BLACK);
+	        }
+	    });
+
 	    
 	    JButton btnRegister = new JButton("Regístrate");
 	    btnRegister.setBackground(Color.WHITE);
@@ -93,6 +109,16 @@ public class LoginView extends JPanel {
 		btnRegister.setToolTipText("¿No tienes cuenta? Créala aquí");
 		
 		btnRegister.addActionListener(e-> registro());
+		//Uso de mouse para cambiar color el boton
+	    btnRegister.addMouseListener(new MouseAdapter() {
+	        public void mouseEntered(MouseEvent e) {
+	            btnRegister.setForeground(Color.BLUE);
+	        }
+
+	        public void mouseExited(MouseEvent e) {
+	            btnRegister.setForeground(Color.BLACK);
+	        }
+	    });
 
 
 	    colocarIcono(boton, "../img/icono.png");
@@ -120,6 +146,25 @@ public class LoginView extends JPanel {
 		textoUsuario = new JTextField();
 		textoUsuario.setFont(fuente);
 		textoUsuario.setPreferredSize(new Dimension(180, 30));
+		
+		//Validacion input en tiempo real
+		textoUsuario.getDocument().addDocumentListener(new DocumentListener() {
+
+		    public void insertUpdate(DocumentEvent e) {
+		        validarUsuarioTiempoReal();
+		    }
+
+		    public void removeUpdate(DocumentEvent e) {
+		        validarUsuarioTiempoReal();
+		    }
+
+		    public void changedUpdate(DocumentEvent e) {
+		        validarUsuarioTiempoReal();
+		    }
+
+		});
+
+		
         
         /*lblUsuarioCorreccion = new JLabel("*Usuario obligatorio");
         lblUsuarioCorreccion.setForeground(Color.RED);
@@ -140,6 +185,22 @@ public class LoginView extends JPanel {
         contrasena.setFont(fuente);
         contrasena.setPreferredSize(new java.awt.Dimension(180, 30));
         
+        //Validacion input en tiempo real
+        contrasena.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                validarContrasenaTiempoReal();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                validarContrasenaTiempoReal();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                validarContrasenaTiempoReal();
+            }
+
+        });
+
         /*lblContrasenaCorreccion = new JLabel("*Contraseña obligatoria");
         lblContrasenaCorreccion.setForeground(Color.RED);
         lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));*/
@@ -296,6 +357,30 @@ public class LoginView extends JPanel {
 	    //Devuelve true si todo esta correcto
 	    return true;
 	}
+	
+	//Validacion tiempo real usuario
+	private void validarUsuarioTiempoReal() {
+
+	    if(textoUsuario.getText().trim().isEmpty()) {
+	        usuarioError("*Usuario obligatorio");
+	    }else {
+	        lblUsuarioCorreccion.setText(" ");
+	    }
+
+	}
+
+
+	//Validacion tiempo real contraseña
+	private void validarContrasenaTiempoReal() {
+
+	    if(String.valueOf(contrasena.getPassword()).trim().isEmpty()) {
+	        contrasenaError("*Contraseña obligatoria");
+	    }else {
+	        lblContrasenaCorreccion.setText(" ");
+	    }
+
+	}
+
 	
 	
 }

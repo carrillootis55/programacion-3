@@ -653,7 +653,8 @@ public class Formulario extends JFrame{
 		int opcion = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas regresar? Se perderán todos los datos");
 		
 		if(opcion == JOptionPane.YES_OPTION) {
-			new LoginWindow();
+			//new LoginWindow();//con este desactivo o sin estar regresa al mainView
+			new LoginWindow(); //con este activo regresa a login
 			dispose();
 		}
 		

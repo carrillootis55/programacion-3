@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class MainView extends JFrame {
@@ -51,6 +52,19 @@ public class MainView extends JFrame {
 		
 		JMenuItem salir = new JMenuItem("Salir");
 		salir.setFont(fuente);
+		
+		//Regresa al loginView
+		salir.addActionListener(e -> {
+			int opcion = JOptionPane.showConfirmDialog( this,"¿Desea salir del sistema?","Confirmar salida",JOptionPane.YES_NO_OPTION );
+			
+		    if(opcion == JOptionPane.YES_OPTION){
+		        new LoginWindow(); // abre la ventana de login
+		        dispose();         // cierra MainView
+
+		    }
+
+		});
+
 
 		archivo.add(cerrarSesion);
 		archivo.addSeparator();
@@ -74,6 +88,11 @@ public class MainView extends JFrame {
 
 		JMenuItem registrar = new JMenuItem("Registrar alumno");
 		registrar.setFont(fuente);
+		
+		//Abrir formulario
+		registrar.addActionListener(e -> {
+            new Formulario(); 
+        });
 		
 		JMenuItem lista = new JMenuItem("Lista de alumnos");
 		lista.setFont(fuente);
@@ -116,7 +135,7 @@ public class MainView extends JFrame {
 	    mensaje.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 	    contenido.add(titulo);
-	    contenido.add(Box.createVerticalStrut(20)); // espacio entre texto
+	    //contenido.add(Box.createVerticalStrut(20)); // espacio entre texto
 	    contenido.add(mensaje);
 
 	    panel.add(contenido);
