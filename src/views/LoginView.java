@@ -46,6 +46,7 @@ public class LoginView extends JPanel {
 	JPasswordField contrasena;
 	JLabel lblUsuarioCorreccion;
 	JLabel lblContrasenaCorreccion;
+	Color defaultButtonColor;
 	
 	public LoginView(LoginWindow window) {
 		this.window= window;
@@ -62,6 +63,7 @@ public class LoginView extends JPanel {
 		crearTitulo();
 		crearFormulario();
 		crearBotones();
+		
 	}
 	
     //METODO PARA CENTRAR INICIO DE SESION
@@ -84,7 +86,10 @@ public class LoginView extends JPanel {
 	    panelBoton.setOpaque(true); 
 	    
 	    
+	    
+	    
 	    JButton boton = new JButton("Iniciar");
+	    defaultButtonColor = boton.getBackground();
 	    boton.setBackground(Color.WHITE);
 	    boton.setForeground(Color.BLACK);
 	    boton.setFont(fuente);
@@ -102,11 +107,13 @@ public class LoginView extends JPanel {
 	    });
 
 	    
+	    
 	    JButton btnRegister = new JButton("Regístrate");
 	    btnRegister.setBackground(Color.WHITE);
 	    btnRegister.setForeground(Color.BLACK);
 	    btnRegister.setFont(fuente);
 		btnRegister.setToolTipText("¿No tienes cuenta? Créala aquí");
+		
 		
 		btnRegister.addActionListener(e-> registro());
 		//Uso de mouse para cambiar color el boton
@@ -120,7 +127,9 @@ public class LoginView extends JPanel {
 	        }
 	    });
 
-
+			
+		panelBoton.add(btnRegister);
+		
 	    colocarIcono(boton, "../img/icono.png");
 
 	    panelBoton.add(boton);
