@@ -1,5 +1,5 @@
 package views;
-
+ 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +18,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 
 public class MainView extends JFrame {
 	private Font fuente = new Font("Times New Roman", Font.ITALIC, 14);
@@ -36,6 +39,22 @@ public class MainView extends JFrame {
 		setLocationRelativeTo(null); // Centra en pantalla
 		setResizable(false);
 		setVisible(true);
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				System.out.println("La ventana se abrio");
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int opcion = JOptionPane.showConfirmDialog(null, "quieres salir?", "Cerrar sistema", JOptionPane.YES_OPTION);
+				if(opcion == JOptionPane.YES_OPTION) {
+					dispose();
+				}
+			}
+		});
+		
 	}
 	
 	public void setMenu() {

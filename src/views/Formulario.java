@@ -1,5 +1,8 @@
 package views;
-
+/*KeyListener cuando el usuario presiona teclas
+ * FocusListener Cuando un componente gana o pierde foco
+ * WindowListener Eventos de la ventana
+ */
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -7,6 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,6 +32,13 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Formulario extends JFrame{
 	
@@ -62,6 +73,7 @@ public class Formulario extends JFrame{
 	
 	private JLabel lblErrorParentesco;
 	private JLabel lblErrorDomicilio;
+	
 	
 	public Formulario() {
 		setSize(400, 600); //lo reemplazo por pack
@@ -101,7 +113,7 @@ public class Formulario extends JFrame{
 				validateMatricula();
 			}
 		});
-
+		
 		txtNombre.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 
 			public void insertUpdate(DocumentEvent e) {
@@ -115,8 +127,10 @@ public class Formulario extends JFrame{
 			public void changedUpdate(DocumentEvent e) {
 				validateNombre();
 			}
-		});
-
+			
+			});
+		
+		
 		txtApellidoPaterno.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 
 			public void insertUpdate(DocumentEvent e) {
@@ -345,6 +359,20 @@ public class Formulario extends JFrame{
 		
 		txtMatricula = new JTextField(30);
 		
+		txtMatricula.addFocusListener(new FocusAdapter() {
+
+		    @Override
+		    public void focusGained(FocusEvent e) {
+		        txtMatricula.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+		    }
+
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		        txtMatricula.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+		    }
+
+		});
+		
 		lblErrorMatricula = new JLabel();
 		lblErrorMatricula.setForeground(Color.RED);
 		lblErrorMatricula.setAlignmentX(LEFT_ALIGNMENT);
@@ -361,6 +389,20 @@ public class Formulario extends JFrame{
 
 		
 		txtApellidoPaterno = new JTextField(30);
+		txtApellidoPaterno.addFocusListener(new FocusAdapter() {
+
+		    @Override
+		    public void focusGained(FocusEvent e) {
+		    	txtApellidoPaterno.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+		    }
+
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		    	txtApellidoPaterno.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+		    }
+
+		});
+		
 		
 		lblErrorApellidoPaterno = new JLabel();
 		lblErrorApellidoPaterno.setForeground(Color.RED);
@@ -378,6 +420,19 @@ public class Formulario extends JFrame{
 
 		
 		txtApellidoMaterno = new JTextField(30);
+		txtApellidoMaterno.addFocusListener(new FocusAdapter() {
+
+		    @Override
+		    public void focusGained(FocusEvent e) {
+		    	txtApellidoMaterno.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+		    }
+
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		    	txtApellidoMaterno.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+		    }
+
+		});
 		
 		lblErrorApellidoMaterno = new JLabel();
 		lblErrorApellidoMaterno.setForeground(Color.RED);
@@ -396,6 +451,19 @@ public class Formulario extends JFrame{
 
 		
 		txtNombre = new JTextField(30);
+		txtNombre.addFocusListener(new FocusAdapter() {
+
+		    @Override
+		    public void focusGained(FocusEvent e) {
+		        txtNombre.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+		    }
+
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		        txtNombre.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+		    }
+
+		});
 		
 		lblErrorNombre = new JLabel();
 		lblErrorNombre.setForeground(Color.RED);
@@ -466,7 +534,19 @@ public class Formulario extends JFrame{
 	    nombreContacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		txtContactoEmergencia = new JTextField(30);
-		
+		txtContactoEmergencia.addFocusListener(new FocusAdapter() {
+
+		    @Override
+		    public void focusGained(FocusEvent e) {
+		    	txtContactoEmergencia.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+		    }
+
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		    	txtContactoEmergencia.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+		    }
+
+		});
 		lblErrorContactoEmergencia = new JLabel();
 		lblErrorContactoEmergencia.setForeground(Color.RED);
 		lblErrorContactoEmergencia.setAlignmentX(LEFT_ALIGNMENT);
@@ -482,7 +562,19 @@ public class Formulario extends JFrame{
 	    contacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		txtNumeroEmergencia = new JTextField(30);
-		
+		txtNumeroEmergencia.addFocusListener(new FocusAdapter() {
+
+		    @Override
+		    public void focusGained(FocusEvent e) {
+		    	txtNumeroEmergencia.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+		    }
+
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		    	txtNumeroEmergencia.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+		    }
+
+		});
 		lblErrorNumeroContacto = new JLabel();
 		lblErrorNumeroContacto.setForeground(Color.RED);
 		lblErrorNumeroContacto.setAlignmentX(LEFT_ALIGNMENT);

@@ -19,6 +19,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -86,8 +88,6 @@ public class LoginView extends JPanel {
 	    panelBoton.setOpaque(true); 
 	    
 	    
-	    
-	    
 	    JButton boton = new JButton("Iniciar");
 	    defaultButtonColor = boton.getBackground();
 	    boton.setBackground(Color.WHITE);
@@ -105,8 +105,7 @@ public class LoginView extends JPanel {
 	            boton.setForeground(Color.BLACK);
 	        }
 	    });
-
-	    
+	    	    
 	    
 	    JButton btnRegister = new JButton("Regístrate");
 	    btnRegister.setBackground(Color.WHITE);
@@ -153,8 +152,33 @@ public class LoginView extends JPanel {
 		
 		//CAMBIOS PARA REDUCIR TAMAÑO DEL CAMPO DE TEXTO QUE ABARCA CASI TODA LA PANTALLA
 		textoUsuario = new JTextField();
+		
+		textoUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+		    @Override
+		    public void keyPressed(KeyEvent e) {
+
+		        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+		            login(); //PRESIONAMOS ENTER PARA INICIAR
+		        }
+
+		        System.out.println("Tecla presionada: " + e.getKeyChar());
+		    }
+		});
+		
 		textoUsuario.setFont(fuente);
 		textoUsuario.setPreferredSize(new Dimension(180, 30));
+		
+		textoUsuario.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					login();
+				}
+				System.out.println("Tecla que se presiono: " + e.getKeyChar());
+			}
+		});
+		
+		
 		
 		//Validacion input en tiempo real
 		textoUsuario.getDocument().addDocumentListener(new DocumentListener() {
