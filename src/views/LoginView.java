@@ -94,7 +94,17 @@ public class LoginView extends JPanel {
 	    boton.setForeground(Color.BLACK);
 	    boton.setFont(fuente);
 	    
-	    boton.addActionListener(e->login());
+	    boton.addActionListener(e->{
+			try {
+				login();
+			} catch (InvalidUserException e1) {
+				// TODO Auto-generated catch block
+				System.out.println(e1.getMessage());
+			} catch (InvalidPasswordExeption e1) {
+				// TODO Auto-generated catch block
+				System.out.println(e1.getMessage());
+			}
+		});
 	    //Uso de mouse para cambiar color el boton
 	    boton.addMouseListener(new MouseAdapter() {
 	        public void mouseEntered(MouseEvent e) {
@@ -158,7 +168,16 @@ public class LoginView extends JPanel {
 		    public void keyPressed(KeyEvent e) {
 
 		        if(e.getKeyCode() == KeyEvent.VK_ENTER){
-		            login(); //PRESIONAMOS ENTER PARA INICIAR
+		            try {
+						login();
+					} catch (InvalidUserException e1) {
+						// TODO Auto-generated catch block
+						
+						System.out.println(e1.getMessage());
+					} catch (InvalidPasswordExeption e1) {
+						// TODO Auto-generated catch block
+						System.out.println(e1.getMessage());
+					} //PRESIONAMOS ENTER PARA INICIAR
 		        }
 
 		        System.out.println("Tecla presionada: " + e.getKeyChar());
@@ -172,7 +191,15 @@ public class LoginView extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					login();
+					try {
+						login();
+					} catch (InvalidUserException e1) {
+						// TODO Auto-generated catch block
+						System.out.println(e1.getMessage());
+					} catch (InvalidPasswordExeption e1) {
+						// TODO Auto-generated catch block
+						System.out.println(e1.getMessage());
+					}
 				}
 				System.out.println("Tecla que se presiono: " + e.getKeyChar());
 			}
@@ -305,19 +332,24 @@ public class LoginView extends JPanel {
 	}*/
 	
 	//Metodo que actua cuando presionamos INICIAR
-	private void login() {
+	private void login() throws InvalidUserException, InvalidPasswordExeption {
 	    //Si es true no hay errores
-	    if(validarCredenciales( textoUsuario.getText(),String.valueOf(contrasena.getPassword()))) {
+	
+			
+			if(validarCredenciales( textoUsuario.getText(),String.valueOf(contrasena.getPassword()))) {
 	    	//JOptionPane.showMessageDialog( this,"Se inició sesión","Sesión iniciada",JOptionPane.INFORMATION_MESSAGE);
 	    	System.out.println("Sesión iniciada correctamente");
+			}
+	    
 	    	MainView ventana = new MainView();//SE VE VENTANA
 	    	
-	    	window.dispose();
 	    	
+	    	window.dispose();
+	
 	        //Limpia los campos despues de iniciar sesión correctamente
 	        textoUsuario.setText("");
 	        contrasena.setText("");
-	    }
+	    
 	}
 	
 	private void registro() {
@@ -365,8 +397,9 @@ public class LoginView extends JPanel {
 	    return "OK";
 	}*/
 	
+    
     //Metodo booleano para validar los campos del login que son usuario y contraseña
-	public boolean validarCredenciales(String usuario, String password) {
+	public boolean validarCredenciales(String usuario, String password) throws InvalidUserException, InvalidPasswordExeption{
 
 	    limpiarErrorMensaje(); //Se limpian errores anteriores
 	    
@@ -374,23 +407,62 @@ public class LoginView extends JPanel {
 
 	    if(usuario.trim().isEmpty()) {
 	        usuarioError("*Usuario obligatorio");
-	        hayError = true; 
+	        throw new InvalidUserException("Usuario vacia");
+	        //hayError = true; 
 	    }
 
 	    if(password.trim().isEmpty()) {
 	        contrasenaError("*Contraseña obligatoria");
-	        hayError = true; 
+	        throw new InvalidPasswordExeption("Contrasena vacia");
+	        //hayError = true; 
+	    }
+	    
+	    if(usuario.equals("dianitha@gmail.com") && password.equals("12345") || usuario.equals("hash@gmail.com") && password.equals("abcs"))
+	    {
+	    	return true;
 	    }
 
-	    //Si hay error devuelve false
+	    if(usuario.equals("dianitha@gmail.com")) {
+	    	throw new InvalidPasswordExeption("Contrasena incorrecta");
+	    }
+	    throw new InvalidUserException("El usuario esta vacio");
+	    /*Si hay error devuelve false
 	    if(hayError) {
 	        return false;
 	    }
-	    
+	    */
 	    //Devuelve true si todo esta correcto
-	    return true;
-	}
-	
+	   // return true;
+		}
+		private void loginView() { 
+			try {
+				if(validarCredenciales(
+						textoUsuario.getText(),
+						String.valueOf(contrasena.getPassword())
+		)) {
+		
+			JOptionPane.showMessageDialog(
+			this,
+			"Se inició la sesión",
+			"Sesión iniciada",
+			JOptionPane.INFORMATION_MESSAGE
+		);
+		
+			new MainView();
+			window.dispose();
+			
+			textoUsuario.setText("");
+			contrasena.setText("");
+		}
+		
+			} catch (InvalidUserException ex) {
+			usuarioError("Usuario incorrecto");
+			
+			} catch (InvalidPasswordExeption ex) {
+			contrasenaError("Contraseña incorrecta");
+			}
+		}
+			
 	//Validacion tiempo real usuario
 	private void validarUsuarioTiempoReal() {
 
@@ -417,6 +489,7 @@ public class LoginView extends JPanel {
 	
 	
 }
+
 		
 	
 	
