@@ -68,7 +68,28 @@ public class LoginView extends JPanel {
 		
 	}
 	
-    //METODO PARA CENTRAR INICIO DE SESION
+	
+    public JPasswordField getContrasena() {
+		return contrasena;
+	}
+
+	public LoginWindow getWindow() {
+		return window;
+	}
+
+	public JTextField getTextoUsuario() {
+		return textoUsuario;
+	}
+
+	public JLabel getLblUsuarioCorreccion() {
+		return lblUsuarioCorreccion;
+	}
+
+	public JLabel getLblContrasenaCorreccion() {
+		return lblContrasenaCorreccion;
+	}
+
+	//METODO PARA CENTRAR INICIO DE SESION
     private void crearTitulo() {
 
         JLabel lblSaludo = new JLabel("Iniciar sesión", JLabel.CENTER);
@@ -346,7 +367,7 @@ public class LoginView extends JPanel {
 	}*/
 	
 	//Metodo que actua cuando presionamos INICIAR
-	private void login() throws InvalidUserException, InvalidPasswordException {
+	private void login() throws InvalidUserException, InvalidPasswordExeption {
 	    //Si es true no hay errores
 	
 			
@@ -413,7 +434,7 @@ public class LoginView extends JPanel {
 	
     
     //Metodo booleano para validar los campos del login que son usuario y contraseña
-    public boolean validarCredenciales(String usuario, String password) throws InvalidUserException, InvalidPasswordException {
+    public boolean validarCredenciales(String usuario, String password) throws InvalidUserException, InvalidPasswordExeption {
    
    	 	limpiarErrorMensaje(); //Se limpian errores anteriores
    	 	
@@ -422,11 +443,11 @@ public class LoginView extends JPanel {
 	    }
 	
 	    if(password.trim().isEmpty()) {
-	        throw new InvalidPasswordException("Contraseña obligatoria");
+	        throw new InvalidPasswordExeption("Contraseña obligatoria");
 	    }
 	    
 	    if(password.contains(" ")) {
-	        throw new InvalidPasswordException("La contraseña no debe tener espacios");
+	        throw new InvalidPasswordExeption("La contraseña no debe tener espacios");
 	    }
 	
 	    if((usuario.equals("dianitha@gmail.com") && password.equals("12345")) || (usuario.equals("hash@gmail.com") && password.equals("abcs"))) {
@@ -434,7 +455,7 @@ public class LoginView extends JPanel {
 	    }
 	
 	    if(usuario.equals("dianitha@gmail.com") || usuario.equals("hash@gmail.com")) {
-	        throw new InvalidPasswordException("Contraseña incorrecta");
+	        throw new InvalidPasswordExeption("Contraseña incorrecta");
 	    }
 	
 	    throw new InvalidUserException("Usuario no existe");
@@ -498,7 +519,7 @@ public class LoginView extends JPanel {
             //usuarioError(e.getMessage()); //imprime usuario incorrecto
             usuarioError("Datos Incorrectos");
             
-        } catch (InvalidPasswordException e) {
+        } catch (InvalidPasswordExeption e) {
             //contrasenaError(e.getMessage()); //imprime contraseña incorrecta
             contrasenaError("Datos Incorrectos");
    
