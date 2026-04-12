@@ -4,6 +4,7 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 
+import controllers.FormularioController;
 import views.Formulario;
 import views.LoginWindow;
 import views.MainView;
@@ -13,11 +14,15 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//MiVentana ventanita= new MiVentana();
-		LoginWindow ventanita = new LoginWindow(); //SE USA PARA QUE SE VEA LOGIN
-		//Formulario formulario= new Formulario();//SE VE EL FORMULARIO
+		//LoginWindow ventanita = new LoginWindow(); //SE USA PARA QUE SE VEA LOGIN
+		Formulario formulario = new Formulario(); //SE USA PARA QUE SE VEA EL FORMULARIO
+		new FormularioController(formulario);
+		
 		//MainView ventana = new MainView();//SE VE VENTANA
-		showOnScreen(0, ventanita);
+		showOnScreen(0, formulario);
 	}
+	
+	
 	
 	public static void showOnScreen(int screen, JFrame frame ) {
 	    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

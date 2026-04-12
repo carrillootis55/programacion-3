@@ -73,7 +73,7 @@ public class Formulario extends JFrame{
 	
 	private JLabel lblErrorParentesco;
 	private JLabel lblErrorDomicilio;
-	
+	private JButton botonRegistro;
 	
 	public Formulario() {
 		setSize(400, 600); //lo reemplazo por pack
@@ -92,248 +92,123 @@ public class Formulario extends JFrame{
 		inicializarComponentes();
 		crearBotones();
 		
-		assignListeners();
-
 		setVisible(true);
 	}
 	
-	private void assignListeners() {
+	
+	public JTextField getTxtMatricula() {
+		return txtMatricula;
+	}
 
-		txtMatricula.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	public JTextField getTxtApellidoMaterno() {
+		return txtApellidoMaterno;
+	}
 
-			public void insertUpdate(DocumentEvent e) {
-				validateMatricula();
-			}
+	public JTextField getTxtApellidoPaterno() {
+		return txtApellidoPaterno;
+	}
 
-			public void removeUpdate(DocumentEvent e) {
-				validateMatricula();
-			}
+	public JTextField getTxtNombre() {
+		return txtNombre;
+	}
 
-			public void changedUpdate(DocumentEvent e) {
-				validateMatricula();
-			}
-		});
-		
-		txtNombre.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	public JTextField getTxtContactoEmergencia() {
+		return txtContactoEmergencia;
+	}
 
-			public void insertUpdate(DocumentEvent e) {
-				validateNombre();
-			}
+	public JTextField getTxtNumeroEmergencia() {
+		return txtNumeroEmergencia;
+	}
 
-			public void removeUpdate(DocumentEvent e) {
-				validateNombre();
-			}
+	public JRadioButton getRbMujer() {
+		return rbMujer;
+	}
 
-			public void changedUpdate(DocumentEvent e) {
-				validateNombre();
-			}
-			
-			});
-		
-		
-		txtApellidoPaterno.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	public JRadioButton getRbHombre() {
+		return rbHombre;
+	}
 
-			public void insertUpdate(DocumentEvent e) {
-				validateApellidoPaterno();
-			}
+	public JRadioButton getRbA() {
+		return rbA;
+	}
 
-			public void removeUpdate(DocumentEvent e) {
-				validateApellidoPaterno();
-			}
+	public JRadioButton getRbB() {
+		return rbB;
+	}	
 
-			public void changedUpdate(DocumentEvent e) {
-				validateApellidoPaterno();
-			}
-		});
-		
-		txtApellidoMaterno.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	public JComboBox<String> getParentescoAlumno() {
+		return parentescoAlumno;
+	}
 
-			public void insertUpdate(DocumentEvent e) {
-				validateApellidoMaterno();
-			}
+	public JComboBox<String> getDomicilio() {
+		return domicilio;
+	}
+	public JButton getBtnRegistrar(){
+	    return botonRegistro;
+	}
 
-			public void removeUpdate(DocumentEvent e) {
-				validateApellidoMaterno();
-			}
+	public void setErrorMatricula(String msg) {
+	    lblErrorMatricula.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorMatricula.setText(msg);
+	}
 
-			public void changedUpdate(DocumentEvent e) {
-				validateApellidoMaterno();
-			}
-		});
-		
-		txtApellidoMaterno.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	public void setErrorNombre(String msg) {
+	    lblErrorNombre.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorNombre.setText(msg);
+	}
 
-			public void insertUpdate(DocumentEvent e) {
-				validateApellidoMaterno();
-			}
+	public void setErrorApellidoPaterno(String msg) {
+	    lblErrorApellidoPaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorApellidoPaterno.setText(msg);
+	}
 
-			public void removeUpdate(DocumentEvent e) {
-				validateApellidoMaterno();
-			}
+	public void setErrorApellidoMaterno(String msg) {
+	    lblErrorApellidoMaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorApellidoMaterno.setText(msg);
+	}
 
-			public void changedUpdate(DocumentEvent e) {
-				validateApellidoMaterno();
-			}
-		});
-		
-		txtContactoEmergencia.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	public void setErrorSexo(String msg) {
+	    lblErrorSexo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorSexo.setText(msg);
+	}
 
-			public void insertUpdate(DocumentEvent e) {
-				validateContactoEmergencia();
-			}
+	public void setErrorGrupo(String msg) {
+	    lblErrorGrupo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorGrupo.setText(msg);
+	}
 
-			public void removeUpdate(DocumentEvent e) {
-				validateContactoEmergencia();
-			}
+	public void setErrorParentesco(String msg) {
+	    lblErrorParentesco.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorParentesco.setText(msg);
+	}
 
-			public void changedUpdate(DocumentEvent e) {
-				validateContactoEmergencia();
-			}
-		});
-		
-		
-		txtNumeroEmergencia.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	public void setErrorDomicilio(String msg) {
+		lblErrorDomicilio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorDomicilio.setText(msg);
+	}
 
-			public void insertUpdate(DocumentEvent e) {
-				validateNumeroEmergencia();
-			}
+	public void setErrorContacto(String msg) {
+		lblErrorContactoEmergencia.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorContactoEmergencia.setText(msg);
+	}
 
-			public void removeUpdate(DocumentEvent e) {
-				validateNumeroEmergencia();
-			}
-
-			public void changedUpdate(DocumentEvent e) {
-				validateNumeroEmergencia();
-			}
-		});
-		
-		parentescoAlumno.addActionListener(e -> validateParentesco());
-
-		domicilio.addActionListener(e -> validateDomicilio());
-
-		rbMujer.addActionListener(e -> validateSexo());
-		rbHombre.addActionListener(e -> validateSexo());
-
-		rbA.addActionListener(e -> validateGrupo());
-		rbB.addActionListener(e -> validateGrupo());
-				
+	public void setErrorNumero(String msg) {
+		lblErrorNumeroContacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorNumeroContacto.setText(msg);
 	}
 	
-	private boolean validateMatricula() {
-
-	    if (txtMatricula.getText().trim().isEmpty()) {
-		    lblErrorMatricula.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorMatricula.setText("La matrícula es obligatoria");
-	        return false;
-	    }
-	    lblErrorMatricula.setText("");
-	    return true;
-	}
 	
-	private boolean validateApellidoMaterno() {
-	    if (txtApellidoMaterno.getText().trim().isEmpty()) {
-		    lblErrorApellidoMaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorApellidoMaterno.setText("El apellido materno es obligatorio");
-	        return false;
-	    }
-	    lblErrorApellidoMaterno.setText("");
-	    return true;
-	}
-	
-	private boolean validateApellidoPaterno() {
-	    if (txtApellidoPaterno.getText().trim().isEmpty()) {
-		    lblErrorApellidoPaterno.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorApellidoPaterno.setText("El apellido paterno es obligatorio");
-	        return false;
-	    }
-	    lblErrorApellidoPaterno.setText("");
-	    return true;
-	}
-	
-	private boolean validateNombre() {
-	    if (txtNombre.getText().trim().isEmpty()) {
-		    lblErrorNombre.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorNombre.setText("El nombre es obligatorio");
-	        return false;
-	    }
-	    lblErrorNombre.setText("");
-	    return true;
-	}
-	
-	private boolean validateGrupo() {
-	    if (!rbA.isSelected() && !rbB.isSelected()) {
-		    lblErrorSexo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorSexo.setText("Debe seleccionar un sexo");
-	        return false;
-	    }
-	    lblErrorSexo.setText("");
-	    return true;
-	}
-	
-	private boolean validateSexo() {
-	    if (!rbMujer.isSelected() && !rbHombre.isSelected()) {
-		    lblErrorGrupo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorGrupo.setText("Debe seleccionar un grupo");
-	        return false;
-	    }
-	    
-	    lblErrorGrupo.setText("");
-	    return true;
-	}
-	
-	private boolean validateParentesco() {
-	    if (parentescoAlumno.getSelectedIndex()== 0) {
-		    lblErrorParentesco.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorParentesco.setText("Debe seleccionar un parentesco");
-	        return false;
-	    }
-	    lblErrorParentesco.setText("");
-	    return true;
-	}
-	
-	private boolean validateDomicilio() {
-	    if (domicilio.getSelectedIndex() == 0) {
-	    	lblErrorDomicilio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorDomicilio.setText("Debe seleccionar un domicilio");
-	        return false;
-	    }
-	    
+	public void resetErrors() {
+		lblErrorMatricula.setText("");
+		lblErrorApellidoMaterno.setText("");
+		lblErrorApellidoPaterno.setText("");
+		lblErrorNombre.setText("");
+		lblErrorNumeroContacto.setText("");
+		lblErrorSexo.setText("");
+		lblErrorGrupo.setText("");
+		lblErrorContactoEmergencia.setText("");
+		lblErrorParentesco.setText("");
 		lblErrorDomicilio.setText("");
-
-	    return true;
-	}
-	
-	private boolean validateContactoEmergencia() {
-	    if (txtContactoEmergencia.getText().trim().isEmpty()) {
-		    lblErrorContactoEmergencia.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorContactoEmergencia.setText("El contacto es obligatorio");
-	        return false;
-	    }
-	    lblErrorContactoEmergencia.setText("");
-	    return true;
-	}
-	
-	private boolean validateNumeroEmergencia() {
-	    String numero = txtNumeroEmergencia.getText().trim();
-
-	    if (numero.isEmpty()) {
-		    lblErrorNumeroContacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-
-	        lblErrorNumeroContacto.setText("El número es obligatorio");
-	        return false;
-	    }
-	    lblErrorNumeroContacto.setText("");
-
-	    return true;
 	}
 	
 	public void inicializarComponentes() {
@@ -653,88 +528,18 @@ public class Formulario extends JFrame{
 		
 	}
 	
-	
-		private void validarFormulario() {
 
-		    lblErrorMatricula.setText("");
-		    lblErrorApellidoMaterno.setText("");
-		    lblErrorApellidoPaterno.setText("");
-		    lblErrorNombre.setText("");
-		    lblErrorNumeroContacto.setText("");
-		    lblErrorSexo.setText("");
-		    lblErrorGrupo.setText("");
-		    lblErrorContactoEmergencia.setText("");
-		    
-		    lblErrorParentesco.setText("");
-		    lblErrorDomicilio.setText("");
-
-		    boolean validacion = true;
-
-		    if (!validateMatricula()) {
-		    	validacion = false;
-		    } 
-		    
-		    if (!validateApellidoPaterno()) {
-		    	validacion = false;
-		    } 
-		    
-		    if (!validateApellidoMaterno()) {
-		    	validacion = false;
-		    }
-		    if (!validateSexo()) {
-		    	validacion = false;
-		    }
-		    if (!validateGrupo()) {
-		    	validacion = false;
-		    }
-		    if (!validateNumeroEmergencia()) {
-		    	validacion = false;
-		    }
-		    if (!validateParentesco()) {
-		    	validacion = false;
-		    }
-		    if (!validateDomicilio()) {
-		    	validacion = false;
-		    }
-		    
-		    if (!validateNombre()) {
-		    	validacion = false;
-		    }
-		    if (!validateContactoEmergencia()) {
-		    	validacion = false;
-		    }
-		    
-		    if (!validateDomicilio()) {
-		    	validacion = false;
-		    }
-		    
-		    if(!validateParentesco()) {
-		    	validacion = false;
-		    }
-		    
-		    
-		    if (validacion) {
-		        JOptionPane.showMessageDialog(this, "Alumno registrado correctamente");
-		        int opcion = JOptionPane.showConfirmDialog(this, "¿Deseas registrar otro alumno?");
-
-		    	if(opcion == JOptionPane.YES_OPTION) {
-					new Formulario();
-					dispose();
-				}		}
-		    }
-	    	
 	
 	private void crearBotones() {
 	    JPanel panelBoton = new JPanel();
 	    panelBoton.setBackground(Color.WHITE);
 	    
-	    JButton botonRegistro = new JButton("REGISTRAR ALUMNO");
+	    botonRegistro = new JButton("REGISTRAR ALUMNO");
 	    botonRegistro.setBackground(Color.WHITE);
 	    botonRegistro.setForeground(Color.BLACK);
 	    
 	   
 	    panelBoton.add(botonRegistro);
-	    botonRegistro.addActionListener(e -> validarFormulario());
 	    add(panelBoton, BorderLayout.SOUTH);
 	    
 	    JButton btnRegresar = new JButton("REGRESAR");
