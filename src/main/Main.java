@@ -5,7 +5,9 @@ import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
 
 import controllers.FormularioController;
+import controllers.LoginController;
 import views.Formulario;
+import views.LoginView;
 import views.LoginWindow;
 import views.MainView;
 
@@ -15,11 +17,24 @@ public class Main {
 		
 		//MiVentana ventanita= new MiVentana();
 		//LoginWindow ventanita = new LoginWindow(); //SE USA PARA QUE SE VEA LOGIN
-		Formulario formulario = new Formulario(); //SE USA PARA QUE SE VEA EL FORMULARIO
-		new FormularioController(formulario);
+		//Formulario formulario = new Formulario(); //SE USA PARA QUE SE VEA EL FORMULARIO
+		//new FormularioController(formulario);
+		//new LoginController(view);
+
+        //ventana.add(vista);
+
+        LoginWindow ventana = new LoginWindow();
+        LoginView vista = new LoginView(ventana);
+
+        ventana.setContentPane(vista);
+        new LoginController(vista);    
+
+        ventana.pack();
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
 		
 		//MainView ventana = new MainView();//SE VE VENTANA
-		showOnScreen(0, formulario);
+		//showOnScreen(0, ventana);
 	}
 	
 	

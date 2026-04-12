@@ -32,6 +32,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import controllers.LoginController;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -551,8 +554,19 @@ public class Formulario extends JFrame{
 		
 		if(opcion == JOptionPane.YES_OPTION) {
 			//new LoginWindow();//con este desactivo o sin estar regresa al mainView
-			new LoginWindow(); //con este activo regresa a login
-			dispose();
+			//new LoginWindow(); //con este activo regresa a login
+			//dispose();
+			
+			LoginWindow ventana = new LoginWindow();
+	        LoginView vista = new LoginView(ventana);
+	        new LoginController(vista);
+
+	        ventana.setContentPane(vista);
+	        ventana.pack();
+	        ventana.setLocationRelativeTo(null);
+	        ventana.setVisible(true);
+
+	        dispose(); //Cerrar formulario actual
 		}
 		
 		});	
