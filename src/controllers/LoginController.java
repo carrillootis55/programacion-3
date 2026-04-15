@@ -172,11 +172,14 @@ public class LoginController {
         }
 
         if ((usuario.equals("dianitha@gmail.com") && password.equals("12345")) ||
-            (usuario.equals("hash@gmail.com") && password.equals("abcs"))) {
+            (usuario.equals("hash@gmail.com") && password.equals("abcs"))||
+            (usuario.equals("dmedinam2108@gmail.com") && password.equals("2127"))
+            ) {
             return true;
         }
 
-        if (usuario.equals("dianitha@gmail.com") || usuario.equals("hash@gmail.com")) {
+        if (usuario.equals("dianitha@gmail.com") || usuario.equals("hash@gmail.com") ||           
+        (usuario.equals("dmedinam2108@gmail.com"))){
             throw new InvalidPasswordException("Contraseña incorrecta");
         }
 
