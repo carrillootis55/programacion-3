@@ -1,10 +1,13 @@
 package controllers;
 
 import java.awt.Font;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 
+import models.Alumno;
+import repository.AlumnoRepository;
 import views.Formulario;
 
 public class FormularioController {
@@ -163,44 +166,69 @@ public class FormularioController {
 	    return true;
 	}
 	
-	private void validarFormulario() {
+	 private void validarFormulario() {
 
-	    boolean validacion = true;
+	        boolean validacion = true;
 
-	    if (!validateMatricula()) {validacion = false;} 
+	        //Se ejecutan las validaciones
+	        if (!validateMatricula()) validacion = false;
+	        if (!validateApellidoPaterno()) validacion = false;
+	        if (!validateApellidoMaterno()) validacion = false;
+	        if (!validateSexo()) validacion = false;
+	        if (!validateGrupo()) validacion = false;
+	        if (!validateNumeroEmergencia()) validacion = false;
+	        if (!validateParentesco()) validacion = false;
+	        if (!validateDomicilio()) validacion = false;
+	        if (!validateNombre()) validacion = false;
+	        if (!validateContactoEmergencia()) validacion = false;
 
-	    if (!validateApellidoPaterno()) {validacion = false;} 
-	    
-	    if (!validateApellidoMaterno()) {validacion = false;}
-	    
-	    if (!validateSexo()) {validacion = false;}
-	    
-	    if (!validateGrupo()) {validacion = false;}
-	    
-	    if (!validateNumeroEmergencia()) {validacion = false;}
-	    
-	    if (!validateParentesco()) {validacion = false;}
-	    
-	    if (!validateDomicilio()) {validacion = false;}
-	    
-	    if (!validateNombre()) {validacion = false;}
-	    
-	    if (!validateContactoEmergencia()) {validacion = false;}
-	    
-	    if (!validateDomicilio()) {validacion = false;}
-	    
-	    if(!validateParentesco()) { validacion = false;}
-	    
-	    
-	    if (validacion) {
-	        JOptionPane.showMessageDialog(null, "Alumno registrado correctamente");
-	        int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas registrar otro alumno?");
+	        if (validacion) {
 
-	    	if(opcion == JOptionPane.YES_OPTION) {
-				new Formulario();
-				view.dispose();
-			}		}
+	            //Si es valido se crea la lita
+	            Alumno alumno = new Alumno(
+	                view.getTxtMatricula().getText(),
+	                view.getTxtNombre().getText(),
+	                view.getTxtApellidoPaterno().getText(),
+	                view.getTxtApellidoMaterno().getText(),
+	                view.getRbHombre().isSelected() ? 'H' : 'M',
+	                view.getRbA().isSelected() ? "A" : "B",
+	                view.getTxtContactoEmergencia().getText(),
+	                view.getTxtNumeroEmergencia().getText(),
+	                view.getParentescoAlumno().getSelectedItem().toString(),
+	                view.getDomicilio().getSelectedItem().toString()
+	            );
+
+	            //Se crea el repositorio para guardar
+	            AlumnoRepository repository = new AlumnoRepository();
+
+	            try {
+	                //Guarda el alumno en el archivo
+	                repository.save(alumno);
+	                
+	                //Imprime todos los alumnos en consola
+	                System.out.println("=== LISTA DE ALUMNOS ===");
+	                for (Alumno a : repository.getAlumnos()) {
+	                    System.out.println(a);
+	                    System.out.println("----------------------");
+	                }
+
+
+	                JOptionPane.showMessageDialog(view, "Alumno registrado correctamente");
+
+	            } catch (IOException e) {
+	                //Manejo de errores
+	                JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
+	            }
+	            
+	            int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas registrar otro alumno?");
+	            if (opcion == JOptionPane.YES_OPTION) {
+	                //new Formulario(); // abre nuevo formulario
+	                Formulario nuevo = new Formulario();
+	                new FormularioController(nuevo);
+	                view.dispose();   // cierra el actual
+	            }
+	        }
 	    }
-    	
+	}
 	
-}
+		

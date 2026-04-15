@@ -79,6 +79,8 @@ public class Formulario extends JFrame{
 	private JButton botonRegistro;
 	
 	public Formulario() {
+		
+		setLayout(new BorderLayout());
 		setSize(400, 600); //lo reemplazo por pack
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -95,7 +97,7 @@ public class Formulario extends JFrame{
 		inicializarComponentes();
 		crearBotones();
 		
-		setVisible(true);
+		//setVisible(true);
 	}
 	
 	
@@ -250,16 +252,15 @@ public class Formulario extends JFrame{
 		    }
 
 		});
+		txtMatricula.setMaximumSize(txtMatricula.getPreferredSize()); 
+		txtMatricula.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtMatricula);
 		
 		lblErrorMatricula = new JLabel();
 		lblErrorMatricula.setForeground(Color.RED);
 		lblErrorMatricula.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(lblErrorMatricula);
-		
-		txtMatricula.setMaximumSize(txtMatricula.getPreferredSize()); 
-		txtMatricula.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txtMatricula);
-				
+			
 		JLabel apellidoPaterno= new JLabel("Apellido Paterno:");
 		apellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(apellidoPaterno);
@@ -280,6 +281,9 @@ public class Formulario extends JFrame{
 		    }
 
 		});
+		txtApellidoPaterno.setMaximumSize(txtApellidoPaterno.getPreferredSize()); 
+		txtApellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtApellidoPaterno);
 		
 		
 		lblErrorApellidoPaterno = new JLabel();
@@ -287,9 +291,6 @@ public class Formulario extends JFrame{
 		lblErrorApellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(lblErrorApellidoPaterno);
 		
-		txtApellidoPaterno.setMaximumSize(txtApellidoPaterno.getPreferredSize()); 
-		txtApellidoPaterno.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txtApellidoPaterno);
 		
 		JLabel apellidoMaterno= new JLabel("Apellido Materno:");
 		apellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
@@ -312,14 +313,16 @@ public class Formulario extends JFrame{
 
 		});
 		
+		txtApellidoMaterno.setMaximumSize(txtApellidoMaterno.getPreferredSize()); 
+		txtApellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtApellidoMaterno);
+		
 		lblErrorApellidoMaterno = new JLabel();
 		lblErrorApellidoMaterno.setForeground(Color.RED);
 		lblErrorApellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(lblErrorApellidoMaterno);
 		
-		txtApellidoMaterno.setMaximumSize(txtApellidoMaterno.getPreferredSize()); 
-		txtApellidoMaterno.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txtApellidoMaterno);
+		
 		
 	
 		JLabel alumno= new JLabel("Nombre");
@@ -342,15 +345,16 @@ public class Formulario extends JFrame{
 		    }
 
 		});
+		txtNombre.setMaximumSize(txtNombre.getPreferredSize()); 
+		txtNombre.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtNombre);
 		
 		lblErrorNombre = new JLabel();
 		lblErrorNombre.setForeground(Color.RED);
 		lblErrorNombre.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(lblErrorNombre);
 		
-		txtNombre.setMaximumSize(txtNombre.getPreferredSize()); 
-		txtNombre.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txtNombre);
+		
 		
 		JPanel panelSexo = new JPanel();
 		panelSexo.setLayout(new BoxLayout(panelSexo, BoxLayout.Y_AXIS));
@@ -425,14 +429,17 @@ public class Formulario extends JFrame{
 		    }
 
 		});
+		
+		txtContactoEmergencia.setMaximumSize(txtContactoEmergencia.getPreferredSize()); 
+		txtContactoEmergencia.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtContactoEmergencia);
+		
 		lblErrorContactoEmergencia = new JLabel();
 		lblErrorContactoEmergencia.setForeground(Color.RED);
 		lblErrorContactoEmergencia.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(lblErrorContactoEmergencia);
 		
-		txtContactoEmergencia.setMaximumSize(txtContactoEmergencia.getPreferredSize()); 
-		txtContactoEmergencia.setAlignmentX(LEFT_ALIGNMENT);
-		panelComponentes.add(txtContactoEmergencia);
+		
 		
 		JLabel contacto= new JLabel("Numero del Contacto de Emergencia:");
 		contacto.setAlignmentX(LEFT_ALIGNMENT);
@@ -527,7 +534,8 @@ public class Formulario extends JFrame{
 		JScrollPane scroll = new JScrollPane(panelComponentes);
 		scroll.setHorizontalScrollBar(null);
 		
-		add(scroll);
+		//add(scroll);
+		add(scroll, BorderLayout.CENTER);
 		
 	}
 	
@@ -541,7 +549,6 @@ public class Formulario extends JFrame{
 	    botonRegistro.setBackground(Color.WHITE);
 	    botonRegistro.setForeground(Color.BLACK);
 	    
-	   
 	    panelBoton.add(botonRegistro);
 	    add(panelBoton, BorderLayout.SOUTH);
 	    
@@ -591,6 +598,9 @@ public class Formulario extends JFrame{
 	    
 	    
 	}
+	
+
+	
 
 	
 	

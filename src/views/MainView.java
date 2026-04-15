@@ -25,6 +25,10 @@ import java.awt.event.WindowEvent;
 public class MainView extends JFrame {
 	private Font fuente = new Font("Times New Roman", Font.ITALIC, 14);
 	
+	public JMenuItem salir;
+    public JMenuItem mItemRegistrar;
+    public JMenuItem mItemListaAlumnos;
+	
 	public MainView() {
 		setTitle("PRIMARIA");
 		setLocationRelativeTo(null);
@@ -40,21 +44,6 @@ public class MainView extends JFrame {
 		setResizable(false);
 		setVisible(true);
 		
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowOpened(WindowEvent e) {
-				System.out.println("La ventana se abrio");
-			}
-			
-			@Override
-			public void windowClosing(WindowEvent e) {
-				int opcion = JOptionPane.showConfirmDialog(null, "quieres salir?", "Cerrar sistema", JOptionPane.YES_OPTION);
-				if(opcion == JOptionPane.YES_OPTION) {
-					dispose();
-				}
-			}
-		});
-		
 	}
 	
 	public void setMenu() {
@@ -69,21 +58,8 @@ public class MainView extends JFrame {
 		JMenuItem cerrarSesion = new JMenuItem("Cerrar sesión");
 		cerrarSesion.setFont(fuente);
 		
-		JMenuItem salir = new JMenuItem("Salir");
+		salir = new JMenuItem("Salir");
 		salir.setFont(fuente);
-		
-		//Regresa al loginView
-		salir.addActionListener(e -> {
-			int opcion = JOptionPane.showConfirmDialog( this,"¿Desea salir del sistema?","Confirmar salida",JOptionPane.YES_NO_OPTION );
-			
-		    if(opcion == JOptionPane.YES_OPTION){
-		        new LoginWindow(); // abre la ventana de login
-		        dispose();         // cierra MainView
-
-		    }
-
-		});
-
 
 		archivo.add(cerrarSesion);
 		archivo.addSeparator();
@@ -104,21 +80,16 @@ public class MainView extends JFrame {
 		JMenu alumnos = new JMenu("ALUMNOS");
 		alumnos.setFont(fuente);
 		mb.add(alumnos);
-
-		JMenuItem registrar = new JMenuItem("Registrar alumno");
-		registrar.setFont(fuente);
 		
-		//Abrir formulario
-		registrar.addActionListener(e -> {
-            new Formulario(); 
-        });
-		
-		JMenuItem lista = new JMenuItem("Lista de alumnos");
-		lista.setFont(fuente);
+		mItemRegistrar = new JMenuItem("Registrar alumno");
+        mItemRegistrar.setFont(fuente);
 
-		alumnos.add(registrar);
-		alumnos.addSeparator();
-		alumnos.add(lista);
+        mItemListaAlumnos = new JMenuItem("Lista de alumnos");
+        mItemListaAlumnos.setFont(fuente);
+
+        alumnos.add(mItemRegistrar);
+        alumnos.addSeparator();
+        alumnos.add(mItemListaAlumnos);
 
 		//CALIFICACIONES
 		JMenu calificaciones = new JMenu("CALIFICACIONES");
@@ -132,6 +103,15 @@ public class MainView extends JFrame {
 		calificaciones.add(ingresar);
 		 
 	}
+	
+    public int confirmExit() {
+        return JOptionPane.showConfirmDialog(
+            this,
+            "¿Desea salir del sistema?",
+            "Confirmar salida",
+            JOptionPane.YES_NO_OPTION
+        );
+    }
 
 	private void setPanelInicio() {
 

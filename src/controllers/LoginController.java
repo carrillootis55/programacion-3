@@ -8,8 +8,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import views.Formulario;
-import views.InvalidPasswordExeption;
-import views.InvalidUserException;
+import exceptions.InvalidPasswordException;
+import exceptions.InvalidUserException;
 import views.LoginView;
 import views.MainView;
 
@@ -102,14 +102,17 @@ public class LoginController {
 
 	            JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente");
 
-	            new MainView();
+	            //new MainView();
+	            MainView main = new MainView();
+	            new HomeController(main);
+	            
 	            view.getWindow().dispose();
 	        }
 
 	    } catch (InvalidUserException e) {
 	        view.setErrorUsuario(e.getMessage());
 
-	    } catch (InvalidPasswordExeption e) {
+	    } catch (InvalidPasswordException e) {
 	        view.setErrorContrasena(e.getMessage());
 	    }
 	}
@@ -129,8 +132,10 @@ public class LoginController {
     private void abrirRegistro() {
 
         Formulario formulario = new Formulario();
+        
+        //HomeController home = new HomeController(new MainView());
         new FormularioController(formulario);
-
+        
         formulario.setLocationRelativeTo(null);
         formulario.setVisible(true);
 
@@ -152,18 +157,18 @@ public class LoginController {
     
     //Validar credenciales
     private boolean validarCredenciales(String usuario, String password)
-            throws InvalidUserException, InvalidPasswordExeption {
+            throws InvalidUserException, InvalidPasswordException {
 
         if (usuario.trim().isEmpty()) {
             throw new InvalidUserException("Usuario obligatorio");
         }
 
         if (password.trim().isEmpty()) {
-            throw new InvalidPasswordExeption("Contraseña obligatoria");
+            throw new InvalidPasswordException("Contraseña obligatoria");
         }
 
         if (password.contains(" ")) {
-            throw new InvalidPasswordExeption("La contraseña no debe tener espacios");
+            throw new InvalidPasswordException("La contraseña no debe tener espacios");
         }
 
         if ((usuario.equals("dianitha@gmail.com") && password.equals("12345")) ||
@@ -172,7 +177,7 @@ public class LoginController {
         }
 
         if (usuario.equals("dianitha@gmail.com") || usuario.equals("hash@gmail.com")) {
-            throw new InvalidPasswordExeption("Contraseña incorrecta");
+            throw new InvalidPasswordException("Contraseña incorrecta");
         }
 
         throw new InvalidUserException("Usuario no existe");
