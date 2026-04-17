@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import controllers.LoginController;
+
 public class LoginWindow extends JFrame {
 	public LoginWindow() {
 		
@@ -23,6 +25,8 @@ public class LoginWindow extends JFrame {
 		
 		LoginView panelito = new LoginView(this);
 		add(panelito);
+		
+		new LoginController(panelito);
 		
 		pack();//Se usa pack para que se ajuste al tamaño real del texto que se tiene
 		setMinimumSize(new Dimension(450, getHeight())); //Para que el titulo de SISTEMA se vea completo

@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import models.Alumno;
 import repository.AlumnoRepository;
+import tablemodels.AlumnoTableModels;
 import views.Formulario;
 import views.LoginWindow;
 import views.MainView;
@@ -45,6 +46,14 @@ public class HomeController {
 
         //Mostrar Alumnos
         view.mItemListaAlumnos.addActionListener(e -> mostrarAlumnos());
+        
+        //Inicio
+        view.inicio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                view.showView(MainView.HOME);
+            }
+        });
+        
     }
 
     private void mostrarAlumnos() {
@@ -58,19 +67,19 @@ public class HomeController {
                 JOptionPane.showMessageDialog(view, "No hay alumnos registrados");
                 return;
             }
+            
+            AlumnoTableModels model = new AlumnoTableModels(alumnos);
 
-            StringBuilder datos = new StringBuilder();
+            view.alumnosPanel.setTableModel(model);
 
-            for (Alumno alumno : alumnos) {
-                datos.append(alumno.toString())
-                     .append("\n--------------------\n");
-            }
-
-            JOptionPane.showMessageDialog(view, datos.toString());
+            view.showView(MainView.ALUMNOS);
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(view, "Error: " + e.getMessage());
         }
+            
+
+            
     }
 
     private void handleClose() {

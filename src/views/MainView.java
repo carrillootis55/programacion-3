@@ -1,6 +1,7 @@
 package views;
  
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,6 +29,16 @@ public class MainView extends JFrame {
 	public JMenuItem salir;
     public JMenuItem mItemRegistrar;
     public JMenuItem mItemListaAlumnos;
+    public JMenu inicio;
+    
+
+    public static final String HOME = "HOME";
+    public static final String ALUMNOS = "ALUMNOS";
+
+    private CardLayout cardLayout;
+    private JPanel container;
+
+    public AlumnosView alumnosPanel;
 	
 	public MainView() {
 		setTitle("PRIMARIA");
@@ -37,11 +48,13 @@ public class MainView extends JFrame {
 		setLayout(new BorderLayout());
 		 
 		setMenu();
-		setPanelInicio();
+		//setPanelInicio();
+		
+		createViews(); 
 		
 		pack(); //Ajusta la ventana al contenido
 		setLocationRelativeTo(null); // Centra en pantalla
-		setResizable(false);
+		setResizable(true);//Aqui se podra ajustar el tamaño de la pantalla para que se aprecien mejor los datos de la tabla
 		setVisible(true);
 		
 	}
@@ -64,6 +77,11 @@ public class MainView extends JFrame {
 		archivo.add(cerrarSesion);
 		archivo.addSeparator();
 		archivo.add(salir);
+		
+		//Inicio
+		inicio = new JMenu("INICIO");
+		inicio.setFont(fuente);
+		mb.add(inicio);
 		 
 		//MAESTRO
 		JMenu maestro = new JMenu("MAESTRO");
@@ -113,7 +131,7 @@ public class MainView extends JFrame {
         );
     }
 
-	private void setPanelInicio() {
+	private JPanel setPanelInicio() {
 
 	    JPanel panel = new JPanel();
 	    panel.setBackground(Color.WHITE);
@@ -139,8 +157,32 @@ public class MainView extends JFrame {
 
 	    panel.add(contenido);
 
-	    add(panel, BorderLayout.CENTER);
+	    //add(panel, BorderLayout.CENTER);
+	    
+	    return panel;
 	}
+	
+	private void createViews() {
+
+	    cardLayout = new CardLayout();
+	    container = new JPanel(cardLayout);
+
+	    JPanel homePanel = setPanelInicio();
+
+	    alumnosPanel = new AlumnosView();
+
+	    container.add(homePanel, HOME);
+	    container.add(alumnosPanel, ALUMNOS);
+
+	    add(container, BorderLayout.CENTER);
+	}
+	
+	
+	public void showView(String view) {
+	    cardLayout.show(container, view);
+	}
+	
+		
 	
 
 }
