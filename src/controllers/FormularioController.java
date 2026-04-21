@@ -184,7 +184,7 @@ public class FormularioController {
 
 	        if (validacion) {
 
-	            //Si es valido se crea la lita
+	            //Si es valido se crea la lista
 	            Alumno alumno = new Alumno(
 	                view.getTxtMatricula().getText(),
 	                view.getTxtNombre().getText(),
