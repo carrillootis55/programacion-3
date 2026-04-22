@@ -34,6 +34,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import controllers.LoginController;
+import models.Alumno;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -100,7 +101,7 @@ public class Formulario extends JFrame{
 		//setVisible(true);
 	}
 	
-	
+		
 	public JTextField getTxtMatricula() {
 		return txtMatricula;
 	}
@@ -539,8 +540,34 @@ public class Formulario extends JFrame{
 		
 	}
 	
+	public void cargarDatos(Alumno alumno) {
+		txtMatricula.setText(alumno.getMatricula());
+	    txtNombre.setText(alumno.getNombre());
+	    txtApellidoPaterno.setText(alumno.getApellidoPaterno());
+	    txtApellidoMaterno.setText(alumno.getApellidoMaterno());
+	    txtContactoEmergencia.setText(alumno.getContactoEmergencia());
+	    txtNumeroEmergencia.setText(alumno.getNumeroEmergencia());
+	    
+	    /*Se utiliza equals PORQUE en FormularioController tenemos view.getRbA().isSelected() ? "A" : "B"
+	    Y en formulario si se pone grupo = char  se mezclaria un string y un char, lo que marca error*/
+	    
+	    if ("M".equals(alumno.getSexo())) {
+	    	rbMujer.setSelected(true);
+	    }else {
+	    	rbHombre.setSelected(true);
+	    }
+	    
+	    if ("A".equals(alumno.getGrupo())) {
+	    	rbA.setSelected(true);
+	    }else {
+	    	rbB.setSelected(true);
+	    }
+	    
+	    parentescoAlumno.setSelectedItem(alumno.getParentesco());
+	    domicilio.setSelectedItem(alumno.getDomicilio());
+	    
+	}
 
-	
 	private void crearBotones() {
 	    JPanel panelBoton = new JPanel();
 	    panelBoton.setBackground(Color.WHITE);
@@ -552,31 +579,6 @@ public class Formulario extends JFrame{
 	    panelBoton.add(botonRegistro);
 	    add(panelBoton, BorderLayout.SOUTH);
 	    
-	    JButton btnRegresar = new JButton("REGRESAR");
-	    btnRegresar.setBackground(Color.WHITE);
-	    btnRegresar.setForeground(Color.BLACK);
-	    btnRegresar.addActionListener(e -> {
-			
-		int opcion = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas regresar? Se perderán todos los datos");
-		
-		if(opcion == JOptionPane.YES_OPTION) {
-			//new LoginWindow();//con este desactivo o sin estar regresa al mainView
-			//new LoginWindow(); //con este activo regresa a login
-			//dispose();
-			
-			LoginWindow ventana = new LoginWindow();
-	        LoginView vista = new LoginView(ventana);
-	        new LoginController(vista);
-
-	        ventana.setContentPane(vista);
-	        ventana.pack();
-	        ventana.setLocationRelativeTo(null);
-	        ventana.setVisible(true);
-
-	        dispose(); //Cerrar formulario actual
-		}
-		
-		});	
 	    
 		JButton botonCierre = new JButton("CERRAR");
 		botonCierre.setBackground(Color.WHITE);
@@ -591,17 +593,8 @@ public class Formulario extends JFrame{
 		}
 
 		});
-	    
 
-	    panelBoton.add(btnRegresar);
-	    panelBoton.add(botonCierre);
-	    
-	    
+		panelBoton.add(botonCierre);
 	}
-	
-
-	
-
-	
 	
 }

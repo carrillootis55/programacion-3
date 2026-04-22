@@ -26,7 +26,8 @@ public class AlumnoTableModels extends AbstractTableModel {
     public AlumnoTableModels(List<Alumno> alumnos) {
         this.alumnos = alumnos;
     }
-
+    
+    
     @Override
     public int getRowCount() {
         return alumnos.size();
@@ -71,6 +72,9 @@ public class AlumnoTableModels extends AbstractTableModel {
         }
 
         return null;
+    }
+    public Alumno getAlumnoAt(int row) {
+    	return alumnos.get(row);
     }
 
 }

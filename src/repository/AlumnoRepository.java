@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -27,6 +28,28 @@ public class AlumnoRepository {
             //Salto de linea
             writer.newLine();
         }
+    }
+    //Reescribe archivo
+    public void updateAll(List<Alumno> alumnos) throws IOException{
+    	try(BufferedWriter writer = new BufferedWriter(new FileWriter(FILE))){
+    		for(Alumno alumno : alumnos) {
+    			writer.write(alumno.toCsv());
+    			writer.newLine();
+    		}
+    	}
+    }
+    //Editar alumno
+    public void update(int index, Alumno alumnoActualizado) throws IOException{
+    	List<Alumno> alumnos = getAlumnos();
+    	alumnos.set(index, alumnoActualizado);
+    	updateAll(alumnos);
+    }
+    
+    //Eliminar alumno
+    public void delete(int index) throws IOException {
+    	List<Alumno> alumnos = getAlumnos();
+    	alumnos.remove(index);
+    	updateAll(alumnos);
     }
     
     //Se obtienen y almacenan los alumnos

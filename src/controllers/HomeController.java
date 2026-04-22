@@ -69,8 +69,9 @@ public class HomeController {
             }
             
             AlumnoTableModels model = new AlumnoTableModels(alumnos);
-
             view.alumnosPanel.setTableModel(model);
+            
+            new alumnoController(view.alumnosPanel);
 
             view.showView(MainView.ALUMNOS);
 

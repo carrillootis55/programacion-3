@@ -73,8 +73,6 @@ public class LoginController {
         });
         
   
-        //Boton registrar
-        view.getBtnRegister().addActionListener(e -> abrirRegistro());
     }
 	
 	//Login

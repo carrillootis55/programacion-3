@@ -57,9 +57,7 @@ public class LoginView extends JPanel {
 	private Color defaultButtonColor;
 	
 	private JButton botonLogin;
-	
-	private JButton btnRegister;
-	
+		
 	public LoginView(LoginWindow window) {
 		this.window= window;
 		fuente = new Font("Times New Roman", Font.ITALIC , 17);
@@ -104,9 +102,6 @@ public class LoginView extends JPanel {
         return botonLogin;
     }
 
-    public JButton getBtnRegister() {
-        return btnRegister;
-    }
     
 	//METODO PARA CENTRAR INICIO DE SESION
     private void crearTitulo() {
@@ -133,7 +128,7 @@ public class LoginView extends JPanel {
 	    botonLogin.setBackground(Color.WHITE);
 	    botonLogin.setForeground(Color.BLACK);
 	    botonLogin.setFont(fuente);
-	    
+		botonLogin.setToolTipText("Inicio de sesion");
 	    
 	    //Uso de mouse para cambiar color el boton
 	    botonLogin.addMouseListener(new MouseAdapter() {
@@ -145,34 +140,10 @@ public class LoginView extends JPanel {
 	        	botonLogin.setForeground(Color.BLACK);
 	        }
 	    });
-	    	    
-	    
-	    btnRegister = new JButton("Regístrate");
-	    btnRegister.setBackground(Color.WHITE);
-	    btnRegister.setForeground(Color.BLACK);
-	    btnRegister.setFont(fuente);
-		btnRegister.setToolTipText("¿No tienes cuenta? Créala aquí");
-		
-		
-		//Uso de mouse para cambiar color el boton
-	    btnRegister.addMouseListener(new MouseAdapter() {
-	        public void mouseEntered(MouseEvent e) {
-	            btnRegister.setForeground(Color.BLUE);
-	        }
-
-	        public void mouseExited(MouseEvent e) {
-	            btnRegister.setForeground(Color.BLACK);
-	        }
-	    });
-
-			
-		//panelBoton.add(btnRegister);
-		
+	    	    		
 	    colocarIcono(botonLogin, "../img/icono.png");
 
-	    panelBoton.add(botonLogin);
-	    panelBoton.add(btnRegister);
-	    
+	    panelBoton.add(botonLogin);	    
 	    add(panelBoton, BorderLayout.SOUTH);
 	    
 	   

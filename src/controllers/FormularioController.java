@@ -11,12 +11,22 @@ import repository.AlumnoRepository;
 import views.Formulario;
 
 public class FormularioController {
-
+	
 	private Formulario view;
+	private AlumnoRepository repository;
+	
+	private boolean editando = false;
+	private int indexEditar = -1;
 	
 	public FormularioController(Formulario view) {
 		this.view = view;
+		this.repository = new AlumnoRepository();
 		assignListeners();
+	}
+	
+	public void setModoEdicion(int index) {
+		this.editando = true;
+		this.indexEditar = index;
 	}
 	
 	private void assignListeners() {
@@ -182,7 +192,7 @@ public class FormularioController {
 	        if (!validateNombre()) validacion = false;
 	        if (!validateContactoEmergencia()) validacion = false;
 
-	        if (validacion) {
+	        if (!validacion) return;
 
 	            //Si es valido se crea la lista
 	            Alumno alumno = new Alumno(
@@ -203,8 +213,11 @@ public class FormularioController {
 
 	            try {
 	                //Guarda el alumno en el archivo
-	                repository.save(alumno);
-	                
+	            	if(editando) {
+	            		repository.update(indexEditar, alumno);
+	            	}else {
+	            		repository.save(alumno);
+	            	}
 	                //Imprime todos los alumnos en consola
 	                System.out.println("=== LISTA DE ALUMNOS ===");
 	                for (Alumno a : repository.getAlumnos()) {
@@ -227,8 +240,9 @@ public class FormularioController {
 	                new FormularioController(nuevo);
 	                view.dispose();   // cierra el actual
 	            }
-	        }
-	    }
-	}
+	     }
+
+	 
+}
 	
 		
