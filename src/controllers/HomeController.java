@@ -39,7 +39,7 @@ public class HomeController {
         view.mItemRegistrar.addActionListener(e -> {
             Formulario formulario = new Formulario();
             new FormularioController(formulario);
-            
+            //Se usa para centrar el texto o en este caso el boton (dentro del formulario)
             formulario.setLocationRelativeTo(null);
             formulario.setVisible(true);
         });

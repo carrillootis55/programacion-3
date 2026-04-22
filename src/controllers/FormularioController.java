@@ -214,8 +214,10 @@ public class FormularioController {
 	            try {
 	                //Guarda el alumno en el archivo
 	            	if(editando) {
+	            		//para el metodo de update se creo dentro del alumnoRepositorio
 	            		repository.update(indexEditar, alumno);
 	            	}else {
+	            		
 	            		repository.save(alumno);
 	            	}
 	                //Imprime todos los alumnos en consola

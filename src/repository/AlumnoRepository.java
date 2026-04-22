@@ -12,7 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Alumno;
-
+/*
+ * BufferedWriter = ALMACENA CARACTERES EN EL BUFER - ESCRIBE TEXTOS DENTRO DE LA LISTA
+ * BufferedReader = ALMACENA DATOS EN LA MEMORIA - LEE EL TEXTO DE LA LISTA
+ * FileReader = Extiende InputStreamReader y se utiliza comúnmente para leer archivos carácter por carácter
+ * FileWriter =  Extiende OutputStreamWriter y se utiliza para escribir archivos linea por linea
+ * REMOVE = En este caso utilizamos alumnos pero la estructura de este metodo es:
+ * lista.remove(objeto) elimina la primera ocurrencia
+ */
 public class AlumnoRepository {
 	
 	//Ruta del archivo donde se guardan los datos de los alumnos en formato CSV

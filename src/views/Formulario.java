@@ -539,7 +539,7 @@ public class Formulario extends JFrame{
 		add(scroll, BorderLayout.CENTER);
 		
 	}
-	
+	//
 	public void cargarDatos(Alumno alumno) {
 		txtMatricula.setText(alumno.getMatricula());
 	    txtNombre.setText(alumno.getNombre());
