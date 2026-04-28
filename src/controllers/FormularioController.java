@@ -241,7 +241,15 @@ public class FormularioController {
 	                Formulario nuevo = new Formulario();
 	                new FormularioController(nuevo);
 	                view.dispose();   // cierra el actual
+	            }else if (opcion == JOptionPane.NO_OPTION) {
+
+	                view.dispose(); //cierra el formulario actual
+
+	            }else {
+	            	view.dispose();
 	            }
+	            
+	            
 	     }
 
 	 

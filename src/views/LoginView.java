@@ -12,7 +12,7 @@ import java.awt.Color;
  */
 import java.awt.Dimension;
 
-import lib.SpringUtilities;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -40,6 +40,8 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import lib.SpringUtilities;
 
 public class LoginView extends JPanel {
 	private LoginWindow window;

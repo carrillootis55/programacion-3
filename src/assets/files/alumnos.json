@@ -1,0 +1,45 @@
+[ {
+  "matricula" : "125466",
+  "nombre" : "Otilio",
+  "apellidoPaterno" : "Gamboa",
+  "apellidoMaterno" : "Carrillo",
+  "sexo" : "H",
+  "grupo" : "A",
+  "contactoEmergencia" : "Pedrito Fernandez",
+  "numeroEmergencia" : "6686854",
+  "parentesco" : "Hermana/Hermano",
+  "domicilio" : "Calle Gomez Farias 4367"
+}, {
+  "matricula" : "5879885",
+  "nombre" : "pedrito",
+  "apellidoPaterno" : "jsjsj",
+  "apellidoMaterno" : "fdfd",
+  "sexo" : "H",
+  "grupo" : "A",
+  "contactoEmergencia" : "jthf",
+  "numeroEmergencia" : "65664",
+  "parentesco" : "Tio/Tia",
+  "domicilio" : "Calle Gomez Farias 4367"
+}, {
+  "matricula" : "5555",
+  "nombre" : "jjjjj",
+  "apellidoPaterno" : "khkh",
+  "apellidoMaterno" : "ljlj",
+  "sexo" : "H",
+  "grupo" : "A",
+  "contactoEmergencia" : "ddd",
+  "numeroEmergencia" : "86868",
+  "parentesco" : "Hermana/Hermano",
+  "domicilio" : "Calle Diana Laura 2365"
+}, {
+  "matricula" : "55858",
+  "nombre" : "grgrg",
+  "apellidoPaterno" : "mm",
+  "apellidoMaterno" : "mmj",
+  "sexo" : "H",
+  "grupo" : "A",
+  "contactoEmergencia" : "hyhyh",
+  "numeroEmergencia" : "6868",
+  "parentesco" : "Hermana/Hermano",
+  "domicilio" : "Calle Aquiles Serdan 1993"
+} ]

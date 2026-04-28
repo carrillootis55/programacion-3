@@ -2,6 +2,7 @@ package repository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,6 +11,10 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import models.Alumno;
 /*
@@ -23,10 +28,15 @@ import models.Alumno;
 public class AlumnoRepository {
 	
 	//Ruta del archivo donde se guardan los datos de los alumnos en formato CSV
-	private final String FILE = "src/assets/files/alumnos.csv";
+	//private final String FILE = "src/assets/files/alumnos.csv";
+	
+	//Ruta del archivo donde se guardan los datos de los alumnos en formato JSON
+	private final String FILE = "src/assets/files/alumnos.json";
+	
+	private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-    //Guardar
-    public void save(Alumno alumno) throws IOException {
+    //Guardar csv
+    /*public void save(Alumno alumno) throws IOException {
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE, true), StandardCharsets.UTF_8))) {
         	
@@ -35,16 +45,30 @@ public class AlumnoRepository {
             //Salto de linea
             writer.newLine();
         }
+    }*/
+    
+    //Guardar json
+    public void save(Alumno alumno) throws IOException {
+        List<Alumno> alumnos = getAlumnos();
+        alumnos.add(alumno);
+        updateAll(alumnos);
     }
-    //Reescribe archivo
-    public void updateAll(List<Alumno> alumnos) throws IOException{
+    //Reescribe archivo csv
+    /*public void updateAll(List<Alumno> alumnos) throws IOException{
     	try(BufferedWriter writer = new BufferedWriter(new FileWriter(FILE))){
     		for(Alumno alumno : alumnos) {
     			writer.write(alumno.toCsv());
     			writer.newLine();
     		}
     	}
+    }*/
+    
+    //Reescribe archivo json
+    public void updateAll(List<Alumno> alumnos) throws IOException {
+        mapper.writeValue(new File(FILE), alumnos);
     }
+
+    
     //Editar alumno
     public void update(int index, Alumno alumnoActualizado) throws IOException{
     	List<Alumno> alumnos = getAlumnos();
@@ -59,8 +83,8 @@ public class AlumnoRepository {
     	updateAll(alumnos);
     }
     
-    //Se obtienen y almacenan los alumnos
-    public List<Alumno> getAlumnos() throws IOException {
+    //Se obtienen y almacenan los alumnos csv
+    /*public List<Alumno> getAlumnos() throws IOException {
 
         List<Alumno> alumnos = new ArrayList<>();
 
@@ -75,5 +99,20 @@ public class AlumnoRepository {
         }
 
         return alumnos;
+    }*/
+    
+    //Se obtienen y almacenan los alumnos json
+    public List<Alumno> getAlumnos() throws IOException {
+
+        File file = new File(FILE);
+
+        if (!file.exists() || file.length() == 0) {
+            return new ArrayList<>();
+        }
+
+        return mapper.readValue(
+                file,
+                new TypeReference<List<Alumno>>() {}
+        );
     }
 }
