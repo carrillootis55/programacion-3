@@ -4,13 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
@@ -23,6 +26,7 @@ public class AlumnosView extends JPanel {
 	private JButton btnAgregar;
 	private JButton btnEditar;
 	private JButton btnEliminar;
+	private JButton btnPdf;
 	
 	
     public AlumnosView() {
@@ -34,11 +38,13 @@ public class AlumnosView extends JPanel {
         btnAgregar = new JButton ("Agregar");
         btnEditar = new JButton ("Editar");
         btnEliminar = new JButton ("Eliminar");
+        btnPdf = new JButton("Exportar PDF");
         
         JPanel panelBotones = new JPanel();
         panelBotones.add(btnAgregar);
         panelBotones.add(btnEditar);
         panelBotones.add(btnEliminar);
+        panelBotones.add(btnPdf);
         
         add(panelBotones, BorderLayout.NORTH);
         add(new JScrollPane(tabla), BorderLayout.CENTER);
@@ -57,6 +63,10 @@ public class AlumnosView extends JPanel {
 	public JButton getBtnEliminar() {
 		return btnEliminar;
 	}
+	
+	public JButton getBtnPdf(){
+		return btnPdf; 
+	} 
 
 	/*public void setTableModel(AlumnoTableModels model) {
         tabla.setModel(model);
@@ -66,6 +76,35 @@ public class AlumnosView extends JPanel {
         return tabla;
     }
     
+    public File selectPdfFile() {
+
+        JFileChooser chooser = new JFileChooser();
+
+        chooser.setSelectedFile(new File("reporte-alumnos.pdf"));
+
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+
+        FileNameExtensionFilter filter =
+                new FileNameExtensionFilter("Documentos PDF", "pdf");
+
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
+
+        int option = chooser.showSaveDialog(this);
+
+        if (option != JFileChooser.APPROVE_OPTION) {
+            return null;
+        }
+
+        File file = chooser.getSelectedFile();
+
+        if (!file.getName().toLowerCase().endsWith(".pdf")) {
+            file = new File(file.getAbsolutePath() + ".pdf");
+        }
+
+        return file;
+    }
     
     
     private void styleTable() {

@@ -1,11 +1,13 @@
 package controllers;
 
+import java.awt.Desktop;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-
+import java.io.File; 
 import models.Alumno;
 import repository.AlumnoRepository;
+import services.PDFExporter;
 import tablemodels.AlumnoTableModels;
 import views.AlumnosView;
 import views.Formulario;
@@ -13,9 +15,13 @@ import views.Formulario;
 public class alumnoController {
 	
 	private AlumnosView view;
+	private PDFExporter pdfExporter;
 		
 	public alumnoController(AlumnosView view) {
 		this.view = view;
+		
+		pdfExporter = new PDFExporter();
+		
 		//AGREGAR
 		view.getBtnAgregar().addActionListener(e ->{
 			Formulario form = new Formulario();
@@ -76,6 +82,31 @@ public class alumnoController {
 				}
 			}
 		});
+		
+		view.getBtnPdf().addActionListener(e -> generarPdf());
+	}
+	
+	private void generarPdf() {
+
+		File file = view.selectPdfFile();
+
+		if (file == null) {
+			return;
+		}
+
+		try {
+			AlumnoRepository repo = new AlumnoRepository();
+
+			pdfExporter.exportAlumnos(repo.getAlumnos(), file);
+
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(file);
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al exportar PDF");
+		}
 	}
 
 }
