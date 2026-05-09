@@ -1,16 +1,19 @@
 [ {
-  "matricula" : "125466",
+  "matricula" : "4234324234",
   "nombre" : "Otilio",
   "apellidoPaterno" : "Gamboa",
   "apellidoMaterno" : "Carrillo",
   "sexo" : "H",
   "grupo" : "A",
   "contactoEmergencia" : "Pedrito Fernandez",
-  "numeroEmergencia" : "6686854",
+  "numeroEmergencia" : "668685412",
   "parentesco" : "Hermana/Hermano",
-  "domicilio" : "Calle Gomez Farias 4367"
+  "domicilio" : "Calle Gomez Farias 4367",
+  "artes" : 10.0,
+  "geografia" : 10.0,
+  "informatica" : 10.0
 }, {
-  "matricula" : "5879885",
+  "matricula" : "2024022327",
   "nombre" : "pedrito",
   "apellidoPaterno" : "jsjsj",
   "apellidoMaterno" : "fdfd",
@@ -19,18 +22,24 @@
   "contactoEmergencia" : "jthf",
   "numeroEmergencia" : "65664",
   "parentesco" : "Tio/Tia",
-  "domicilio" : "Calle Gomez Farias 4367"
+  "domicilio" : "Calle Gomez Farias 4367",
+  "artes" : 2.0,
+  "geografia" : 3.0,
+  "informatica" : 5.0
 }, {
-  "matricula" : "5555",
-  "nombre" : "jjjjj",
-  "apellidoPaterno" : "khkh",
-  "apellidoMaterno" : "ljlj",
+  "matricula" : "2222112221",
+  "nombre" : "Gabriel",
+  "apellidoPaterno" : "Orozco",
+  "apellidoMaterno" : "Armenta",
   "sexo" : "H",
-  "grupo" : "A",
-  "contactoEmergencia" : "ddd",
-  "numeroEmergencia" : "86868",
+  "grupo" : "B",
+  "contactoEmergencia" : "David",
+  "numeroEmergencia" : "868682222",
   "parentesco" : "Hermana/Hermano",
-  "domicilio" : "Calle Diana Laura 2365"
+  "domicilio" : "Calle Diana Laura 2365",
+  "artes" : 0.0,
+  "geografia" : 0.0,
+  "informatica" : 0.0
 }, {
   "matricula" : "55858",
   "nombre" : "grgrg",
@@ -41,5 +50,22 @@
   "contactoEmergencia" : "hyhyh",
   "numeroEmergencia" : "6868",
   "parentesco" : "Hermana/Hermano",
-  "domicilio" : "Calle Aquiles Serdan 1993"
+  "domicilio" : "Calle Aquiles Serdan 1993",
+  "artes" : 10.0,
+  "geografia" : 10.0,
+  "informatica" : 9.0
+}, {
+  "matricula" : "2024082721",
+  "nombre" : "Elizabeth",
+  "apellidoPaterno" : "Medina",
+  "apellidoMaterno" : "Martinez",
+  "sexo" : "H",
+  "grupo" : "B",
+  "contactoEmergencia" : "Jamin",
+  "numeroEmergencia" : "6452838282",
+  "parentesco" : "Hermana/Hermano",
+  "domicilio" : "Calle Ficus 3489",
+  "artes" : 0.0,
+  "geografia" : 0.0,
+  "informatica" : 0.0
 } ]

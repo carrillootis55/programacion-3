@@ -1,6 +1,10 @@
 package controllers;
 
+//package controllers;
+
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -79,30 +83,111 @@ public class FormularioController {
 		view.getRbB().addActionListener(e -> validateGrupo());
 		
 		view.getBtnRegistrar().addActionListener(e -> validarFormulario());
+		
+		view.getTxtMatricula().addKeyListener(new KeyAdapter() {
+		    @Override
+		    public void keyTyped(KeyEvent e) {
+		        char c = e.getKeyChar();
+		        // Consumir si NO es letra ni número isLetterOrDigit si es numero se usa isDigit
+		        if (!Character.isDigit(c)) {
+		            e.consume();
+		        }
+		    }
+		});
+		
+		view.getTxtNumeroEmergencia().addKeyListener(new KeyAdapter() {
+		    @Override
+		    public void keyTyped(KeyEvent e) {
+		        char c = e.getKeyChar();
+		        // Consumir si NO es letra ni número isLetterOrDigit si es numero se usa isDigit
+		        if (!Character.isDigit(c)) {
+		            e.consume();
+		        }
+		    }
+		});
+		
+		view.getTxtApellidoPaterno().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c =e.getKeyChar();
+				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
+				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
+					e.consume();//IGNORA LA LETRA
+					view.setErrorApellidoPaterno("Solo se permiten letras");
+				}
+			}
+		});
 
+		view.getTxtApellidoMaterno().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c =e.getKeyChar();
+				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
+				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
+					e.consume();//IGNORA LA LETRA
+					view.setErrorApellidoPaterno("Solo se permiten letras");
+				}
+			}
+		});
+		
+		view.getTxtNombre().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c =e.getKeyChar();
+				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
+				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
+					e.consume();//IGNORA LA LETRA
+					view.setErrorNombre("Solo se permiten letras");
+				}
+			}
+		});
+		
+		
+		view.getTxtContactoEmergencia().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c =e.getKeyChar();
+				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
+				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
+					e.consume();//IGNORA LA LETRA
+					view.setErrorContacto("Solo se permiten letras");
+				}
+			}
+		});
 	}
 	
-	
 	private boolean validateMatricula() {
-
-	    if (view.getTxtMatricula().getText().trim().isEmpty()) {
+		
+		
+		String matricula = view.getTxtMatricula().getText().trim();
+	    if (matricula.isEmpty()) {
 		    view.setErrorMatricula("La matrícula es obligatoria");
 	        return false;
 	    }
+	    
+	    if(matricula.length() < 10) {
+	    	view.setErrorMatricula("La matricula es muy corta");
+	    	return false;
+	    }
+	    
 	    view.setErrorMatricula("");
 	    return true;
 	}
 	
 	private boolean validateApellidoMaterno() {
+
 	    if (view.getTxtApellidoMaterno().getText().trim().isEmpty()) {
-	        view.setErrorApellidoMaterno("El apellido materno es obligatorio");
+	        view.setErrorApellidoMaterno("El apellido paterno es obligatorio");
 	        return false;
 	    }
 	    view.setErrorApellidoMaterno("");
 	    return true;
+		
 	}
 	
+	
 	private boolean validateApellidoPaterno() {
+		
 	    if (view.getTxtApellidoPaterno().getText().trim().isEmpty()) {
 	        view.setErrorApellidoPaterno("El apellido paterno es obligatorio");
 	        return false;
@@ -112,7 +197,8 @@ public class FormularioController {
 	}
 	
 	private boolean validateNombre() {
-	    if (view.getTxtNombre().getText().trim().isEmpty()) {
+		
+		if (view.getTxtNombre().getText().trim().isEmpty()) {
 	        view.setErrorNombre("El nombre es obligatorio");
 	        return false;
 	    }
@@ -157,7 +243,8 @@ public class FormularioController {
 	}
 	
 	private boolean validateContactoEmergencia() {
-	    if (view.getTxtContactoEmergencia().getText().trim().isEmpty()) {
+		
+		if (view.getTxtContactoEmergencia().getText().trim().isEmpty()) {
 	        view.setErrorContacto("El contacto es obligatorio");
 	        return false;
 	    }
@@ -166,14 +253,21 @@ public class FormularioController {
 	}
 	
 	private boolean validateNumeroEmergencia() {
-	    String numero = view.getTxtNumeroEmergencia().getText().trim();
-
+	   
+		String numero = view.getTxtNumeroEmergencia().getText().trim();
 	    if (numero.isEmpty()) {
-	        view.setErrorNumero("El número es obligatorio");
+		    view.setErrorNumero("El número es obligatorio");
 	        return false;
 	    }
+	    
+	    if(numero.length() < 10) {
+	    	view.setErrorNumero("El número es muy corto");
+	    	return false;
+	    }
+	    
 	    view.setErrorNumero("");
 	    return true;
+		
 	}
 	
 	 private void validarFormulario() {
@@ -237,14 +331,7 @@ public class FormularioController {
 	            
 	            int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas registrar otro alumno?");
 	            if (opcion == JOptionPane.YES_OPTION) {
-	                //new Formulario(); // abre nuevo formulario
-	                Formulario nuevo = new Formulario();
-	                new FormularioController(nuevo);
-	                view.dispose();   // cierra el actual
-	            }else if (opcion == JOptionPane.NO_OPTION) {
-
-	                view.dispose(); //cierra el formulario actual
-
+	            	view.limpiarFormulario();
 	            }else {
 	            	view.dispose();
 	            }

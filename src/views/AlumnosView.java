@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -19,6 +20,7 @@ import javax.swing.table.JTableHeader;
 
 import tablemodels.AlumnoTableModels;
 import utils.AppFont;
+import utils.ConfigManager;
 
 public class AlumnosView extends JPanel {
 	
@@ -28,6 +30,7 @@ public class AlumnosView extends JPanel {
 	private JButton btnEliminar;
 	private JButton btnPdf;
 	
+	private JButton btnCalificar;
 	
     public AlumnosView() {
         setLayout(new BorderLayout());
@@ -39,11 +42,15 @@ public class AlumnosView extends JPanel {
         btnEditar = new JButton ("Editar");
         btnEliminar = new JButton ("Eliminar");
         btnPdf = new JButton("Exportar PDF");
+        btnCalificar = new JButton("Calificar");
         
         JPanel panelBotones = new JPanel();
         panelBotones.add(btnAgregar);
         panelBotones.add(btnEditar);
         panelBotones.add(btnEliminar);
+        
+        panelBotones.add(new JSeparator(SwingConstants.VERTICAL));
+        panelBotones.add(btnCalificar);
         panelBotones.add(btnPdf);
         
         add(panelBotones, BorderLayout.NORTH);
@@ -72,6 +79,10 @@ public class AlumnosView extends JPanel {
         tabla.setModel(model);
     }*/
 
+	public JButton getBtnCalificar() {
+	    return btnCalificar;
+	}
+	
     public JTable getTabla() {
         return tabla;
     }
@@ -79,17 +90,15 @@ public class AlumnosView extends JPanel {
     public File selectPdfFile() {
 
         JFileChooser chooser = new JFileChooser();
-
+        try {
+        	String last = ConfigManager.loadLastDirectory();
+        	
+        	if(last !=null) {
+        		chooser.setCurrentDirectory(new File(last));
+        	}
+        } catch(Exception e) {}
         chooser.setSelectedFile(new File("reporte-alumnos.pdf"));
 
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(false);
-
-        FileNameExtensionFilter filter =
-                new FileNameExtensionFilter("Documentos PDF", "pdf");
-
-        chooser.addChoosableFileFilter(filter);
-        chooser.setFileFilter(filter);
 
         int option = chooser.showSaveDialog(this);
 
@@ -99,9 +108,9 @@ public class AlumnosView extends JPanel {
 
         File file = chooser.getSelectedFile();
 
-        if (!file.getName().toLowerCase().endsWith(".pdf")) {
-            file = new File(file.getAbsolutePath() + ".pdf");
-        }
+        try {
+        	ConfigManager.saveLastDirectory(file.getParent());
+        }catch(Exception e) {}
 
         return file;
     }

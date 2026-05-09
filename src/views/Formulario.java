@@ -539,6 +539,20 @@ public class Formulario extends JFrame{
 		add(scroll, BorderLayout.CENTER);
 		
 	}
+	
+	public void limpiarFormulario() {
+	    txtMatricula.setText("");
+	    txtNombre.setText("");
+	    txtApellidoPaterno.setText("");
+	    txtApellidoMaterno.setText("");
+	    txtContactoEmergencia.setText("");
+	    txtNumeroEmergencia.setText("");
+	    
+	    bgSexo.clearSelection();
+	    bgGrupo.clearSelection();
+	    parentescoAlumno.setSelectedIndex(0);
+	    domicilio.setSelectedIndex(0);
+	}
 	//
 	public void cargarDatos(Alumno alumno) {
 		txtMatricula.setText(alumno.getMatricula());

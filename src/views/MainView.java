@@ -21,29 +21,33 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import models.Maestro;
 
 public class MainView extends JFrame {
 	private Font fuente = new Font("Times New Roman", Font.ITALIC, 14);
 	
 	public JMenuItem salir;
-    public JMenuItem mItemRegistrar;
     public JMenuItem mItemListaAlumnos;
+    public JMenuItem mItemPerfil;
+    public JMenuItem mItemCalificaciones;
     public JMenu inicio;
     
 
     public static final String HOME = "HOME";
     public static final String ALUMNOS = "ALUMNOS";
-
+    public static final String MAESTRO = "MAESTRO";
+    public static final String CALIFICACIONES = "CALIFICACIONES";
+    
     private CardLayout cardLayout;
     private JPanel container;
 
     public AlumnosView alumnosPanel;
-	
+	public MaestroView maestroPanel;
+	public CalificacionesView calificacionesPanel;
 	public MainView() {
-		setTitle("PRIMARIA");
+		setTitle("SISTEMA DE PRIMARIA");
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		 
 		setLayout(new BorderLayout());
 		 
@@ -68,14 +72,10 @@ public class MainView extends JFrame {
 		archivo.setFont(fuente);
 		mb.add(archivo);
 
-		JMenuItem cerrarSesion = new JMenuItem("Cerrar sesión");
-		cerrarSesion.setFont(fuente);
 		
-		salir = new JMenuItem("Salir");
+		salir = new JMenuItem("Cerrar sesión");
 		salir.setFont(fuente);
 
-		archivo.add(cerrarSesion);
-		archivo.addSeparator();
 		archivo.add(salir);
 		
 		//Inicio
@@ -87,45 +87,36 @@ public class MainView extends JFrame {
 		JMenu maestro = new JMenu("MAESTRO");
 		maestro.setFont(fuente);
 		mb.add(maestro);
-		 
-		maestro.addSeparator();
-		 
-		JMenuItem perfil = new JMenuItem("Perfil");
-		perfil.setFont(fuente);
-		maestro.add(perfil);
+		 		 
+		mItemPerfil = new JMenuItem("Perfil");
+		mItemPerfil.setFont(fuente);
+		maestro.add(mItemPerfil);
 
 		//ALUMNOS
 		JMenu alumnos = new JMenu("ALUMNOS");
 		alumnos.setFont(fuente);
 		mb.add(alumnos);
-		
-		mItemRegistrar = new JMenuItem("Registrar alumno");
-        mItemRegistrar.setFont(fuente);
-
+	
         mItemListaAlumnos = new JMenuItem("Lista de alumnos");
         mItemListaAlumnos.setFont(fuente);
 
-        alumnos.add(mItemRegistrar);
-        alumnos.addSeparator();
         alumnos.add(mItemListaAlumnos);
 
 		//CALIFICACIONES
-		JMenu calificaciones = new JMenu("CALIFICACIONES");
-		calificaciones.setFont(fuente);
-		mb.add(calificaciones);
-		 
-		calificaciones.addSeparator();
-		 
-		JMenuItem ingresar = new JMenuItem("Ingresar calificaciones");
-		ingresar.setFont(fuente);
-		calificaciones.add(ingresar);
+        JMenu menuCalificaciones = new JMenu("CALIFICACIONES");
+        menuCalificaciones.setFont(fuente);
+        mb.add(menuCalificaciones);
+		 		 
+		mItemCalificaciones = new JMenuItem("Calificaciones");
+		mItemCalificaciones.setFont(fuente);
+		menuCalificaciones.add(mItemCalificaciones);
 		 
 	}
 	
     public int confirmExit() {
         return JOptionPane.showConfirmDialog(
             this,
-            "¿Desea salir del sistema?",
+            "¿Desea cerrar la sesion del sistema?",
             "Confirmar salida",
             JOptionPane.YES_NO_OPTION
         );
@@ -170,10 +161,14 @@ public class MainView extends JFrame {
 	    JPanel homePanel = setPanelInicio();
 
 	    alumnosPanel = new AlumnosView();
-
+	    maestroPanel = new MaestroView(new Maestro());
+	    calificacionesPanel = new CalificacionesView();
+	    
 	    container.add(homePanel, HOME);
 	    container.add(alumnosPanel, ALUMNOS);
-
+	    container.add(maestroPanel, MAESTRO);
+	    container.add(calificacionesPanel, CALIFICACIONES);
+	    
 	    add(container, BorderLayout.CENTER);
 	}
 	

@@ -2,14 +2,17 @@ package controllers;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
-
+import models.Maestro;
 import models.Alumno;
 import repository.AlumnoRepository;
+import services.PDFExporter;
 import tablemodels.AlumnoTableModels;
+import tablemodels.CalificacionTableModel;
 import views.Formulario;
 import views.LoginWindow;
 import views.MainView;
@@ -35,27 +38,53 @@ public class HomeController {
             }
         });
 
-        //Abrir Formulario
-        view.mItemRegistrar.addActionListener(e -> {
-            Formulario formulario = new Formulario();
-            new FormularioController(formulario);
-            //Se usa para centrar el texto o en este caso el boton (dentro del formulario)
-            formulario.setLocationRelativeTo(null);
-            formulario.setVisible(true);
-        });
-
         //Mostrar Alumnos
         view.mItemListaAlumnos.addActionListener(e -> mostrarAlumnos());
-        
+        view.mItemPerfil.addActionListener(e -> mostrarMaestro());
+
         //Inicio
         view.inicio.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 view.showView(MainView.HOME);
             }
         });
+        view.mItemCalificaciones.addActionListener(e -> mostrarCalificaciones());
         
-    }
+        view.calificacionesPanel.getBtnPdf().addActionListener(e -> exportarCalificacionesPdf());
+    	}
+    
+    private void exportarCalificacionesPdf() {
 
+        File file =
+                view.calificacionesPanel.selectPdfFile();
+
+        if (file == null)
+            return;
+
+        try {
+            AlumnoRepository repo =
+                    new AlumnoRepository();
+
+            PDFExporter exporter =
+                    new PDFExporter();
+
+            exporter.exportCalificaciones(
+                    repo.getAlumnos(),
+                    file
+            );
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "PDF exportado correctamente"
+            );
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al exportar PDF"
+            );
+        }
+    }
     private void mostrarAlumnos() {
 
         AlumnoRepository repository = new AlumnoRepository();
@@ -63,24 +92,51 @@ public class HomeController {
         try {
             List<Alumno> alumnos = repository.getAlumnos();
 
-            if (alumnos.isEmpty()) {
+            if (alumnos == null || alumnos.isEmpty()) {
                 JOptionPane.showMessageDialog(view, "No hay alumnos registrados");
                 return;
             }
             
-            AlumnoTableModels model = new AlumnoTableModels(alumnos);
-            view.alumnosPanel.setTableModel(model);
-            
+            AlumnoTableModels modelAlumnos = new AlumnoTableModels(alumnos);
+            view.alumnosPanel.setTableModel(modelAlumnos);
             new alumnoController(view.alumnosPanel);
-
+            
             view.showView(MainView.ALUMNOS);
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(view, "Error: " + e.getMessage());
-        }
-            
+        } catch (Exception e) {
+        	JOptionPane.showMessageDialog(view, "Error al carga calificaciones" + e.getMessage());
+        }   
+   
+    }
+    
+    private void mostrarMaestro() {
+    	
+    	List<String> materias = new ArrayList<>();
+    	materias.add("Geografia");
+    	materias.add("Artes");
+    	materias.add("Informatica");
+    	
+    	Maestro maestro = new Maestro("Mta. Eloise Villas", 32, "Maestria en educacion", 'M', materias);
+    	view.maestroPanel.updateMaestro(maestro);
+    	view.showView(MainView.MAESTRO);
+    }
+    
+    private void mostrarCalificaciones() {
+    	try {
+            AlumnoRepository repo = new AlumnoRepository();
+            List<Alumno> alumnos = repo.getAlumnos();
 
-            
+            CalificacionTableModel model = new CalificacionTableModel(alumnos);
+            view.calificacionesPanel.setTableModel(model);
+
+            view.showView(MainView.CALIFICACIONES);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Error al cargar calificaciones");
+        }
+    	
     }
 
     private void handleClose() {

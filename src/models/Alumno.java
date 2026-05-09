@@ -14,6 +14,11 @@ public class Alumno{
     private String parentesco;
     private String domicilio; 
     
+    
+    private double artes;
+    private double geografia;
+    private double informatica;
+    
     //Constructores
     public Alumno(){
     	
@@ -113,6 +118,32 @@ public class Alumno{
 
 	public void setDomicilio(String domicilio) {
 		this.domicilio = domicilio;
+	}
+	
+	
+
+	public double getArtes() {
+		return artes;
+	}
+
+	public void setArtes(double artes) {
+		this.artes = artes;
+	}
+
+	public double getGeografia() {
+		return geografia;
+	}
+
+	public void setGeografia(double geografia) {
+		this.geografia = geografia;
+	}
+
+	public double getInformatica() {
+		return informatica;
+	}
+
+	public void setInformatica(double informatica) {
+		this.informatica = informatica;
 	}
 
 	@Override

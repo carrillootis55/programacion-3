@@ -24,6 +24,7 @@ import models.Alumno;
 
 public class PDFExporter {
 
+	
     public void exportAlumnos(List<Alumno> alumnos, File file) throws IOException {
 
         try (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
@@ -109,7 +110,7 @@ public class PDFExporter {
                     }
                 }
             }
-
+            
             //Datos
             for (Alumno a : alumnos) {
             	
@@ -138,6 +139,105 @@ public class PDFExporter {
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
                         .add(new Paragraph(a.getNumeroEmergencia())));
+            }
+
+            doc.add(table);
+            
+            
+        }
+        
+    }
+    
+    public void exportCalificaciones(List<Alumno> alumnos, File file)
+            throws IOException {
+
+        try (PdfDocument pdfDoc =
+                     new PdfDocument(new PdfWriter(file));
+             Document doc =
+                     new Document(pdfDoc, PageSize.LETTER)) {
+
+            doc.add(new Paragraph("Reporte de Calificaciones")
+                    .setBold()
+                    .setFontSize(16)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            doc.add(new Paragraph(" "));
+
+            float[] columnas = {1, 4, 2, 2, 2};
+
+            Table table =
+                    new Table(UnitValue.createPercentArray(columnas))
+                            .useAllAvailableWidth();
+
+            // encabezados
+            table.addHeaderCell(
+                    new Cell().add(new Paragraph("ID"))
+                            .setBackgroundColor(
+                                    new DeviceRgb(45,111,164))
+                            .setFontColor(DeviceGray.WHITE)
+                            .setTextAlignment(TextAlignment.CENTER));
+
+            table.addHeaderCell(
+                    new Cell().add(new Paragraph("Nombre"))
+                            .setBackgroundColor(
+                                    new DeviceRgb(45,111,164))
+                            .setFontColor(DeviceGray.WHITE));
+
+            table.addHeaderCell(
+                    new Cell().add(new Paragraph("Artes"))
+                            .setBackgroundColor(
+                                    new DeviceRgb(45,111,164))
+                            .setFontColor(DeviceGray.WHITE)
+                            .setTextAlignment(TextAlignment.CENTER));
+
+            table.addHeaderCell(
+                    new Cell().add(new Paragraph("Geografía"))
+                            .setBackgroundColor(
+                                    new DeviceRgb(45,111,164))
+                            .setFontColor(DeviceGray.WHITE)
+                            .setTextAlignment(TextAlignment.CENTER));
+
+            table.addHeaderCell(
+                    new Cell().add(new Paragraph("Informática"))
+                            .setBackgroundColor(
+                                    new DeviceRgb(45,111,164))
+                            .setFontColor(DeviceGray.WHITE)
+                            .setTextAlignment(TextAlignment.CENTER));
+
+            int i = 1;
+
+            for (Alumno a : alumnos) {
+
+                table.addCell(
+                        new Cell().add(
+                                new Paragraph(String.valueOf(i++)))
+                                .setTextAlignment(
+                                        TextAlignment.CENTER));
+
+                table.addCell(
+                        new Cell().add(
+                                new Paragraph(a.getNombre())));
+
+                table.addCell(
+                        new Cell().add(
+                                new Paragraph(
+                                        String.valueOf(a.getArtes())))
+                                .setTextAlignment(
+                                        TextAlignment.CENTER));
+
+                table.addCell(
+                        new Cell().add(
+                                new Paragraph(
+                                        String.valueOf(a.getGeografia())))
+                                .setTextAlignment(
+                                        TextAlignment.CENTER));
+
+                table.addCell(
+                        new Cell().add(
+                                new Paragraph(
+                                        String.valueOf(a.getInformatica())))
+                                .setTextAlignment(
+                                        TextAlignment.CENTER));
             }
 
             doc.add(table);

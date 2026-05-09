@@ -10,6 +10,7 @@ import repository.AlumnoRepository;
 import services.PDFExporter;
 import tablemodels.AlumnoTableModels;
 import views.AlumnosView;
+import views.CalificarAlumnoView;
 import views.Formulario;
 
 public class alumnoController {
@@ -84,8 +85,27 @@ public class alumnoController {
 		});
 		
 		view.getBtnPdf().addActionListener(e -> generarPdf());
+		
+		view.getBtnCalificar().addActionListener(e -> {
+			int fila = view.getSelectedRow();
+			
+			if(fila == -1) {
+				JOptionPane.showMessageDialog(null, "Selecciona un alumno");
+				return;
+			}
+			
+			AlumnoTableModels model = (AlumnoTableModels) view.getTabla().getModel();
+	        Alumno alumno = model.getAlumnoAt(fila);
+	        
+	        CalificarAlumnoView v = new CalificarAlumnoView(alumno);
+	        new CalificacionesController(v, alumno, fila);
+	        
+			v.setLocationRelativeTo(null);			
+		});
 	}
 	
+
+
 	private void generarPdf() {
 
 		File file = view.selectPdfFile();
