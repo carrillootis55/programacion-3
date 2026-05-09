@@ -31,6 +31,32 @@ public class alumnoController {
 			form.setVisible(true);
 		});
 		
+		view.getBtnCalificar().addActionListener(e -> {
+		    int fila = view.getSelectedRow();
+
+		    if (fila == -1) {
+		        JOptionPane.showMessageDialog(null,
+		                "Selecciona un alumno");
+		        return;
+		    }
+
+		    AlumnoTableModels model =
+		            (AlumnoTableModels) view.getTabla().getModel();
+
+		    Alumno alumno = model.getAlumnoAt(fila);
+
+		    CalificarAlumnoView ventana =
+		            new CalificarAlumnoView(alumno);
+
+		    new CalificacionesController(
+		            ventana,
+		            alumno,
+		            fila
+		    );
+
+		    ventana.setLocationRelativeTo(null);
+		    ventana.setVisible(true);
+		});
 		
 		//EDITAR
 		view.getBtnEditar().addActionListener(e ->{
@@ -103,6 +129,7 @@ public class alumnoController {
 			v.setLocationRelativeTo(null);			
 		});
 	}
+	
 	
 
 

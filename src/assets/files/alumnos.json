@@ -23,9 +23,9 @@
   "numeroEmergencia" : "65664",
   "parentesco" : "Tio/Tia",
   "domicilio" : "Calle Gomez Farias 4367",
-  "artes" : 2.0,
-  "geografia" : 3.0,
-  "informatica" : 5.0
+  "artes" : 10.0,
+  "geografia" : 2.0,
+  "informatica" : 2.0
 }, {
   "matricula" : "2222112221",
   "nombre" : "Gabriel",
@@ -65,6 +65,20 @@
   "numeroEmergencia" : "6452838282",
   "parentesco" : "Hermana/Hermano",
   "domicilio" : "Calle Ficus 3489",
+  "artes" : 0.0,
+  "geografia" : 0.0,
+  "informatica" : 0.0
+}, {
+  "matricula" : "2333242342",
+  "nombre" : "Eduarda",
+  "apellidoPaterno" : "Mendez",
+  "apellidoMaterno" : "Castillo",
+  "sexo" : "M",
+  "grupo" : "B",
+  "contactoEmergencia" : "lulu",
+  "numeroEmergencia" : "2342342543",
+  "parentesco" : "Hermana/Hermano",
+  "domicilio" : "Calle Gomez Farias 4367",
   "artes" : 0.0,
   "geografia" : 0.0,
   "informatica" : 0.0
