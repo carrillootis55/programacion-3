@@ -97,8 +97,14 @@ public class alumnoController {
 			if(confirm == JOptionPane.YES_OPTION) {
 				try {
 					AlumnoRepository repo = new AlumnoRepository();
-					repo.delete(fila);
-					
+
+		            AlumnoTableModels model =
+		                (AlumnoTableModels) view.getTabla().getModel();
+
+		            Alumno alumno = model.getAlumnoAt(fila);
+
+		            repo.delete(alumno.getMatricula());
+		            
 					List<Alumno> alumnos = repo.getAlumnos();
 					view.setTableModel(new AlumnoTableModels(alumnos));
 					

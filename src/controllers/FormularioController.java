@@ -309,7 +309,7 @@ public class FormularioController {
 	                //Guarda el alumno en el archivo
 	            	if(editando) {
 	            		//para el metodo de update se creo dentro del alumnoRepositorio
-	            		repository.update(indexEditar, alumno);
+	            		repository.update(alumno);
 	            	}else {
 	            		
 	            		repository.save(alumno);
@@ -324,7 +324,7 @@ public class FormularioController {
 
 	                JOptionPane.showMessageDialog(view, "Alumno registrado correctamente");
 
-	            } catch (IOException e) {
+	            } catch (Exception e) {
 	                //Manejo de errores
 	                JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
 	            }

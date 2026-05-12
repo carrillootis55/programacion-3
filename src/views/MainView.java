@@ -37,6 +37,7 @@ public class MainView extends JFrame {
     public static final String ALUMNOS = "ALUMNOS";
     public static final String MAESTRO = "MAESTRO";
     public static final String CALIFICACIONES = "CALIFICACIONES";
+
     
     private CardLayout cardLayout;
     private JPanel container;

@@ -41,20 +41,6 @@
   "geografia" : 0.0,
   "informatica" : 0.0
 }, {
-  "matricula" : "55858",
-  "nombre" : "grgrg",
-  "apellidoPaterno" : "mm",
-  "apellidoMaterno" : "mmj",
-  "sexo" : "H",
-  "grupo" : "A",
-  "contactoEmergencia" : "hyhyh",
-  "numeroEmergencia" : "6868",
-  "parentesco" : "Hermana/Hermano",
-  "domicilio" : "Calle Aquiles Serdan 1993",
-  "artes" : 10.0,
-  "geografia" : 10.0,
-  "informatica" : 9.0
-}, {
   "matricula" : "2024082721",
   "nombre" : "Elizabeth",
   "apellidoPaterno" : "Medina",

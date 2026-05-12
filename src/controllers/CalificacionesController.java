@@ -34,7 +34,7 @@ public class CalificacionesController {
 	           alumno.setInformatica(info);
 	           
 	           AlumnoRepository repo = new AlumnoRepository();
-	           repo.update(index, alumno);
+	           repo.update(alumno);
 	           
 	           JOptionPane.showMessageDialog(view, "Calificaciones guardadas");
 	           view.dispose();

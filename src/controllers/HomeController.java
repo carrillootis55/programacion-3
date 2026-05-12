@@ -16,6 +16,7 @@ import tablemodels.CalificacionTableModel;
 import views.Formulario;
 import views.LoginWindow;
 import views.MainView;
+import config.Config;
 
 public class HomeController {
 
@@ -93,22 +94,25 @@ public class HomeController {
             List<Alumno> alumnos = repository.getAlumnos();
 
             if (alumnos == null || alumnos.isEmpty()) {
-                JOptionPane.showMessageDialog(view, "No hay alumnos registrados");
+                JOptionPane.showMessageDialog(view,
+                        "No hay alumnos registrados");
                 return;
             }
-            
-            AlumnoTableModels modelAlumnos = new AlumnoTableModels(alumnos);
+
+            AlumnoTableModels modelAlumnos =
+                    new AlumnoTableModels(alumnos);
+
             view.alumnosPanel.setTableModel(modelAlumnos);
             new alumnoController(view.alumnosPanel);
-            
+
             view.showView(MainView.ALUMNOS);
 
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(view, "Error: " + e.getMessage());
         } catch (Exception e) {
-        	JOptionPane.showMessageDialog(view, "Error al carga calificaciones" + e.getMessage());
-        }   
-   
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al cargar alumnos: " + e.getMessage()
+            );
+        }
     }
     
     private void mostrarMaestro() {

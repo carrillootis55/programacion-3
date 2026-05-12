@@ -12,6 +12,9 @@ import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
 import views.LoginView;
 import views.MainView;
+import java.sql.SQLException;
+import repository.MaestroRepository;
+
 
 public class LoginController {
 
@@ -154,10 +157,10 @@ public class LoginController {
     }
     
     //Validar credenciales
-    private boolean validarCredenciales(String usuario, String password)
+    private boolean validarCredenciales(String email, String password)
             throws InvalidUserException, InvalidPasswordException {
 
-        if (usuario.trim().isEmpty()) {
+        if (email.trim().isEmpty()) {
             throw new InvalidUserException("Usuario obligatorio");
         }
 
@@ -169,7 +172,34 @@ public class LoginController {
             throw new InvalidPasswordException("La contraseña no debe tener espacios");
         }
 
-        if ((usuario.equals("dianitha@gmail.com") && password.equals("12345")) ||
+        try {
+            MaestroRepository repository = new MaestroRepository();
+            
+            // Buscamos al maestro por su email
+            models.Maestro maestro = repository.buscarEmail(email);
+            
+            if (maestro == null) {
+                throw new InvalidUserException("Email no registrado");
+            }
+
+            // Verificamos la contraseña
+            if (!maestro.getPassword().equals(password)) {
+                throw new InvalidPasswordException("Contraseña incorrecta");
+            }
+            System.out.println("Login exitoso:");
+            System.out.println("ID: " + maestro.getId());
+            System.out.println("Nombre: " + maestro.getNombre());
+            System.out.println("Email: " + maestro.getEmail());
+            return true;
+	        } catch (SQLException e) {
+	        System.out.println("Error al conectar a la BD: " + e.getMessage());
+	        throw new InvalidUserException("Error de conexión a la BD: " + e.getMessage());
+	    }
+	}
+
+
+        
+        /*if ((usuario.equals("dianitha@gmail.com") && password.equals("12345")) ||
             (usuario.equals("hash@gmail.com") && password.equals("abcs"))||
             (usuario.equals("dmedinam2108@gmail.com") && password.equals("2127"))
             ) {
@@ -182,7 +212,7 @@ public class LoginController {
         }
 
         throw new InvalidUserException("Usuario no existe");
-    }
+    }*/
 
     
 	

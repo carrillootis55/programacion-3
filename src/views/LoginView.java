@@ -70,6 +70,7 @@ public class LoginView extends JPanel {
 		
 		inicializarComponentes();
 		
+		
 	} 
 	
 	private void inicializarComponentes() {
@@ -80,29 +81,12 @@ public class LoginView extends JPanel {
 	}
 	
 	//Getters
-    public JPasswordField getContrasena() {
-		return contrasena;
-	}
-
-	public LoginWindow getWindow() {
-		return window;
-	}
-
-	public JTextField getTextoUsuario() {
-		return textoUsuario;
-	}
-
-	public JLabel getLblUsuarioCorreccion() {
-		return lblUsuarioCorreccion;
-	}
-
-	public JLabel getLblContrasenaCorreccion() {
-		return lblContrasenaCorreccion;
-	}
-	
-	public JButton getBotonLogin() {
-        return botonLogin;
-    }
+    public JPasswordField getContrasena() {return contrasena;}
+	public LoginWindow getWindow() {return window;}
+	public JTextField getTextoUsuario() {return textoUsuario;}
+	public JLabel getLblUsuarioCorreccion() {return lblUsuarioCorreccion;}
+	public JLabel getLblContrasenaCorreccion() {return lblContrasenaCorreccion;}
+	public JButton getBotonLogin() {return botonLogin;}
 
     
 	//METODO PARA CENTRAR INICIO DE SESION

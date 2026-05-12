@@ -2,6 +2,10 @@ package models;
 import java.util.List;
 
 public class Maestro {
+	
+	private int id;
+	private String password;
+	private String email;
 	private String nombre;
 	private int edad;
 	private String maestria;
@@ -18,6 +22,48 @@ public class Maestro {
 		this.materias = materias;
 	}
 
+	public Maestro(int id, String nombre, String email, String password) {
+		this.id = id;
+		this.nombre = nombre;
+		this.email = email;
+		this.password = password;
+	}
+
+	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, List<String> materias) {
+		this.nombre = nombre;
+		this.email = email;
+		this.password = password;
+		this.edad = edad;
+		this.maestria = maestria;
+		this.genero = genero;
+		this.materias = materias;
+	}
+
+	//Getters y Setters
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getNombre() {
 		return nombre;
 	}
