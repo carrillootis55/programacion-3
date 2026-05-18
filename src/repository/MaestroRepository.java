@@ -45,18 +45,19 @@ public class MaestroRepository {
     }
 
     public Maestro buscarEmail(String email) throws SQLException {
-        String sql = "SELECT id, nombre, email, password FROM maestros WHERE email = ? LIMIT 1";
-        
+        String sql = "SELECT id, nombre, email, password, role FROM maestros WHERE email = ? LIMIT 1";
+
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Maestro(
                         resultSet.getInt("id"),
                         resultSet.getString("nombre"),
                         resultSet.getString("email"),
-                        resultSet.getString("password")
+                        resultSet.getString("password"),
+                        resultSet.getString("role")
                     );
                 }
             }

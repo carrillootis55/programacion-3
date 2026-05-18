@@ -11,6 +11,7 @@ public class Maestro {
 	private String maestria;
 	private char genero;
 	private List<String> materias;
+	private String role;
 	
 	public Maestro() {}
 
@@ -22,21 +23,30 @@ public class Maestro {
 		this.materias = materias;
 	}
 
-	public Maestro(int id, String nombre, String email, String password) {
+	public Maestro(int id, String nombre, String email, String password, String role) {
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
 		this.password = password;
+		this.role = role;
 	}
 
-	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, List<String> materias) {
+	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, List<String> materias, String role) {
 		this.nombre = nombre;
 		this.email = email;
 		this.password = password;
 		this.edad = edad;
 		this.maestria = maestria;
 		this.genero = genero;
-		this.materias = materias;
+		this.materias = materias;		
+		this.role = role;
+
+	}
+	public Maestro(int id, String nombre, String email, String password) {
+	    this.id = id;
+	    this.nombre = nombre;
+	    this.email = email;
+	    this.password = password;
 	}
 
 	//Getters y Setters
@@ -102,6 +112,14 @@ public class Maestro {
 
 	public void setMaterias(List<String> materias) {
 		this.materias = materias;
+	}
+	
+	public String getRole() {
+	    return role;
+	}
+
+	public void setRole(String role) {
+	    this.role = role;
 	}
 
 	@Override
