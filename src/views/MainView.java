@@ -46,7 +46,7 @@ public class MainView extends JFrame {
 	public MaestroView maestroPanel;
 	public CalificacionesView calificacionesPanel;
 	public MainView() {
-		setTitle("SISTEMA DE PRIMARIA");
+		setTitle("SISTEMA DE CALIFICACIONES DE SECUNDARIA");
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		 

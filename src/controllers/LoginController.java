@@ -2,7 +2,7 @@ package controllers;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+import utils.PasswordUtils;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -201,7 +201,7 @@ public class LoginController {
             }
 
             // Verificamos la contraseña
-            if (!maestro.getPassword().equals(password)) {
+            if (!PasswordUtils.checkPassword(password, maestro.getPassword())) {
                 throw new InvalidPasswordException("Contraseña incorrecta");
             }
             System.out.println("Login exitoso:");

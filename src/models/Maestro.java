@@ -13,35 +13,53 @@ public class Maestro {
 	//private List<String> materias;
 	private String anio;
 	private String grupo;
+	private List<String> materias;
+	private String role;
 	
 	public Maestro() {}
 
 	public Maestro(String nombre, int edad, String maestria, char genero) {
-		this.nombre = nombre;
-		this.edad = edad;
-		this.maestria = maestria;
-		this.genero = genero;
-
+	    this.nombre = nombre;
+	    this.edad = edad;
+	    this.maestria = maestria;
+	    this.genero = genero;
 	}
+	
+	public Maestro(int id, String nombre, String email,String password, String role) {
+		 this.id = id;
+		 this.nombre = nombre;
+		 this.email = email;
+		 this.password = password;
+		 this.role = role;
+		}
 
+	public Maestro(String nombre, String email, String password,int edad, String maestria, char genero, String anio, String grupo) {
+		 this.nombre = nombre;
+		 this.email = email;
+		 this.password = password;
+		 this.edad = edad;
+		 this.maestria = maestria;
+		 this.genero = genero;
+		 this.anio = anio;
+		 this.grupo = grupo;
+		}
 	public Maestro(int id, String nombre, String email, String password) {
-		this.id = id;
-		this.nombre = nombre;
-		this.email = email;
-		this.password = password;
-	}
-
-	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, String anio, String grupo) {
-		this.nombre = nombre;
-		this.email = email;
-		this.password = password;
-		this.edad = edad;
-		this.maestria = maestria;
-		this.genero = genero;
-		this.anio = anio;
-	    this.grupo = grupo;
-	}
-
+		 this.id = id;
+		 this.nombre = nombre;
+		 this.email = email;
+		 this.password = password;
+		}
+	
+	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, List<String> materias, String role) {
+		 this.nombre = nombre;
+		 this.email = email;
+		 this.password = password;
+		 this.edad = edad;
+		 this.maestria = maestria;
+		 this.genero = genero;
+		 this.materias = materias;
+		 this.role = role;
+		}
 	//Getters y Setters
 
 	public int getId() {
@@ -114,6 +132,14 @@ public class Maestro {
 
 	public void setGrupo(String grupo) {
 	    this.grupo = grupo;
+	}
+	
+	public String getRole() {
+	    return role;
+	}
+
+	public void setRole(String role) {
+	    this.role = role;
 	}
 
 	@Override
