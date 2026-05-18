@@ -10,16 +10,18 @@ public class Maestro {
 	private int edad;
 	private String maestria;
 	private char genero;
-	private List<String> materias;
+	//private List<String> materias;
+	private String anio;
+	private String grupo;
 	
 	public Maestro() {}
 
-	public Maestro(String nombre, int edad, String maestria, char genero, List<String> materias) {
+	public Maestro(String nombre, int edad, String maestria, char genero) {
 		this.nombre = nombre;
 		this.edad = edad;
 		this.maestria = maestria;
 		this.genero = genero;
-		this.materias = materias;
+
 	}
 
 	public Maestro(int id, String nombre, String email, String password) {
@@ -29,14 +31,15 @@ public class Maestro {
 		this.password = password;
 	}
 
-	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, List<String> materias) {
+	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, String anio, String grupo) {
 		this.nombre = nombre;
 		this.email = email;
 		this.password = password;
 		this.edad = edad;
 		this.maestria = maestria;
 		this.genero = genero;
-		this.materias = materias;
+		this.anio = anio;
+	    this.grupo = grupo;
 	}
 
 	//Getters y Setters
@@ -96,12 +99,21 @@ public class Maestro {
 		this.genero = genero;
 	}
 
-	public List<String> getMaterias() {
-		return materias;
+	
+	public String getAnio() {
+	    return anio;
 	}
 
-	public void setMaterias(List<String> materias) {
-		this.materias = materias;
+	public void setAnio(String anio) {
+	    this.anio = anio;
+	}
+
+	public String getGrupo() {
+	    return grupo;
+	}
+
+	public void setGrupo(String grupo) {
+	    this.grupo = grupo;
 	}
 
 	@Override
@@ -110,8 +122,9 @@ public class Maestro {
 				"Nombre:" + nombre + 
 				"/nEdad: " + edad + 
 				"/nMaestria: " + maestria + 
-				"/nGenero: " + genero
-				+ "/nMaterias: " + materias;
+				"/nGenero: " + genero +
+				"\nAño: " + anio +
+	            "\nGrupo: " + grupo;
 	}
 	
 	

@@ -10,6 +10,7 @@ import javax.swing.event.DocumentListener;
 import views.Formulario;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
+import models.Maestro;
 import views.LoginView;
 import views.MainView;
 import java.sql.SQLException;
@@ -102,10 +103,14 @@ public class LoginController {
 	        if (validarCredenciales(usuario, password)) {
 
 	            JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente");
+	            
+	            MaestroRepository repository = new MaestroRepository();
 
+                Maestro maestro =  repository.obtenerMaestroPorEmail(usuario);
 	            //new MainView();
+                
 	            MainView main = new MainView();
-	            new HomeController(main);
+	            new HomeController(main,maestro);
 	            
 	            view.getWindow().dispose();
 	        }
@@ -115,7 +120,15 @@ public class LoginController {
 
 	    } catch (InvalidPasswordException e) {
 	        view.setErrorContrasena(e.getMessage());
-	    }
+	    }catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error al obtener maestro"
+            );
+        }
+	    
+	    
 	}
 	
 	
@@ -134,8 +147,13 @@ public class LoginController {
 
         Formulario formulario = new Formulario();
         
+        Maestro maestro = new Maestro();
+
+        maestro.setAnio("1");
+        maestro.setGrupo("A");
+        
         //HomeController home = new HomeController(new MainView());
-        new FormularioController(formulario);
+        new FormularioController(formulario, maestro);
         
         formulario.setLocationRelativeTo(null);
         formulario.setVisible(true);

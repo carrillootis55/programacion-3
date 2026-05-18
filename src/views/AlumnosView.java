@@ -204,9 +204,9 @@ public class AlumnosView extends JPanel {
         if (tabla.getColumnCount() >= 6) {
             tabla.getColumnModel().getColumn(5).setPreferredWidth(50);
         }
-
+      
         if (tabla.getColumnCount() >= 7) {
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(50);
         }
 
         if (tabla.getColumnCount() >= 8) {
@@ -220,7 +220,11 @@ public class AlumnosView extends JPanel {
         if (tabla.getColumnCount() >= 10) {
             tabla.getColumnModel().getColumn(9).setPreferredWidth(80);
         }
+
+        if (tabla.getColumnCount() >= 11) {
+            tabla.getColumnModel().getColumn(10).setPreferredWidth(80);
         
+        }
         //Centrar
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
@@ -238,6 +242,11 @@ public class AlumnosView extends JPanel {
         if (tabla.getColumnCount() >= 6) {
             tabla.getColumnModel().getColumn(5).setCellRenderer(center);
         }
+        
+        if (tabla.getColumnCount() >= 7) {
+            tabla.getColumnModel().getColumn(6).setCellRenderer(center);
+        }
+        
     }
     
     

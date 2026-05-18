@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 
 import models.Alumno;
+import models.Maestro;
 import repository.AlumnoRepository;
 import views.Formulario;
 
@@ -19,18 +20,51 @@ public class FormularioController {
 	private Formulario view;
 	private AlumnoRepository repository;
 	
+	private Maestro maestroActual;
+	
 	private boolean editando = false;
 	private int indexEditar = -1;
 	
-	public FormularioController(Formulario view) {
+	public FormularioController(Formulario view,  Maestro maestro) {
 		this.view = view;
+		this.maestroActual = maestro;
 		this.repository = new AlumnoRepository();
+		configurarGrupoYAnio();
 		assignListeners();
 	}
 	
 	public void setModoEdicion(int index) {
 		this.editando = true;
 		this.indexEditar = index;
+	}
+	
+	private void configurarGrupoYAnio() {
+
+	    //Año
+	    if (maestroActual.getAnio().equals("1")) {
+	        view.getRb1().setSelected(true);
+	    } else if (maestroActual.getAnio().equals("2")) {
+	        view.getRb2().setSelected(true);
+	    } else {
+	        view.getRb3().setSelected(true);
+	    }
+
+	    //Grupo
+	    if (maestroActual.getGrupo().equals("A")) {
+	        view.getRbA().setSelected(true);
+	    } else {
+	        view.getRbB().setSelected(true);
+	    }
+
+	    //Bloquear las opciones
+	    //Año
+	    view.getRb1().setEnabled(false);
+	    view.getRb2().setEnabled(false);
+	    view.getRb3().setEnabled(false);
+
+	    //Grupo
+	    view.getRbA().setEnabled(false);
+	    view.getRbB().setEnabled(false);
 	}
 	
 	private void assignListeners() {
@@ -78,9 +112,15 @@ public class FormularioController {
 
 		view.getRbMujer().addActionListener(e -> validateSexo());
 		view.getRbHombre().addActionListener(e -> validateSexo());
+		
+		view.getRb1().addActionListener(e -> validateAnio());
+		view.getRb2().addActionListener(e -> validateAnio());
+		view.getRb3().addActionListener(e -> validateAnio());
 
 		view.getRbA().addActionListener(e -> validateGrupo());
 		view.getRbB().addActionListener(e -> validateGrupo());
+		
+		
 		
 		view.getBtnRegistrar().addActionListener(e -> validarFormulario());
 		
@@ -224,6 +264,20 @@ public class FormularioController {
 	    return true;
 	}
 	
+	private boolean validateAnio() {
+
+	    if (!view.getRb1().isSelected() &&
+	        !view.getRb2().isSelected() &&
+	        !view.getRb3().isSelected()) {
+
+	        view.setErrorAnio("Debe seleccionar un año");
+	        return false;
+	    }
+
+	    view.setErrorAnio("");
+	    return true;
+	}
+	
 	private boolean validateParentesco() {
 	    if (view.getParentescoAlumno().getSelectedIndex() == 0) {
 	        view.setErrorParentesco("Debe seleccionar un parentesco");
@@ -279,6 +333,7 @@ public class FormularioController {
 	        if (!validateApellidoPaterno()) validacion = false;
 	        if (!validateApellidoMaterno()) validacion = false;
 	        if (!validateSexo()) validacion = false;
+	        if (!validateAnio()) validacion = false;
 	        if (!validateGrupo()) validacion = false;
 	        if (!validateNumeroEmergencia()) validacion = false;
 	        if (!validateParentesco()) validacion = false;
@@ -295,6 +350,8 @@ public class FormularioController {
 	                view.getTxtApellidoPaterno().getText(),
 	                view.getTxtApellidoMaterno().getText(),
 	                view.getRbHombre().isSelected() ? 'H' : 'M',
+            		view.getRb1().isSelected() ? "1" :
+        			view.getRb2().isSelected() ? "2" : "3",
 	                view.getRbA().isSelected() ? "A" : "B",
 	                view.getTxtContactoEmergencia().getText(),
 	                view.getTxtNumeroEmergencia().getText(),
@@ -309,7 +366,7 @@ public class FormularioController {
 	                //Guarda el alumno en el archivo
 	            	if(editando) {
 	            		//para el metodo de update se creo dentro del alumnoRepositorio
-	            		repository.update(alumno);
+	            		repository.updateAlumno(alumno);
 	            	}else {
 	            		
 	            		repository.save(alumno);
@@ -332,6 +389,7 @@ public class FormularioController {
 	            int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas registrar otro alumno?");
 	            if (opcion == JOptionPane.YES_OPTION) {
 	            	view.limpiarFormulario();
+	            	configurarGrupoYAnio();
 	            }else {
 	            	view.dispose();
 	            }

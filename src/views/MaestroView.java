@@ -2,12 +2,12 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Panel;
 import models.Maestro;
-import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -72,12 +72,19 @@ public class MaestroView extends JPanel{
 		String maestriaText = maestro.getMaestria() != null ? maestro.getMaestria() : "N/A";
 		panelDer.add(new JLabel(maestriaText), gbc);
 				
-		gbc.gridx = 0; gbc.gridy = 4;
-		panelDer.add(new JLabel("Materias: "), gbc);
-		gbc.gridx = 1;
-		List<String> materias = maestro.getMaterias();
-		String materiasText = (materias != null && !materias.isEmpty()) ? String.join(", ", materias) : "Ninguna";
-		panelDer.add(new JLabel(materiasText), gbc);
+		gbc.gridx = 0;
+        gbc.gridy = 5;
+        panelDer.add(new JLabel("Año: "), gbc);
+        gbc.gridx = 1;
+        panelDer.add(new JLabel(maestro.getAnio() != null? maestro.getAnio(): "No asignado"),gbc);
+
+        
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        panelDer.add(new JLabel("Grupo: "), gbc);
+        gbc.gridx = 1;
+        panelDer.add(new JLabel(maestro.getGrupo() != null? maestro.getGrupo(): "No asignado"), gbc);
+
 		
         add(panelImagenContenedor, BorderLayout.WEST);
         add(panelDer, BorderLayout.CENTER);

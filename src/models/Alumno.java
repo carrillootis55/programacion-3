@@ -9,22 +9,19 @@ public class Alumno{
     private String apellidoMaterno;
     private char sexo;
     private String grupo;
+    private String anio;
     private String contactoEmergencia;
     private String numeroEmergencia;
     private String parentesco;
     private String domicilio; 
     
     
-    private double artes;
-    private double geografia;
-    private double informatica;
-    
     //Constructores
     public Alumno(){
     	
     }
 
-    public Alumno(String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, char sexo, String grupo, String contactoEmergencia, 
+    public Alumno(String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, char sexo, String anio,String grupo,String contactoEmergencia, 
     		String numeroEmergencia, String parentesco, String domicilio){
 
         this.matricula = matricula;
@@ -32,6 +29,7 @@ public class Alumno{
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.sexo = sexo;
+        this.anio = anio;
         this.grupo = grupo;
         this.contactoEmergencia = contactoEmergencia;
         this.numeroEmergencia = numeroEmergencia;
@@ -87,6 +85,14 @@ public class Alumno{
 	public void setGrupo(String grupo) {
 		this.grupo = grupo;
 	}
+	
+	public String getAnio() {
+		return anio;
+	}
+
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
 
 	public String getContactoEmergencia() {
 		return contactoEmergencia;
@@ -122,30 +128,6 @@ public class Alumno{
 	
 	
 
-	public double getArtes() {
-		return artes;
-	}
-
-	public void setArtes(double artes) {
-		this.artes = artes;
-	}
-
-	public double getGeografia() {
-		return geografia;
-	}
-
-	public void setGeografia(double geografia) {
-		this.geografia = geografia;
-	}
-
-	public double getInformatica() {
-		return informatica;
-	}
-
-	public void setInformatica(double informatica) {
-		this.informatica = informatica;
-	}
-
 	@Override
     public String toString() {
         return "Matrícula: " + matricula +
@@ -153,6 +135,7 @@ public class Alumno{
                "\nApellido Paterno: " + apellidoPaterno +
                "\nApellido Materno: " + apellidoMaterno +
                "\nSexo: " + sexo +
+               "\nAño: " + anio +
                "\nGrupo: " + grupo +
                "\nContacto Emergencia: " + contactoEmergencia +
                "\nNúmero Emergencia: " + numeroEmergencia +
@@ -167,6 +150,7 @@ public class Alumno{
                apellidoPaterno + "," +
                apellidoMaterno + "," +
                sexo + "," +
+               anio + "," +
                grupo + "," +
                contactoEmergencia + "," +
                numeroEmergencia + "," +
@@ -187,7 +171,9 @@ public class Alumno{
             data[6],
             data[7],
             data[8],
-            data[9]
+            data[9],
+            data[10]
+            	
         );
     }
     

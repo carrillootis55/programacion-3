@@ -6,31 +6,48 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import java.io.File; 
 import models.Alumno;
+import models.Maestro;
 import repository.AlumnoRepository;
+import repository.CalificacionRepository;
 import services.PDFExporter;
 import tablemodels.AlumnoTableModels;
 import views.AlumnosView;
 import views.CalificarAlumnoView;
 import views.Formulario;
 
-public class alumnoController {
+public class AlumnoController {
 	
 	private AlumnosView view;
 	private PDFExporter pdfExporter;
+	private Maestro maestroActual;
 		
-	public alumnoController(AlumnosView view) {
+	public AlumnoController(AlumnosView view, Maestro maestro) {
 		this.view = view;
+		
+		this.maestroActual = maestro;
 		
 		pdfExporter = new PDFExporter();
 		
 		//AGREGAR
-		view.getBtnAgregar().addActionListener(e ->{
+		view.getBtnAgregar().addActionListener(e -> {
 			Formulario form = new Formulario();
-			FormularioController controller = new FormularioController(form);
+	
+			FormularioController controller =new FormularioController(form,maestroActual);
+			
+			//Actualiza tabla
+			form.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+
+                    actualizarTabla();
+                }
+            });
 			form.setLocationRelativeTo(null);
 			form.setVisible(true);
 		});
 		
+		//Calificar
 		view.getBtnCalificar().addActionListener(e -> {
 		    int fila = view.getSelectedRow();
 
@@ -44,15 +61,14 @@ public class alumnoController {
 		            (AlumnoTableModels) view.getTabla().getModel();
 
 		    Alumno alumno = model.getAlumnoAt(fila);
+            CalificacionRepository repo =
+                    new CalificacionRepository();
 
-		    CalificarAlumnoView ventana =
-		            new CalificarAlumnoView(alumno);
+            List<String> materias = repo.getMateriasPorAnio(maestroActual.getAnio());
 
-		    new CalificacionesController(
-		            ventana,
-		            alumno,
-		            fila
-		    );
+            CalificarAlumnoView ventana = new CalificarAlumnoView( alumno,materias );
+            
+            new CalificacionesController(ventana, alumno, fila,  materias );
 
 		    ventana.setLocationRelativeTo(null);
 		    ventana.setVisible(true);
@@ -71,13 +87,24 @@ public class alumnoController {
 			Alumno alumno = model.getAlumnoAt(fila);
 			
 			Formulario form = new Formulario();
-			FormularioController controller = new FormularioController(form);
+			FormularioController controller =new FormularioController(form,maestroActual);
 			
 			form.cargarDatos(alumno);
 			controller.setModoEdicion(fila);
+			
+			//Actualizar tabla
+			form.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+
+                    actualizarTabla();
+                }
+            });
 			form.setLocationRelativeTo(null);
 			form.setVisible(true);
 			} catch(Exception ex){
+				
 				JOptionPane.showMessageDialog(null, "Error al abrir el formulario");
 			}
 		});
@@ -105,7 +132,18 @@ public class alumnoController {
 
 		            repo.delete(alumno.getMatricula());
 		            
-					List<Alumno> alumnos = repo.getAlumnos();
+		            
+					//List<Alumno> alumnos = repo.getAlumnos();
+					List<Alumno> alumnos =
+                            repo.getAlumnosPorGrupo(
+                                    maestroActual.getAnio(),
+                                    maestroActual.getGrupo()
+                            );
+
+                    view.setTableModel(
+                            new AlumnoTableModels(alumnos)
+                    );
+					
 					view.setTableModel(new AlumnoTableModels(alumnos));
 					
 					JOptionPane.showMessageDialog(null, "Alumno eliminado");
@@ -118,25 +156,34 @@ public class alumnoController {
 		
 		view.getBtnPdf().addActionListener(e -> generarPdf());
 		
-		view.getBtnCalificar().addActionListener(e -> {
-			int fila = view.getSelectedRow();
-			
-			if(fila == -1) {
-				JOptionPane.showMessageDialog(null, "Selecciona un alumno");
-				return;
-			}
-			
-			AlumnoTableModels model = (AlumnoTableModels) view.getTabla().getModel();
-	        Alumno alumno = model.getAlumnoAt(fila);
-	        
-	        CalificarAlumnoView v = new CalificarAlumnoView(alumno);
-	        new CalificacionesController(v, alumno, fila);
-	        
-			v.setLocationRelativeTo(null);			
-		});
 	}
 	
-	
+	private void actualizarTabla() {
+
+        try {
+
+            AlumnoRepository repo =
+                    new AlumnoRepository();
+
+            List<Alumno> alumnos =
+                    repo.getAlumnosPorGrupo(
+                            maestroActual.getAnio(),
+                            maestroActual.getGrupo()
+                    );
+
+            view.setTableModel(
+                    new AlumnoTableModels(alumnos)
+            );
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error al actualizar tabla"
+            );
+        }
+    }
+
 
 
 	private void generarPdf() {
@@ -149,8 +196,14 @@ public class alumnoController {
 
 		try {
 			AlumnoRepository repo = new AlumnoRepository();
+			
+			List<Alumno> alumnos =
+                    repo.getAlumnosPorGrupo(
+                            maestroActual.getAnio(),
+                            maestroActual.getGrupo()
+                    );
 
-			pdfExporter.exportAlumnos(repo.getAlumnos(), file);
+			pdfExporter.exportAlumnos(alumnos, file);
 
 			if (Desktop.isDesktopSupported()) {
 				Desktop.getDesktop().open(file);

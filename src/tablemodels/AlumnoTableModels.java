@@ -16,6 +16,7 @@ public class AlumnoTableModels extends AbstractTableModel {
         "Apellido Paterno",
         "Apellido Materno",
         "Sexo",
+        "Año",
         "Grupo",
         "Contacto",
         "Número",
@@ -60,15 +61,22 @@ public class AlumnoTableModels extends AbstractTableModel {
             case 4: 
             	return a.getSexo();
             case 5: 
-            	return a.getGrupo();
-            case 6: 
-            	return a.getContactoEmergencia();
+            	return a.getAnio();
+            	
+            case 6:
+                return a.getGrupo();
+
             case 7: 
-            	return a.getNumeroEmergencia();
+                return a.getContactoEmergencia();
+
             case 8: 
-            	return a.getParentesco();
+                return a.getNumeroEmergencia();
+
             case 9: 
-            	return a.getDomicilio();
+                return a.getParentesco();
+
+            case 10: 
+                return a.getDomicilio();
         }
 
         return null;

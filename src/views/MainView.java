@@ -56,10 +56,12 @@ public class MainView extends JFrame {
 		//setPanelInicio();
 		
 		createViews(); 
-		
+		//CAMBIOS 15 MAYO
 		pack(); //Ajusta la ventana al contenido
 		setLocationRelativeTo(null); // Centra en pantalla
 		setResizable(true);//Aqui se podra ajustar el tamaño de la pantalla para que se aprecien mejor los datos de la tabla
+		
+
 		setVisible(true);
 		
 	}
@@ -176,6 +178,15 @@ public class MainView extends JFrame {
 	
 	public void showView(String view) {
 	    cardLayout.show(container, view);
+	    //CAMBIOS 15 MAYO
+	    //Vista completa para alumnos y calificaciones
+	    if(view.equals(ALUMNOS)|| view.equals(CALIFICACIONES)) {
+	        setExtendedState(JFrame.MAXIMIZED_BOTH);
+	    }else {
+
+	        //Ventana normal para otras vistas
+	        setExtendedState(JFrame.NORMAL);
+	    }
 	}
 	
 		

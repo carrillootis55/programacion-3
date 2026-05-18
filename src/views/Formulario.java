@@ -62,6 +62,11 @@ public class Formulario extends JFrame{
 	private JRadioButton rbB;
 	private ButtonGroup bgGrupo;
 	
+	private JRadioButton rb1;
+	private JRadioButton rb2;
+	private JRadioButton rb3;
+	private ButtonGroup bgAnio;
+	
 	private JComboBox<String> parentescoAlumno;
 	private JComboBox<String> domicilio;
 
@@ -74,6 +79,8 @@ public class Formulario extends JFrame{
 	private JLabel lblErrorNumeroContacto;
 	private JLabel lblErrorSexo;
 	private JLabel lblErrorGrupo;
+	
+	private JLabel lblErrorAnio;
 	
 	private JLabel lblErrorParentesco;
 	private JLabel lblErrorDomicilio;
@@ -141,6 +148,18 @@ public class Formulario extends JFrame{
 	public JRadioButton getRbB() {
 		return rbB;
 	}	
+	
+	public JRadioButton getRb1() {
+		return rb1;
+	}
+	
+	public JRadioButton getRb2() {
+		return rb2;
+	}
+	
+	public JRadioButton getRb3() {
+		return rb3;
+	}
 
 	public JComboBox<String> getParentescoAlumno() {
 		return parentescoAlumno;
@@ -182,6 +201,11 @@ public class Formulario extends JFrame{
 	    lblErrorGrupo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 	    lblErrorGrupo.setText(msg);
 	}
+	
+	public void setErrorAnio(String msg) {
+	    lblErrorAnio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    lblErrorAnio.setText(msg);
+	}
 
 	public void setErrorParentesco(String msg) {
 	    lblErrorParentesco.setFont(new Font("Times New Roman", Font.ITALIC, 15));
@@ -212,6 +236,7 @@ public class Formulario extends JFrame{
 		lblErrorNumeroContacto.setText("");
 		lblErrorSexo.setText("");
 		lblErrorGrupo.setText("");
+		lblErrorAnio.setText("");
 		lblErrorContactoEmergencia.setText("");
 		lblErrorParentesco.setText("");
 		lblErrorDomicilio.setText("");
@@ -361,12 +386,14 @@ public class Formulario extends JFrame{
 		panelSexo.setLayout(new BoxLayout(panelSexo, BoxLayout.Y_AXIS));
 
 		JPanel panelSexoGrupo = new JPanel();
-		panelSexoGrupo.setLayout(new GridLayout(3, 2, 10, 5));
+		panelSexoGrupo.setLayout(new GridLayout(4, 3, 10, 5));
 
 		JLabel sexo = new JLabel("Sexo:");
 		JLabel grupo = new JLabel("Grupo:");
+		JLabel anio = new JLabel("Año:");
 	    sexo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 	    grupo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    anio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		rbMujer = new JRadioButton("Mujer");
 		rbHombre = new JRadioButton("Hombre");
@@ -377,6 +404,15 @@ public class Formulario extends JFrame{
 		rbB = new JRadioButton("B");
 	    rbA.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 	    rbB.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    
+	    rb1 = new JRadioButton("1");
+		rb2 = new JRadioButton("2");
+		rb3 = new JRadioButton("3");
+		
+		rb1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    rb2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    rbA.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    rb3.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		bgSexo = new ButtonGroup();
 		bgSexo.add(rbMujer);
@@ -385,15 +421,27 @@ public class Formulario extends JFrame{
 		bgGrupo = new ButtonGroup();
 		bgGrupo.add(rbA);
 		bgGrupo.add(rbB);
+		
+		bgAnio = new ButtonGroup();
+		bgAnio.add(rb1);
+		bgAnio.add(rb2);
+		bgAnio.add(rb3);
 
 		panelSexoGrupo.add(sexo);
 		panelSexoGrupo.add(grupo);
+		panelSexoGrupo.add(anio);
 
 		panelSexoGrupo.add(rbMujer);
 		panelSexoGrupo.add(rbA);
+		panelSexoGrupo.add(rb1);
 
 		panelSexoGrupo.add(rbHombre);
 		panelSexoGrupo.add(rbB);
+		panelSexoGrupo.add(rb2);
+		
+		panelSexoGrupo.add(new JLabel(""));
+		panelSexoGrupo.add(new JLabel(""));
+		panelSexoGrupo.add(rb3);
 
 		panelSexoGrupo.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -407,6 +455,11 @@ public class Formulario extends JFrame{
 		lblErrorGrupo.setForeground(Color.RED);
 		lblErrorGrupo.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(lblErrorGrupo);
+		
+		lblErrorAnio = new JLabel();
+		lblErrorAnio.setForeground(Color.RED);
+		lblErrorAnio.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorAnio);
 		
 		panelSexoGrupo.setMaximumSize(panelSexoGrupo.getPreferredSize());
 		panelComponentes.add(Box.createVerticalStrut(15));
@@ -550,6 +603,7 @@ public class Formulario extends JFrame{
 	    
 	    bgSexo.clearSelection();
 	    bgGrupo.clearSelection();
+	    bgAnio.clearSelection();
 	    parentescoAlumno.setSelectedIndex(0);
 	    domicilio.setSelectedIndex(0);
 	}
@@ -575,6 +629,14 @@ public class Formulario extends JFrame{
 	    	rbA.setSelected(true);
 	    }else {
 	    	rbB.setSelected(true);
+	    }
+	    
+	    if ("1".equals(alumno.getAnio())) {
+	    	rb1.setSelected(true);
+	    }else if ("2".equals(alumno.getAnio())) {
+	    	rb2.setSelected(true);
+	    }else {
+	    	rb3.setSelected(true);
 	    }
 	    
 	    parentescoAlumno.setSelectedItem(alumno.getParentesco());

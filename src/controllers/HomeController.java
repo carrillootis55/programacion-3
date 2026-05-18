@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import models.Maestro;
+import models.Materia;
 import models.Alumno;
 import repository.AlumnoRepository;
 import services.PDFExporter;
 import tablemodels.AlumnoTableModels;
 import tablemodels.CalificacionTableModel;
+import repository.CalificacionRepository;
+import repository.MateriaRepository;
 import views.Formulario;
 import views.LoginWindow;
 import views.MainView;
@@ -21,9 +24,12 @@ import config.Config;
 public class HomeController {
 
     private MainView view;
+    private Maestro maestroActual;
 
-    public HomeController(MainView view) {
+    public HomeController(MainView view, Maestro maestro) {
         this.view = view;
+        this.maestroActual = maestro;
+        new AlumnoController(view.alumnosPanel, maestro);
         registerListeners();
     }
 
@@ -52,46 +58,53 @@ public class HomeController {
         view.mItemCalificaciones.addActionListener(e -> mostrarCalificaciones());
         
         view.calificacionesPanel.getBtnPdf().addActionListener(e -> exportarCalificacionesPdf());
-    	}
+    }
     
     private void exportarCalificacionesPdf() {
 
-        File file =
-                view.calificacionesPanel.selectPdfFile();
+        File file =view.calificacionesPanel.selectPdfFile();
 
         if (file == null)
             return;
 
         try {
-            AlumnoRepository repo =
-                    new AlumnoRepository();
 
-            PDFExporter exporter =
-                    new PDFExporter();
+            AlumnoRepository repo = new AlumnoRepository();
 
-            exporter.exportCalificaciones(
-                    repo.getAlumnos(),
-                    file
-            );
+            List<Alumno> alumnos = repo.getAlumnosPorGrupo( maestroActual.getAnio(), maestroActual.getGrupo());
 
-            JOptionPane.showMessageDialog(
-                    view,
-                    "PDF exportado correctamente"
-            );
+            MateriaRepository materiaRepo = new MateriaRepository();
+
+            List<Materia> listaMaterias = materiaRepo.getMateriasPorAnio( maestroActual.getAnio()  );
+
+            List<String> materias = new ArrayList<>();
+
+            for (Materia materia : listaMaterias) {
+
+                materias.add( materia.getNombre());
+            }
+
+            PDFExporter exporter = new PDFExporter();
+
+            exporter.exportCalificaciones(alumnos, materias, file );
+
+            JOptionPane.showMessageDialog( view,"PDF exportado correctamente" );
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(
-                    view,
-                    "Error al exportar PDF"
-            );
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(view, "Error al exportar PDF");
         }
     }
+    
+
     private void mostrarAlumnos() {
 
         AlumnoRepository repository = new AlumnoRepository();
 
         try {
-            List<Alumno> alumnos = repository.getAlumnos();
+            /*List<Alumno> alumnos = repository.getAlumnos();
 
             if (alumnos == null || alumnos.isEmpty()) {
                 JOptionPane.showMessageDialog(view,
@@ -103,9 +116,26 @@ public class HomeController {
                     new AlumnoTableModels(alumnos);
 
             view.alumnosPanel.setTableModel(modelAlumnos);
-            new alumnoController(view.alumnosPanel);
+            new AlumnoController(view.alumnosPanel);
+
+            view.showView(MainView.ALUMNOS);*/
+        	List<Alumno> alumnos =
+                    repository.getAlumnosPorGrupo(
+                            maestroActual.getAnio(),
+                            maestroActual.getGrupo()
+                    );
+
+            AlumnoTableModels modelAlumnos = new AlumnoTableModels(alumnos);
+
+            view.alumnosPanel.setTableModel(modelAlumnos);
+            //new AlumnoController(view.alumnosPanel);
 
             view.showView(MainView.ALUMNOS);
+
+            if (alumnos == null || alumnos.isEmpty()) {
+                JOptionPane.showMessageDialog(view,
+                        "No hay alumnos registrados");
+            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
@@ -116,32 +146,74 @@ public class HomeController {
     }
     
     private void mostrarMaestro() {
-    	
-    	List<String> materias = new ArrayList<>();
-    	materias.add("Geografia");
-    	materias.add("Artes");
-    	materias.add("Informatica");
-    	
-    	Maestro maestro = new Maestro("Mta. Eloise Villas", 32, "Maestria en educacion", 'M', materias);
-    	view.maestroPanel.updateMaestro(maestro);
+    	view.maestroPanel.updateMaestro(
+                maestroActual
+        );
     	view.showView(MainView.MAESTRO);
     }
     
     private void mostrarCalificaciones() {
     	try {
-            AlumnoRepository repo = new AlumnoRepository();
-            List<Alumno> alumnos = repo.getAlumnos();
 
-            CalificacionTableModel model = new CalificacionTableModel(alumnos);
+            AlumnoRepository repo =
+                    new AlumnoRepository();
+
+            // Obtener alumnos del grupo
+            List<Alumno> alumnos =
+                    repo.getAlumnosPorGrupo(
+                            maestroActual.getAnio(),
+                            maestroActual.getGrupo()
+                    );
+
+            // Obtener materias 
+            MateriaRepository materiaRepo =
+                    new MateriaRepository();
+
+            List<Materia> listaMaterias =
+                    materiaRepo.getMateriasPorAnio(
+                            maestroActual.getAnio()
+                    );
+
+            // Convertir Materia a String
+            List<String> materias =
+                    new ArrayList<>();
+
+            for (Materia materia : listaMaterias) {
+
+                materias.add(materia.getNombre());
+            }
+
+            if (alumnos == null || alumnos.isEmpty()) {
+
+                JOptionPane.showMessageDialog(
+                        view,
+                        "No hay alumnos registrados"
+                );
+
+                return;
+            }
+
+            // Crear modelo
+            CalificacionTableModel model =new CalificacionTableModel(alumnos,materias);
+
+            // Asignar tabla
             view.calificacionesPanel.setTableModel(model);
 
+            // Mostrar panel
             view.showView(MainView.CALIFICACIONES);
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(view, "Error al cargar calificaciones");
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al cargar calificaciones: "
+                            + e.getMessage()
+            );
         }
-    	
-    }
+	}
+ 
 
     private void handleClose() {
 

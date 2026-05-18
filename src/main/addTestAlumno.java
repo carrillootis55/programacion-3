@@ -16,14 +16,12 @@ public class addTestAlumno {
         alumno.setApellidoPaterno("Mendivil");
         alumno.setApellidoMaterno("Reyes");
         alumno.setSexo('M');
+        alumno.setAnio("1");
         alumno.setGrupo("A");
         alumno.setContactoEmergencia("Luca");
         alumno.setNumeroEmergencia("555349634");
         alumno.setParentesco("Padre");
         alumno.setDomicilio("Calle Ficus 3489");
-        alumno.setArtes(8.5);
-        alumno.setGeografia(9.0);
-        alumno.setInformatica(8.5);
 
         try {
             repo.save(alumno);

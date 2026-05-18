@@ -21,6 +21,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
 import models.Alumno;
+import repository.CalificacionRepository;
 
 public class PDFExporter {
 
@@ -39,7 +40,7 @@ public class PDFExporter {
             doc.add(new Paragraph("").setMarginTop(30));
 
             //columnas
-            float[] columnsWidth = {2, 3, 3, 3, 2, 2, 3, 3};
+            float[] columnsWidth = {2, 3, 3, 3, 2, 2, 2, 3, 3};
 
             Table table = new Table(UnitValue.createPercentArray(columnsWidth))
                     .useAllAvailableWidth();
@@ -47,7 +48,7 @@ public class PDFExporter {
             PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
             //encabezado
-            Cell titulo = new Cell(1, 8)
+            Cell titulo = new Cell(1, 9)
                     .add(new Paragraph("Alumnos"))
                     .setFont(font)
                     .setFontSize(14)
@@ -85,6 +86,11 @@ public class PDFExporter {
                             .setBorderTop(new SolidBorder(1f))
                             .setBackgroundColor(new DeviceGray(0.80f))
                             .add(new Paragraph("Sexo")),
+                            
+                    new Cell().setTextAlignment(TextAlignment.CENTER)
+                    .setBorderTop(new SolidBorder(1f))
+                    .setBackgroundColor(new DeviceGray(0.80f))
+                    .add(new Paragraph("Año")),
 
                     new Cell().setTextAlignment(TextAlignment.CENTER)
                             .setBorderTop(new SolidBorder(1f))
@@ -132,6 +138,9 @@ public class PDFExporter {
                 	)));
                 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
+                        .add(new Paragraph(a.getAnio())));
+                
+                table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
                         .add(new Paragraph(a.getGrupo())));
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.LEFT)
@@ -148,99 +157,105 @@ public class PDFExporter {
         
     }
     
-    public void exportCalificaciones(List<Alumno> alumnos, File file)
-            throws IOException {
+   
+    public void exportCalificaciones(List<Alumno> alumnos, List<String> materias, File file) throws IOException {
+        try (
 
-        try (PdfDocument pdfDoc =
-                     new PdfDocument(new PdfWriter(file));
-             Document doc =
-                     new Document(pdfDoc, PageSize.LETTER)) {
+            PdfDocument pdfDoc =new PdfDocument(new PdfWriter(file)  );
 
-            doc.add(new Paragraph("Reporte de Calificaciones")
-                    .setBold()
-                    .setFontSize(16)
-                    .setTextAlignment(TextAlignment.CENTER));
+            Document doc =new Document( pdfDoc,PageSize.LETTER.rotate() )
+
+        ) {
+            CalificacionRepository repo =new CalificacionRepository();
+
+            doc.add(new Paragraph( "Reporte de Calificaciones") .setBold() .setFontSize(16)  .setTextAlignment(  TextAlignment.CENTER  ) );
 
             doc.add(new Paragraph(" "));
 
-            float[] columnas = {1, 4, 2, 2, 2};
+            int totalColumnas = 2 + materias.size() + 1;
 
-            Table table =
-                    new Table(UnitValue.createPercentArray(columnas))
-                            .useAllAvailableWidth();
+            float[] columnas =new float[totalColumnas];
 
-            // encabezados
-            table.addHeaderCell(
-                    new Cell().add(new Paragraph("ID"))
-                            .setBackgroundColor(
-                                    new DeviceRgb(45,111,164))
-                            .setFontColor(DeviceGray.WHITE)
-                            .setTextAlignment(TextAlignment.CENTER));
+            columnas[0] = 1;
+            columnas[1] = 4;
 
-            table.addHeaderCell(
-                    new Cell().add(new Paragraph("Nombre"))
-                            .setBackgroundColor(
-                                    new DeviceRgb(45,111,164))
-                            .setFontColor(DeviceGray.WHITE));
+            for (int i = 2; i < totalColumnas; i++) {
+                columnas[i] = 2;
+            }
 
-            table.addHeaderCell(
-                    new Cell().add(new Paragraph("Artes"))
-                            .setBackgroundColor(
-                                    new DeviceRgb(45,111,164))
-                            .setFontColor(DeviceGray.WHITE)
-                            .setTextAlignment(TextAlignment.CENTER));
+            Table table = new Table(  UnitValue.createPercentArray( columnas) ).useAllAvailableWidth();
+
+            table.addHeaderCell(crearHeader("ID"));
+            table.addHeaderCell(crearHeader("Nombre"));
+
+            for (String materia : materias) {
+
+                table.addHeaderCell(
+                        crearHeader(materia)
+                );
+            }
 
             table.addHeaderCell(
-                    new Cell().add(new Paragraph("Geografía"))
-                            .setBackgroundColor(
-                                    new DeviceRgb(45,111,164))
-                            .setFontColor(DeviceGray.WHITE)
-                            .setTextAlignment(TextAlignment.CENTER));
+                    crearHeader("Promedio")
+            );
 
-            table.addHeaderCell(
-                    new Cell().add(new Paragraph("Informática"))
-                            .setBackgroundColor(
-                                    new DeviceRgb(45,111,164))
-                            .setFontColor(DeviceGray.WHITE)
-                            .setTextAlignment(TextAlignment.CENTER));
+            int contador = 1;
 
-            int i = 1;
+            // FILAS
+            for (Alumno alumno : alumnos) {
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(contador++))).setTextAlignment(TextAlignment.CENTER));
 
-            for (Alumno a : alumnos) {
+                table.addCell(new Cell() .add(new Paragraph(alumno.getNombre() )) );
 
-                table.addCell(
-                        new Cell().add(
-                                new Paragraph(String.valueOf(i++)))
-                                .setTextAlignment(
-                                        TextAlignment.CENTER));
+                double suma = 0;
 
-                table.addCell(
-                        new Cell().add(
-                                new Paragraph(a.getNombre())));
+                for (String materia : materias) {
 
-                table.addCell(
-                        new Cell().add(
-                                new Paragraph(
-                                        String.valueOf(a.getArtes())))
-                                .setTextAlignment(
-                                        TextAlignment.CENTER));
+                    Double calificacion = 0.0;
 
-                table.addCell(
-                        new Cell().add(
-                                new Paragraph(
-                                        String.valueOf(a.getGeografia())))
-                                .setTextAlignment(
-                                        TextAlignment.CENTER));
+                    try {
 
-                table.addCell(
-                        new Cell().add(
-                                new Paragraph(
-                                        String.valueOf(a.getInformatica())))
-                                .setTextAlignment(
-                                        TextAlignment.CENTER));
+                        calificacion =repo.obtenerCalificacion( alumno.getMatricula(), materia );
+
+                        if (calificacion == null) {
+                            calificacion = 0.0;
+                        }
+
+                    } catch (Exception e) {
+
+                        calificacion = 0.0;
+                    }
+
+                    suma += calificacion;
+
+                    table.addCell(new Cell().add( new Paragraph(String.valueOf(calificacion ))).setTextAlignment( TextAlignment.CENTER ));
+                }
+
+                double promedio =suma / materias.size();
+
+                promedio = Math.round(promedio * 10.0 ) / 10.0;
+
+                table.addCell(new Cell().add(new Paragraph( String.valueOf(promedio ) )).setTextAlignment(TextAlignment.CENTER ) );
             }
 
             doc.add(table);
         }
     }
+    
+    private Cell crearHeader(String texto) {
+
+        return new Cell()
+                .add(new Paragraph(texto))
+                .setBackgroundColor(
+                        new DeviceRgb(45,111,164)
+                )
+                .setFontColor(DeviceGray.WHITE)
+                .setTextAlignment(
+                        TextAlignment.CENTER
+                );
+    }
+    
+    
+
+    
 }

@@ -1,7 +1,15 @@
 package views;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+
 import models.Alumno;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,41 +20,78 @@ import javax.swing.SpringLayout;
 import lib.SpringUtilities;
 
 public class CalificarAlumnoView extends JFrame{
-	public JTextField txtArtes = new JTextField(10);
-	public JTextField txtGeografia = new JTextField(10);
-	public JTextField txtInformatica = new JTextField(10);
+	
+	private List<JTextField> camposCalificaciones;
+	private List<JLabel> labelsError;
 	
 	public JButton btnGuardar = new JButton("Guardar");
 	
-	public CalificarAlumnoView(Alumno alumno) {
-		//SPRING UTILITIES
-		
-		setTitle("Calificaciones");
-		setSize(250, 200);
-		setLayout(new java.awt.FlowLayout());
-		
-		add(new JLabel("Alumno: " + alumno.getNombre()));
+	public CalificarAlumnoView(Alumno alumno,List<String> materias) {
 
-		JPanel panelito= new JPanel(new SpringLayout());
-		
-		panelito.add(new JLabel("Artes: "));
-		panelito.add(txtArtes);
+	    setTitle("Calificaciones");
 
-		panelito.add(new JLabel("Geografia: "));
-		panelito.add(txtGeografia);
-		
-		panelito.add(new JLabel("Informatica: "));
-		panelito.add(txtInformatica);
-	
-		SpringUtilities.makeCompactGrid(panelito, 3, 2, 6, 6, 6, 6);
-		/*	
-		add(new JLabel("Artes"));
-		add(new JLabel("Geografia"));
-		add(new JLabel("Informatica"));
-		*/
-		add(panelito);
-		add(btnGuardar);
-	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    setSize(320, 220);
+
+	    setLayout(new BorderLayout());
+
+	    camposCalificaciones = new ArrayList<>();
+
+	    labelsError = new ArrayList<>();
+
+	    JLabel lblAlumno =new JLabel( "Alumno: " + alumno.getNombre() + " " + alumno.getApellidoPaterno() );
+
+	    lblAlumno.setHorizontalAlignment(JLabel.CENTER );
+
+	    add(lblAlumno, BorderLayout.NORTH);
+
+	    JPanel panelCentro = new JPanel();
+
+	    panelCentro.setLayout(new BoxLayout( panelCentro,BoxLayout.Y_AXIS));
+	    panelCentro.setBorder(javax.swing.BorderFactory .createEmptyBorder(5, 10, 5, 10) );
+
+	    for (String materia : materias) {
+
+	    	JPanel fila = new JPanel( new FlowLayout( FlowLayout.LEFT, 5, 2 ));
+
+	        JLabel lblMateria = new JLabel(materia + ": ");
+
+	        JTextField txtCalificacion =new JTextField(5);
+
+	        JLabel lblError =new JLabel(" ");
+
+	        lblError.setForeground(Color.RED);
+
+	        camposCalificaciones.add(txtCalificacion );
+
+	        labelsError.add(lblError);
+
+	        fila.add(lblMateria);
+	        fila.add(txtCalificacion);
+	        fila.add(lblError);
+
+	        panelCentro.add(fila);
+	    }
+
+	    add(panelCentro, BorderLayout.CENTER);
+
+	    JPanel panelBoton = new JPanel();
+
+	    panelBoton.add(btnGuardar);
+
+	    add(panelBoton, BorderLayout.SOUTH);
+
+	    setDefaultCloseOperation(
+	            JFrame.DISPOSE_ON_CLOSE
+	    );
 	}
+
+
+    public List<JTextField> getCamposCalificaciones() {
+        return camposCalificaciones;
+    }
+    
+    public List<JLabel> getLabelsError() {
+        return labelsError;
+    }
 	
 }
