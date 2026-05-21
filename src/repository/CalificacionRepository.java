@@ -10,42 +10,33 @@ import config.DatabaseConnection;
 
 public class CalificacionRepository {
 	
-    public void guardarCalificacion(
-            String matricula,
-            int materiaId,
-            double calificacion
-    ) throws Exception {
+    public void guardarCalificacion( String matricula,int materiaId,double calificacion) throws Exception {
+    	 String sql = """
+                 INSERT INTO calificacion(
+                     alumno_matricula,
+                     materia_id,
+                     calificacion
+                 )
+                 VALUES (?, ?, ?)
+                 """;
 
-        String sql = """
-                INSERT INTO calificaciones(
-                    alumno_matricula,
-                    materia_id,
-                    calificacion
-                )
-                VALUES (?, ?, ?)
-                """;
+         Connection conn = DatabaseConnection.getConnection();
 
-        Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
 
-        PreparedStatement ps = conn.prepareStatement(sql);
+         ps.setString(1, matricula);
+         ps.setInt(2, materiaId);
+         ps.setDouble(3, calificacion);
 
-        ps.setString(1, matricula);
-        ps.setInt(2, materiaId);
-        ps.setDouble(3, calificacion);
+         ps.executeUpdate();
 
-        ps.executeUpdate();
+         ps.close();
 
-        ps.close();
     }
 
-    public void actualizarCalificacion(
-            String matricula,
-            int materiaId,
-            double calificacion
-    ) throws Exception {
-
-        String sql = """
-                UPDATE calificaciones
+    public void actualizarCalificacion( String matricula, int materiaId, double calificacion) throws Exception {
+    	String sql = """
+                UPDATE calificacion
                 SET calificacion = ?
                 WHERE alumno_matricula = ?
                 AND materia_id = ?
@@ -62,16 +53,14 @@ public class CalificacionRepository {
         ps.executeUpdate();
 
         ps.close();
+
     }
 
-    public boolean existeCalificacion(
-            String matricula,
-            int materiaId
-    ) {
+    public boolean existeCalificacion(String matricula, int materiaId ) {
 
-        String sql = """
+    	String sql = """
                 SELECT *
-                FROM calificaciones
+                FROM calificacion
                 WHERE alumno_matricula = ?
                 AND materia_id = ?
                 """;
@@ -101,8 +90,8 @@ public class CalificacionRepository {
 
         String sql = """
                 SELECT nombre
-                FROM materias
-                WHERE anio = ?
+                FROM materia
+                WHERE anio_id = ?
                 """;
 
         try (
@@ -125,16 +114,13 @@ public class CalificacionRepository {
         return materias;
     }
 
-    public int getMateriaId(
-            String nombreMateria,
-            String anio
-    ) {
-
-        String sql = """
+    public int getMateriaId( String nombreMateria, String anio) {
+    	
+    	String sql = """
                 SELECT id
-                FROM materias
+                FROM materia
                 WHERE nombre = ?
-                AND anio = ?
+                AND anio_id = ?
                 LIMIT 1
                 """;
 
@@ -159,40 +145,37 @@ public class CalificacionRepository {
         return -1;
     }
     
-    public Double obtenerCalificacion(
-            String matricula,
-            String nombreMateria
-    ) {
+    public Double obtenerCalificacion(String matricula, String nombreMateria ) {
 
-        String sql = """
-                SELECT c.calificacion
-                FROM calificaciones c
-                INNER JOIN materias m
-                ON c.materia_id = m.id
-                WHERE c.alumno_matricula = ?
-                AND m.nombre = ?
-                """;
+    	 String sql = """
+                 SELECT c.calificacion
+                 FROM calificacion c
+                 INNER JOIN materia m
+                 ON c.materia_id = m.id
+                 WHERE c.alumno_matricula = ?
+                 AND m.nombre = ?
+                 """;
 
-        try (
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+         try (
+             Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)
+         ) {
 
-            ps.setString(1, matricula);
-            ps.setString(2, nombreMateria);
+             ps.setString(1, matricula);
+             ps.setString(2, nombreMateria);
 
-            ResultSet rs = ps.executeQuery();
+             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
+             if (rs.next()) {
 
-                return rs.getDouble("calificacion");
-            }
+                 return rs.getDouble("calificacion");
+             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
 
-        return null;
+         return null;
     }
 
 }

@@ -124,12 +124,28 @@ public class FormularioController {
 		
 		view.getBtnRegistrar().addActionListener(e -> validarFormulario());
 		
-		view.getTxtMatricula().addKeyListener(new KeyAdapter() {
+		/*view.getTxtMatricula().addKeyListener(new KeyAdapter() {
 		    @Override
 		    public void keyTyped(KeyEvent e) {
 		        char c = e.getKeyChar();
 		        // Consumir si NO es letra ni número isLetterOrDigit si es numero se usa isDigit
 		        if (!Character.isDigit(c)) {
+		            e.consume();
+		        }
+		    }
+		});*/
+		view.getTxtMatricula().addKeyListener(new KeyAdapter() {
+
+		    @Override
+		    public void keyTyped(KeyEvent e) {
+		        char c = e.getKeyChar();
+		        //Solo permite numeros
+		        if (!Character.isDigit(c)) {
+		            e.consume();
+		        }
+
+		        //Maximo 10 digitos
+		        if (view.getTxtMatricula().getText().length() >= 10) {
 		            e.consume();
 		        }
 		    }
@@ -197,19 +213,21 @@ public class FormularioController {
 	}
 	
 	private boolean validateMatricula() {
-		
-		
-		String matricula = view.getTxtMatricula().getText().trim();
+
+	    String matricula = view.getTxtMatricula().getText().trim();
+
+	    //Verifica si esta vacia
 	    if (matricula.isEmpty()) {
-		    view.setErrorMatricula("La matrícula es obligatoria");
+
+	        view.setErrorMatricula("La matrícula es obligatoria");
 	        return false;
 	    }
-	    
-	    if(matricula.length() < 10) {
-	    	view.setErrorMatricula("La matricula es muy corta");
-	    	return false;
+	    if (matricula.length() != 10) {
+
+	        view.setErrorMatricula("La matrícula debe tener 10 dígitos");
+	        return false;
 	    }
-	    
+
 	    view.setErrorMatricula("");
 	    return true;
 	}
