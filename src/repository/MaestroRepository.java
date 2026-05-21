@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import utils.PasswordUtils;
 import models.Maestro;
 import config.DatabaseConnection;
 
@@ -19,40 +19,9 @@ public class MaestroRepository {
         this.connection = DatabaseConnection.getConnection();
     }
     
-    public Maestro login(String email, String password) throws SQLException {
-        // Consulta para obtener los datos 
-        //String sql = "SELECT id, nombre, email FROM maestros WHERE email = ? AND password = ?";
-        String sql = """
-        		SELECT id, nombre, email, anio, grupo
-        		FROM maestros
-        		WHERE email = ? AND password = ?
-        		""";
-        
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    // Creamos el objeto Maestro con los datos de la base de datos
-                    Maestro maestro = new Maestro();
-                    maestro.setId(rs.getInt("id"));
-                    maestro.setNombre(rs.getString("nombre"));
-                    maestro.setEmail(rs.getString("email"));
-                    maestro.setAnio(rs.getString("anio"));
-                    maestro.setGrupo(rs.getString("grupo"));
-                    
-                    return maestro; // Login exitoso
-                }
-            }
-        }
-        return null; // Login fallido
-    }
 
     public Maestro buscarEmail(String email) throws SQLException {
-        String sql = "SELECT id, nombre, email, password, role FROM maestros WHERE email = ? LIMIT 1";
+        String sql = "SELECT id, nombre, email, password, role FROM maestro WHERE email = ? LIMIT 1";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
@@ -74,7 +43,7 @@ public class MaestroRepository {
     
 
     public boolean verificarCredenciales(String email, String password) throws SQLException {
-        String sql = "SELECT password FROM maestros WHERE email = ?";
+        String sql = "SELECT password FROM maestro WHERE email = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -83,8 +52,8 @@ public class MaestroRepository {
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                return rs.getString("password").equals(password);
-            }
+            	return PasswordUtils.checkPassword(password, rs.getString("password"));
+            	}
         }
         return false;
     }
@@ -93,7 +62,7 @@ public class MaestroRepository {
         String sql = """
         		SELECT id, nombre, email, password,
         		edad, maestria, genero, anio, grupo
-        		FROM maestros
+        		FROM maestro
         		WHERE email = ?
         		LIMIT 1
         		""";
@@ -129,7 +98,7 @@ public class MaestroRepository {
         String sql = """
         		SELECT id, nombre, email, password,
         		edad, maestria, genero, anio, grupo
-        		FROM maestros
+        		FROM maestro
         		""";
         
         try (Statement statement = connection.createStatement();
@@ -155,31 +124,36 @@ public class MaestroRepository {
     
  
     public boolean guardar(Maestro maestro) throws SQLException {
-        String sql = "INSERT INTO maestros (nombre, email, password, edad, maestria, genero, anio, grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        
+
+        String sql = """
+            INSERT INTO maestro
+            (nombre, email, password, edad, maestria, anio_id, grupo_id, role)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setString(1, maestro.getNombre());
             statement.setString(2, maestro.getEmail());
-            statement.setString(3, maestro.getPassword());
+            statement.setString(3,PasswordUtils.hashPassword(maestro.getPassword()));
             statement.setInt(4, maestro.getEdad());
             statement.setString(5, maestro.getMaestria());
-            statement.setString(6, String.valueOf(maestro.getGenero()));
-            statement.setString(7, maestro.getAnio());
-            statement.setString(8, maestro.getGrupo());
-            
+            statement.setInt(6, Integer.parseInt(maestro.getAnio()));
+            statement.setInt(7,
+                    maestro.getGrupo().equals("A") ? 1 : 2);
+
+            statement.setString(8, "MAESTRO");
+
             return statement.executeUpdate() > 0;
         }
     }
-    
- 
     public boolean actualizar(Maestro maestro) throws SQLException {
-        String sql = "UPDATE maestros SET nombre = ?, email = ?, password = ?, edad = ?, maestria = ?, genero = ?, anio = ?, grupo = ? WHERE id = ?";
+        String sql = "UPDATE maestro SET nombre = ?, email = ?, password = ?, edad = ?, maestria = ?, genero = ?, anio = ?, grupo = ? WHERE id = ?";
         
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, maestro.getNombre());
             statement.setString(2, maestro.getEmail());
-            statement.setString(3, maestro.getPassword());
+            statement.setString(3, PasswordUtils.hashPassword(maestro.getPassword()));
             statement.setInt(4, maestro.getEdad());
             statement.setString(5, maestro.getMaestria());
             statement.setString(6, String.valueOf(maestro.getGenero()));
@@ -193,7 +167,7 @@ public class MaestroRepository {
     
  
     public boolean eliminar(int id) throws SQLException {
-        String sql = "DELETE FROM maestros WHERE id = ?";
+        String sql = "DELETE FROM maestro WHERE id = ?";
         
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
