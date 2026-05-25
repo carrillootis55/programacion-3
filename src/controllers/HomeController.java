@@ -30,6 +30,8 @@ public class HomeController {
         this.view = view;
         this.maestroActual = maestro;
         new AlumnoController(view.alumnosPanel, maestro);
+        
+        new ListaMaestrosController( view.listaMaestrosPanel);
         registerListeners();
     }
 
@@ -57,7 +59,16 @@ public class HomeController {
         });
         view.mItemCalificaciones.addActionListener(e -> mostrarCalificaciones());
         
+        view.listaMaestrosPanel.getBtnPdf().addActionListener(
+                e -> exportMaestrosPDF()
+        );
+        view.mItemAdminPerfil.addActionListener( e -> mostrarAdmin());
+        
+        view.mItemListaMaestros.addActionListener( e -> mostrarListaMaestros() );
+        
         view.calificacionesPanel.getBtnPdf().addActionListener(e -> exportarCalificacionesPdf());
+         
+        
     }
     
     private void exportarCalificacionesPdf() {
@@ -97,6 +108,49 @@ public class HomeController {
             JOptionPane.showMessageDialog(view, "Error al exportar PDF");
         }
     }
+    
+    
+ // =========================
+ // NUEVO METODO EXPORTAR PDF MAESTROS
+ // =========================
+    private void exportMaestrosPDF() {
+
+     // Seleccionar archivo
+     File file = view.listaMaestrosPanel.selectPdfFile();
+
+     if (file == null) {
+         return;
+     }
+
+     try {
+
+         // Obtener maestros
+         repository.MaestroRepository repo =new repository.MaestroRepository();
+
+         List<Maestro> maestros =repo.obtenerSoloMaestros();
+
+         // Validar lista vacía
+         if (maestros == null || maestros.isEmpty()) {
+
+             JOptionPane.showMessageDialog(view,"No hay maestros registrados");
+
+             return;
+         }
+
+         // Exportar PDF
+         PDFExporter exporter = new PDFExporter();
+
+         exporter.exportMaestros(maestros, file);
+
+         JOptionPane.showMessageDialog(view,"PDF exportado correctamente");
+
+     } catch (Exception e) {
+
+         e.printStackTrace();
+
+         JOptionPane.showMessageDialog( view, "Error al exportar PDF" );
+     }
+ }
     
 
     private void mostrarAlumnos() {
@@ -214,6 +268,21 @@ public class HomeController {
         }
 	}
  
+    private void mostrarAdmin() {
+
+        //Actualizar datos admin
+        view.adminPanel.updateAdmin(
+                maestroActual
+        );
+
+        //Mostrar panel admin
+        view.showView( MainView.ADMIN_PERFIL);
+    }
+    
+    private void mostrarListaMaestros() {
+
+        view.showView( MainView.LISTA_MAESTROS);
+    }
 
     private void handleClose() {
 

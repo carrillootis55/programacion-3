@@ -7,22 +7,22 @@ public class Maestro {
 	private String password;
 	private String email;
 	private String nombre;
+	private String sexo;
 	private int edad;
 	private String maestria;
-	private char genero;
-	//private List<String> materias;
 	private String anio;
 	private String grupo;
 	private List<String> materias;
 	private String role;
 	
-	public Maestro() {}
+	public Maestro() {
+		
+	}
 
-	public Maestro(String nombre, int edad, String maestria, char genero) {
+	public Maestro(String nombre, int edad, String maestria) {
 	    this.nombre = nombre;
 	    this.edad = edad;
 	    this.maestria = maestria;
-	    this.genero = genero;
 	}
 	
 	public Maestro(int id, String nombre, String email,String password, String role) {
@@ -31,35 +31,37 @@ public class Maestro {
 		 this.email = email;
 		 this.password = password;
 		 this.role = role;
-		}
+	}
 
-	public Maestro(String nombre, String email, String password,int edad, String maestria, char genero, String anio, String grupo) {
+	public Maestro(String nombre, String email, String password, String sexo, int edad, String maestria, String anio, String grupo) {
 		 this.nombre = nombre;
 		 this.email = email;
 		 this.password = password;
+		 this.sexo = sexo;
 		 this.edad = edad;
 		 this.maestria = maestria;
-		 this.genero = genero;
 		 this.anio = anio;
 		 this.grupo = grupo;
-		}
+	}
+	
 	public Maestro(int id, String nombre, String email, String password) {
 		 this.id = id;
 		 this.nombre = nombre;
 		 this.email = email;
 		 this.password = password;
-		}
+	}
 	
-	public Maestro(String nombre, String email, String password, int edad, String maestria, char genero, List<String> materias, String role) {
+	public Maestro(String nombre, String email, String password,String sexo, int edad, String maestria, List<String> materias, String role) {
 		 this.nombre = nombre;
 		 this.email = email;
 		 this.password = password;
+		 this.sexo = sexo;
 		 this.edad = edad;
 		 this.maestria = maestria;
-		 this.genero = genero;
 		 this.materias = materias;
 		 this.role = role;
-		}
+	}
+	
 	//Getters y Setters
 
 	public int getId() {
@@ -92,6 +94,14 @@ public class Maestro {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
 
 	public int getEdad() {
 		return edad;
@@ -108,15 +118,6 @@ public class Maestro {
 	public void setMaestria(String maestria) {
 		this.maestria = maestria;
 	}
-
-	public char getGenero() {
-		return genero;
-	}
-
-	public void setGenero(char genero) {
-		this.genero = genero;
-	}
-
 	
 	public String getAnio() {
 	    return anio;
@@ -146,9 +147,9 @@ public class Maestro {
 	public String toString() {
 		return "Descripcion del maestro:/n" + 
 				"Nombre:" + nombre + 
+				"\nSexo: " + sexo +
 				"/nEdad: " + edad + 
 				"/nMaestria: " + maestria + 
-				"/nGenero: " + genero +
 				"\nAño: " + anio +
 	            "\nGrupo: " + grupo;
 	}

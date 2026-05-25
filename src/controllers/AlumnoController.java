@@ -57,12 +57,10 @@ public class AlumnoController {
 		        return;
 		    }
 
-		    AlumnoTableModels model =
-		            (AlumnoTableModels) view.getTabla().getModel();
+		    AlumnoTableModels model = (AlumnoTableModels) view.getTabla().getModel();
 
 		    Alumno alumno = model.getAlumnoAt(fila);
-            CalificacionRepository repo =
-                    new CalificacionRepository();
+            CalificacionRepository repo = new CalificacionRepository();
 
             List<String> materias = repo.getMateriasPorAnio(maestroActual.getAnio());
 
@@ -125,8 +123,7 @@ public class AlumnoController {
 				try {
 					AlumnoRepository repo = new AlumnoRepository();
 
-		            AlumnoTableModels model =
-		                (AlumnoTableModels) view.getTabla().getModel();
+		            AlumnoTableModels model = (AlumnoTableModels) view.getTabla().getModel();
 
 		            Alumno alumno = model.getAlumnoAt(fila);
 

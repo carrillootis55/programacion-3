@@ -36,10 +36,25 @@ public class MaestroView extends JPanel{
         panelImagenContenedor.setPreferredSize(new Dimension(400, 400));
         panelImagenContenedor.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 10));
 
-        ImageIcon originalIcon = new ImageIcon("src/img/Maestro.jpg");
-        Image imgEscalada = originalIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
-        JLabel imageLabel = new JLabel(new ImageIcon(imgEscalada));
+       
+        String rutaImagen;
 
+        if(maestro.getSexo() != null &&maestro.getSexo().equalsIgnoreCase("M")) {
+            rutaImagen = "src/img/maestra.png";
+
+        } else {
+
+            rutaImagen = "src/img/maestro.png";
+        }
+
+
+        ImageIcon originalIcon = new ImageIcon(rutaImagen);
+
+        Image imgEscalada = originalIcon.getImage()
+                .getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+
+        JLabel imageLabel = new JLabel(new ImageIcon(imgEscalada));
+        
 	    panelImagenContenedor.add(imageLabel);
 	    
 	    
@@ -61,10 +76,6 @@ public class MaestroView extends JPanel{
 		gbc.gridx = 1;
 		panelDer.add(new JLabel(String.valueOf(maestro.getEdad())), gbc);
 		
-		gbc.gridx = 0; gbc.gridy = 2;
-		panelDer.add(new JLabel("Genero: "), gbc);
-		gbc.gridx = 1;
-		panelDer.add(new JLabel(String.valueOf(maestro.getGenero())), gbc);
 		
 		gbc.gridx = 0; gbc.gridy = 3;
 		panelDer.add(new JLabel("Maestria: "), gbc);

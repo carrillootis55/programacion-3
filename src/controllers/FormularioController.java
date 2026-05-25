@@ -1,7 +1,5 @@
 package controllers;
 
-//package controllers;
-
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -155,7 +153,6 @@ public class FormularioController {
 		    @Override
 		    public void keyTyped(KeyEvent e) {
 		        char c = e.getKeyChar();
-		        // Consumir si NO es letra ni número isLetterOrDigit si es numero se usa isDigit
 		        if (!Character.isDigit(c)) {
 		            e.consume();
 		        }
@@ -167,8 +164,9 @@ public class FormularioController {
 			public void keyTyped(KeyEvent e) {
 				char c =e.getKeyChar();
 				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
-				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
-					e.consume();//IGNORA LA LETRA
+				if(!Character.isLetter(c) && c != ' ' && c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE) {
+					e.consume();
+
 					view.setErrorApellidoPaterno("Solo se permiten letras");
 				}
 			}
@@ -179,9 +177,10 @@ public class FormularioController {
 			public void keyTyped(KeyEvent e) {
 				char c =e.getKeyChar();
 				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
-				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
-					e.consume();//IGNORA LA LETRA
-					view.setErrorApellidoPaterno("Solo se permiten letras");
+				if(!Character.isLetter(c) && c != ' ' && c != KeyEvent.VK_BACK_SPACE &&c != KeyEvent.VK_DELETE) {
+					e.consume();
+
+					view.setErrorApellidoMaterno("Solo se permiten letras");
 				}
 			}
 		});
@@ -191,8 +190,9 @@ public class FormularioController {
 			public void keyTyped(KeyEvent e) {
 				char c =e.getKeyChar();
 				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
-				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
-					e.consume();//IGNORA LA LETRA
+				if(!Character.isLetter(c) && c != ' ' && c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE) {
+					e.consume();
+
 					view.setErrorNombre("Solo se permiten letras");
 				}
 			}
@@ -204,8 +204,10 @@ public class FormularioController {
 			public void keyTyped(KeyEvent e) {
 				char c =e.getKeyChar();
 				// SI NO ES UNA LETRA Y TAMPOCO ES RETROCESO O BORRAR SE CONSUME EL EVENTO
-				if(!Character.isLetter(c) && c != KeyEvent.VK_BACK_SPACE && c !=KeyEvent.VK_DELETE) {
-					e.consume();//IGNORA LA LETRA
+				if(!Character.isLetter(c) &&c != ' ' &&c != KeyEvent.VK_BACK_SPACE &&c != KeyEvent.VK_DELETE) {
+					
+					e.consume();
+
 					view.setErrorContacto("Solo se permiten letras");
 				}
 			}
@@ -227,7 +229,13 @@ public class FormularioController {
 	        view.setErrorMatricula("La matrícula debe tener 10 dígitos");
 	        return false;
 	    }
+	    
+	    if (!editando && repository.existeMatricula(matricula)) {
 
+	        view.setErrorMatricula("La matrícula ya está registrada");
+	        return false;
+	    }
+	    
 	    view.setErrorMatricula("");
 	    return true;
 	}

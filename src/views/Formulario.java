@@ -595,6 +595,7 @@ public class Formulario extends JFrame{
 	
 	public void limpiarFormulario() {
 	    txtMatricula.setText("");
+	    txtMatricula.setEditable(true);
 	    txtNombre.setText("");
 	    txtApellidoPaterno.setText("");
 	    txtApellidoMaterno.setText("");
@@ -610,6 +611,25 @@ public class Formulario extends JFrame{
 	//
 	public void cargarDatos(Alumno alumno) {
 		txtMatricula.setText(alumno.getMatricula());
+		txtMatricula.setEditable(false);
+		
+		txtMatricula.addMouseListener(new java.awt.event.MouseAdapter() {
+
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent e) {
+
+		        if (!txtMatricula.isEditable()) {
+
+		            JOptionPane.showMessageDialog(
+		                null,
+		                "La matrícula no se puede editar",
+		                "Edición bloqueada",
+		                JOptionPane.WARNING_MESSAGE
+		            );
+		        }
+		    }
+		});
+		
 	    txtNombre.setText(alumno.getNombre());
 	    txtApellidoPaterno.setText(alumno.getApellidoPaterno());
 	    txtApellidoMaterno.setText(alumno.getApellidoMaterno());

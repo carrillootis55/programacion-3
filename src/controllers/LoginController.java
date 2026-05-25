@@ -109,8 +109,13 @@ public class LoginController {
                 Maestro maestro =  repository.obtenerMaestroPorEmail(usuario);
 	            //new MainView();
                 
-	            MainView main = new MainView();
+	            MainView main = new MainView(maestro);
+	            
+	            main.configurarPermisos(maestro);
+	            
 	            new HomeController(main,maestro);
+	       
+	            main.showView(MainView.HOME);
 	            
 	            view.getWindow().dispose();
 	        }
@@ -208,6 +213,8 @@ public class LoginController {
             System.out.println("ID: " + maestro.getId());
             System.out.println("Nombre: " + maestro.getNombre());
             System.out.println("Email: " + maestro.getEmail());
+            System.out.println("ROL: " + maestro.getRole());
+            //System.out.println("ROL RECIBIDO: -" + maestro.getRole() + "-");
             return true;
 	        } catch (SQLException e) {
 	        System.out.println("Error al conectar a la BD: " + e.getMessage());

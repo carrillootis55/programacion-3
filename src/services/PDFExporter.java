@@ -21,6 +21,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
 import models.Alumno;
+import models.Maestro;
 import repository.CalificacionRepository;
 
 public class PDFExporter {
@@ -157,6 +158,93 @@ public class PDFExporter {
         
     }
     
+    public void exportMaestros(List<Maestro> maestros, File file) throws IOException {
+
+        try (
+
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
+
+            Document doc = new Document(pdfDoc, PageSize.LETTER.rotate())
+
+        ) {
+
+            doc.add(
+                new Paragraph("Reporte de Maestros")
+                .setBold()
+                .setFontSize(16)
+                .setTextAlignment(TextAlignment.CENTER)
+            );
+
+            doc.add(new Paragraph(" "));
+
+            float[] columnas = {1, 3, 4, 1, 1, 3, 1, 1};
+
+            Table table = new Table(UnitValue.createPercentArray(columnas) ).useAllAvailableWidth();
+
+            table.addHeaderCell(crearHeader("ID"));
+            table.addHeaderCell(crearHeader("Nombre"));
+            table.addHeaderCell(crearHeader("Email"));
+            table.addHeaderCell(crearHeader("Sexo"));
+            table.addHeaderCell(crearHeader("Edad"));
+            table.addHeaderCell(crearHeader("Maestría"));
+            table.addHeaderCell(crearHeader("Año"));
+            table.addHeaderCell(crearHeader("Grupo"));
+
+            for (Maestro m : maestros) {
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(String.valueOf(m.getId()))
+                    )
+                );
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(m.getNombre())
+                    )
+                );
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(m.getEmail())
+                    )
+                );
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(String.valueOf(m.getSexo()))
+                    )
+                );
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(String.valueOf(m.getEdad()))
+                    )
+                );
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(m.getMaestria())
+                    )
+                );
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(m.getAnio())
+                    )
+                );
+
+                table.addCell(
+                    new Cell().add(
+                        new Paragraph(m.getGrupo())
+                    )
+                );
+            }
+
+            doc.add(table);
+        }
+    }
+    
    
     public void exportCalificaciones(List<Alumno> alumnos, List<String> materias, File file) throws IOException {
         try (
@@ -256,6 +344,7 @@ public class PDFExporter {
     }
     
     
-
+    
+    
     
 }

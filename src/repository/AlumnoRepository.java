@@ -213,7 +213,8 @@ public class AlumnoRepository {
         System.out.println("Conectado");
 
         List<Alumno> alumnos = new ArrayList<>();
-
+        
+        //se usa a.* para indicar que seleccione todas las columnas de la tabla alumnos
         String sql = """
             SELECT
                 a.*,
@@ -346,8 +347,33 @@ public class AlumnoRepository {
 
 	        return alumnos;
 	    }
+	 
+	 
+	 public boolean existeMatricula(String matricula) {
+
+		    String sql = "SELECT matricula FROM alumno WHERE matricula = ?";
+
+		    try (
+
+		        Connection conn = DatabaseConnection.getConnection();
+
+		        PreparedStatement ps = conn.prepareStatement(sql)
+
+		    ) {
+
+		        ps.setString(1, matricula);
+
+		        ResultSet rs = ps.executeQuery();
+		        return rs.next();
+
+		    } catch (Exception e) {
+
+		        e.printStackTrace();
+		    }
+
+		    return false;
+	}
     
-  
-    
-    
+	 
+	 
 }
