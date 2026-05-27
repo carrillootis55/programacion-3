@@ -33,7 +33,7 @@ public class CalificacionRepository {
          ps.close();
 
     }
-
+  //=================================================================================================================================================================
     public void actualizarCalificacion( String matricula, int materiaId, double calificacion) throws Exception {
     	String sql = """
                 UPDATE calificacion
@@ -55,7 +55,7 @@ public class CalificacionRepository {
         ps.close();
 
     }
-
+  //=================================================================================================================================================================
     public boolean existeCalificacion(String matricula, int materiaId ) {
 
     	String sql = """
@@ -83,7 +83,7 @@ public class CalificacionRepository {
 
         return false;
     }
-
+  //=================================================================================================================================================================
     public List<String> getMateriasPorAnio(String anio) {
 
         List<String> materias = new ArrayList<>();
@@ -113,7 +113,7 @@ public class CalificacionRepository {
 
         return materias;
     }
-
+  //=================================================================================================================================================================
     public int getMateriaId( String nombreMateria, String anio) {
     	
     	String sql = """
@@ -144,7 +144,7 @@ public class CalificacionRepository {
 
         return -1;
     }
-    
+  //=================================================================================================================================================================
     public Double obtenerCalificacion(String matricula, String nombreMateria ) {
 
     	 String sql = """

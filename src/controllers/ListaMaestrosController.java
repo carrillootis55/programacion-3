@@ -32,7 +32,7 @@ public class ListaMaestrosController {
 
         asignarEventos();
     }
-
+  //=================================================================================================================================================================
     private void asignarEventos() {
 
     	view.getBtnAgregar().addActionListener(e -> {
@@ -80,7 +80,7 @@ public class ListaMaestrosController {
         );
         */
     }
-
+  //=================================================================================================================================================================
     private void cargarTabla() {
 
         try {
@@ -158,7 +158,7 @@ public class ListaMaestrosController {
         }
     }
     */
-
+  //=================================================================================================================================================================
     private void editarMaestro() {
 
         int fila = view.getSelectedRow();

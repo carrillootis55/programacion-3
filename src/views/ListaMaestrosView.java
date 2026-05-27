@@ -79,7 +79,7 @@ public class ListaMaestrosView extends JPanel {
     public JButton getBtnPdf() {
         return btnPdf;
     }
-
+  //=================================================================================================================================================================
     public File selectPdfFile() {
 
         JFileChooser chooser = new JFileChooser();
@@ -121,7 +121,7 @@ public class ListaMaestrosView extends JPanel {
         return file;
     }
 
-
+  //=================================================================================================================================================================
     private void styleTable() {
 
         tabla.setRowHeight(35);
@@ -210,7 +210,7 @@ public class ListaMaestrosView extends JPanel {
         });
     }
 
-
+  //=================================================================================================================================================================
     public void setTableModel(MaestroTableModel model) {
 
         tabla.setModel(model);
@@ -277,7 +277,7 @@ public class ListaMaestrosView extends JPanel {
         }
     }
 
-
+  //=================================================================================================================================================================
     public int getSelectedRow() {
 
         return tabla.getSelectedRow();

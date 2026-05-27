@@ -227,7 +227,7 @@ public class Formulario extends JFrame{
 	    lblErrorNumeroContacto.setText(msg);
 	}
 	
-	
+	//=================================================================================================================================================================
 	public void resetErrors() {
 		lblErrorMatricula.setText("");
 		lblErrorApellidoMaterno.setText("");
@@ -241,7 +241,7 @@ public class Formulario extends JFrame{
 		lblErrorParentesco.setText("");
 		lblErrorDomicilio.setText("");
 	}
-	
+	//=================================================================================================================================================================
 	public void inicializarComponentes() {
 		
 		
@@ -592,7 +592,7 @@ public class Formulario extends JFrame{
 		add(scroll, BorderLayout.CENTER);
 		
 	}
-	
+	//=================================================================================================================================================================
 	public void limpiarFormulario() {
 	    txtMatricula.setText("");
 	    txtMatricula.setEditable(true);
@@ -608,7 +608,7 @@ public class Formulario extends JFrame{
 	    parentescoAlumno.setSelectedIndex(0);
 	    domicilio.setSelectedIndex(0);
 	}
-	//
+	//=================================================================================================================================================================
 	public void cargarDatos(Alumno alumno) {
 		txtMatricula.setText(alumno.getMatricula());
 		txtMatricula.setEditable(false);
@@ -663,7 +663,7 @@ public class Formulario extends JFrame{
 	    domicilio.setSelectedItem(alumno.getDomicilio());
 	    
 	}
-
+	//=================================================================================================================================================================
 	private void crearBotones() {
 	    JPanel panelBoton = new JPanel();
 	    panelBoton.setBackground(Color.WHITE);

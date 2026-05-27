@@ -26,7 +26,7 @@ public class LoginController {
 		assignListeners();
 		
 	}
-	
+	//=================================================================================================================================================================
 	private void assignListeners() {
 
         //Boton login
@@ -78,7 +78,7 @@ public class LoginController {
         
   
     }
-	
+	//=================================================================================================================================================================
 	//Login
 	private void login() {
 
@@ -136,7 +136,7 @@ public class LoginController {
 	    
 	}
 	
-	
+	//=================================================================================================================================================================
 	//Validacion usuario
     private boolean validarUsuario() {
         if (view.getTextoUsuario().getText().trim().isEmpty()) {
@@ -147,7 +147,7 @@ public class LoginController {
         
         return true;
     }
-    
+  //=================================================================================================================================================================
     private void abrirRegistro() {
 
         Formulario formulario = new Formulario();
@@ -166,7 +166,7 @@ public class LoginController {
         //Cerrar login
         view.getWindow().dispose();
     }
-    
+  //=================================================================================================================================================================
     //Validacion contraseña
     private boolean validarContrasena() {
         if (String.valueOf(view.getContrasena().getPassword()).trim().isEmpty()) {
@@ -178,7 +178,7 @@ public class LoginController {
         return true;
 
     }
-    
+  //=================================================================================================================================================================
     //Validar credenciales
     private boolean validarCredenciales(String email, String password)
             throws InvalidUserException, InvalidPasswordException {
@@ -223,21 +223,6 @@ public class LoginController {
 	}
 
 
-        
-        /*if ((usuario.equals("dianitha@gmail.com") && password.equals("12345")) ||
-            (usuario.equals("hash@gmail.com") && password.equals("abcs"))||
-            (usuario.equals("dmedinam2108@gmail.com") && password.equals("2127"))
-            ) {
-            return true;
-        }
-
-        if (usuario.equals("dianitha@gmail.com") || usuario.equals("hash@gmail.com") ||           
-        (usuario.equals("dmedinam2108@gmail.com"))){
-            throw new InvalidPasswordException("Contraseña incorrecta");
-        }
-
-        throw new InvalidUserException("Usuario no existe");
-    }*/
 
     
 	

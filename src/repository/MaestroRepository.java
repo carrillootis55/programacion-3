@@ -19,7 +19,7 @@ public class MaestroRepository {
         this.connection = DatabaseConnection.getConnection();
     }
     
-
+  //=================================================================================================================================================================
     public Maestro buscarEmail(String email) throws SQLException {
         String sql = """
                 SELECT
@@ -84,7 +84,7 @@ public class MaestroRepository {
 
         return null;
     }
-
+  //=================================================================================================================================================================
     public boolean verificarCredenciales( String email,String password ) throws SQLException {
 
         String sql =  "SELECT password FROM maestro WHERE email = ?";
