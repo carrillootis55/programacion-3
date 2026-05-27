@@ -157,7 +157,7 @@ public class PDFExporter {
         }
         
     }
-    
+  //=================================================================================================================================================================
     public void exportMaestros(List<Maestro> maestros, File file) throws IOException {
 
         try (
@@ -245,7 +245,7 @@ public class PDFExporter {
         }
     }
     
-   
+  //=================================================================================================================================================================
     public void exportCalificaciones(List<Alumno> alumnos, List<String> materias, File file) throws IOException {
         try (
 
@@ -329,7 +329,7 @@ public class PDFExporter {
             doc.add(table);
         }
     }
-    
+  //=================================================================================================================================================================
     private Cell crearHeader(String texto) {
 
         return new Cell()

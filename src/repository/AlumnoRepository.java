@@ -53,7 +53,7 @@ public class AlumnoRepository {
     }*/
     
     //Guardar json
-	
+//=================================================================================================================================================================
 	public void save(Alumno alumno) throws Exception {
         String sql = """
             INSERT INTO alumno(
@@ -123,7 +123,7 @@ public class AlumnoRepository {
         mapper.writeValue(new File(FILE), alumnos);
     }
 */
-    
+	//=================================================================================================================================================================
 	public void updateAlumno(Alumno alumno) throws Exception {
 
         String sql = """
@@ -172,7 +172,8 @@ public class AlumnoRepository {
 
         ps.close();
     }
-	 
+	
+	//=================================================================================================================================================================
     //Eliminar alumno
 	public void delete(String matricula) throws Exception {
 
@@ -206,7 +207,7 @@ public class AlumnoRepository {
 
         return alumnos;
     }*/
-    
+	//=================================================================================================================================================================
     //Se obtienen y almacenan los alumnos json
 	public List<Alumno> getAlumnos() {
 
@@ -277,101 +278,101 @@ public class AlumnoRepository {
         return alumnos;
     }
 
-  
-	 public List<Alumno> getAlumnosPorGrupo(String anio, String grupo) {
+	//=================================================================================================================================================================
+	public List<Alumno> getAlumnosPorGrupo(String anio, String grupo) {
 
-	        List<Alumno> alumnos = new ArrayList<>();
+        List<Alumno> alumnos = new ArrayList<>();
 
-	        String sql = """
-	            SELECT
-	                a.*,
-	                an.tipo AS anio,
-	                g.tipoGrupo AS grupo
-	            FROM alumno a
-	            INNER JOIN anio an
-	                ON a.anio_id = an.id
-	            INNER JOIN grupo g
-	                ON a.grupo_id = g.id
-	            WHERE an.tipo = ?
-	            AND g.tipoGrupo = ?
-	            """;
+        String sql = """
+            SELECT
+                a.*,
+                an.tipo AS anio,
+                g.tipoGrupo AS grupo
+            FROM alumno a
+            INNER JOIN anio an
+                ON a.anio_id = an.id
+            INNER JOIN grupo g
+                ON a.grupo_id = g.id
+            WHERE an.tipo = ?
+            AND g.tipoGrupo = ?
+            """;
 
-	        try (
+        try (
 
-	            Connection conn = DatabaseConnection.getConnection();
+            Connection conn = DatabaseConnection.getConnection();
 
-	            PreparedStatement ps = conn.prepareStatement(sql)
+            PreparedStatement ps = conn.prepareStatement(sql)
 
-	        ) {
+        ) {
 
-	            ps.setString(1, anio);
+            ps.setString(1, anio);
 
-	            ps.setString(2, grupo);
+            ps.setString(2, grupo);
 
-	            ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-	            while (rs.next()) {
+            while (rs.next()) {
 
-	                Alumno alumno = new Alumno(
+                Alumno alumno = new Alumno(
 
-	                    rs.getString("matricula"),
+                    rs.getString("matricula"),
 
-	                    rs.getString("nombre"),
+                    rs.getString("nombre"),
 
-	                    rs.getString("apellido_paterno"),
+                    rs.getString("apellido_paterno"),
 
-	                    rs.getString("apellido_materno"),
+                    rs.getString("apellido_materno"),
 
-	                    rs.getString("sexo").charAt(0),
+                    rs.getString("sexo").charAt(0),
 
-	                    rs.getString("anio"),
+                    rs.getString("anio"),
 
-	                    rs.getString("grupo"),
+                    rs.getString("grupo"),
 
-	                    rs.getString("contacto_emergencia"),
+                    rs.getString("contacto_emergencia"),
 
-	                    rs.getString("numero_emergencia"),
+                    rs.getString("numero_emergencia"),
 
-	                    rs.getString("parentesco"),
+                    rs.getString("parentesco"),
 
-	                    rs.getString("domicilio")
-	                );
+                    rs.getString("domicilio")
+                );
 
-	                alumnos.add(alumno);
-	            }
+                alumnos.add(alumno);
+            }
 
-	        } catch (Exception e) {
+        } catch (Exception e) {
 
-	            e.printStackTrace();
-	        }
+            e.printStackTrace();
+        }
 
-	        return alumnos;
+        return alumnos;
+    }
+	 
+	//=================================================================================================================================================================
+	public boolean existeMatricula(String matricula) {
+
+	    String sql = "SELECT matricula FROM alumno WHERE matricula = ?";
+
+	    try (
+
+	        Connection conn = DatabaseConnection.getConnection();
+
+	        PreparedStatement ps = conn.prepareStatement(sql)
+
+	    ) {
+
+	        ps.setString(1, matricula);
+
+	        ResultSet rs = ps.executeQuery();
+	        return rs.next();
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
 	    }
-	 
-	 
-	 public boolean existeMatricula(String matricula) {
 
-		    String sql = "SELECT matricula FROM alumno WHERE matricula = ?";
-
-		    try (
-
-		        Connection conn = DatabaseConnection.getConnection();
-
-		        PreparedStatement ps = conn.prepareStatement(sql)
-
-		    ) {
-
-		        ps.setString(1, matricula);
-
-		        ResultSet rs = ps.executeQuery();
-		        return rs.next();
-
-		    } catch (Exception e) {
-
-		        e.printStackTrace();
-		    }
-
-		    return false;
+	    return false;
 	}
     
 	 

@@ -36,7 +36,7 @@ public class FormularioMaestroController {
 
         bloquearGruposOcupados();
     }
-
+  //=================================================================================================================================================================
     public void setModoEdicion() {
 
         this.editando = true;
@@ -50,7 +50,7 @@ public class FormularioMaestroController {
         view.getRbA().setEnabled(false);
         view.getRbB().setEnabled(false);
     }
-
+  //=================================================================================================================================================================
     private void assignListeners() {
 
         view.getTxtNombre().getDocument().addDocumentListener(
@@ -190,7 +190,7 @@ public class FormularioMaestroController {
             }
         });
     }
-
+  //=================================================================================================================================================================
     private boolean validateNombre() {
 
         if (view.getTxtNombre().getText().trim().isEmpty()) {
@@ -204,7 +204,7 @@ public class FormularioMaestroController {
 
         return true;
     }
-
+  //=================================================================================================================================================================
     private boolean validateEmail() {
 
         String email =view.getTxtEmail().getText() .trim();
@@ -226,7 +226,7 @@ public class FormularioMaestroController {
 
         return true;
     }
-
+  //=================================================================================================================================================================
     private boolean validatePassword() {
 
         String password = new String(view.getTxtPassword() .getPassword());
@@ -249,7 +249,7 @@ public class FormularioMaestroController {
         return true;
     }
 
-
+  //=================================================================================================================================================================
     private boolean validateEdad() {
 
         String edad =view.getTxtEdad().getText() .trim();
@@ -281,7 +281,7 @@ public class FormularioMaestroController {
         return true;
     }
 
-
+  //=================================================================================================================================================================
     private boolean validateMaestria() {
 
         if (view.getTxtMaestria().getText().trim().isEmpty()) {
@@ -295,7 +295,7 @@ public class FormularioMaestroController {
 
         return true;
     }
-
+  //=================================================================================================================================================================
     private boolean validateSexo() {
 
         if (!view.getRbHombre().isSelected()&& !view.getRbMujer().isSelected()) {
@@ -309,7 +309,7 @@ public class FormularioMaestroController {
 
         return true;
     }
-
+  //=================================================================================================================================================================
     private boolean validateAnio() {
 
         if (!view.getRb1().isSelected()&& !view.getRb2().isSelected()&& !view.getRb3().isSelected()) {
@@ -323,7 +323,7 @@ public class FormularioMaestroController {
 
         return true;
     }
-
+  //=================================================================================================================================================================
     private boolean validateGrupo() {
 
         if (!view.getRbA().isSelected()&& !view.getRbB().isSelected()) {
@@ -337,7 +337,7 @@ public class FormularioMaestroController {
 
         return true;
     }
-
+  //=================================================================================================================================================================
     private boolean validarGrupoDisponible() {
 
         String anio =view.getRb1().isSelected() ? "1": view.getRb2().isSelected() ? "2": "3";
@@ -365,7 +365,7 @@ public class FormularioMaestroController {
         return true;
     }
 
-
+  //=================================================================================================================================================================
     private void bloquearGruposOcupados() {
 
         try {
@@ -385,7 +385,7 @@ public class FormularioMaestroController {
             JOptionPane.showMessageDialog(view, "Error al cargar grupos");
         }
     }
-
+  //=================================================================================================================================================================
     private void validarFormulario() {
 
         boolean validacion = true;

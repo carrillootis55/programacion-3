@@ -108,7 +108,7 @@ public class MaestroRepository {
         return false;
     }
     
-    
+  //=================================================================================================================================================================
     public Maestro obtenerMaestroPorEmail(String email)throws SQLException {
 
         String sql = """
@@ -177,7 +177,7 @@ public class MaestroRepository {
         return null;
     }
 
-
+  //=================================================================================================================================================================
     public List<Maestro> obtenerTodos()throws SQLException {
 
         List<Maestro> maestros = new ArrayList<>();
@@ -241,9 +241,8 @@ public class MaestroRepository {
 
         return maestros;
     }
-    
-    public List<Maestro> obtenerSoloMaestros()
-            throws SQLException {
+  //=================================================================================================================================================================
+    public List<Maestro> obtenerSoloMaestros()throws SQLException {
 
         List<Maestro> maestros =
                 new ArrayList<>();
@@ -312,7 +311,7 @@ public class MaestroRepository {
         return maestros;
     }
     
-    
+  //=================================================================================================================================================================
     public int contarMaestros() throws SQLException {
 
         String sql = """
@@ -340,7 +339,7 @@ public class MaestroRepository {
         return 0;
     }
     
- 
+  //=================================================================================================================================================================
     public boolean guardar(Maestro maestro) throws SQLException {
 
         String sql = """
@@ -383,7 +382,7 @@ public class MaestroRepository {
         }
     }
     
-    
+  //=================================================================================================================================================================
     public boolean actualizar(Maestro maestro)throws SQLException {
         String sql = """
                 UPDATE maestro
@@ -441,13 +440,13 @@ public class MaestroRepository {
         }
         
     }*/
-    
+  //=================================================================================================================================================================
     
     public boolean esAdmin(Maestro maestro) {
 
         return maestro.getRole().equals("ADMIN");
     }
-    
+  //=================================================================================================================================================================
     public boolean existeMaestroEnGrupo(String anio, String grupo)throws SQLException {
 
         String sql = """

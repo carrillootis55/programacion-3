@@ -96,9 +96,6 @@ public class FormularioMaestro extends JFrame {
 
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // =========================
-        // NOMBRE
-        // =========================
 
         JLabel nombre = new JLabel("Nombre:");
 
@@ -116,9 +113,7 @@ public class FormularioMaestro extends JFrame {
 
         panel.add(lblErrorNombre);
 
-        // =========================
-        // EMAIL
-        // =========================
+
 
         JLabel email = new JLabel("Email:");
 
@@ -136,9 +131,7 @@ public class FormularioMaestro extends JFrame {
 
         panel.add(lblErrorEmail);
 
-        // =========================
-        // PASSWORD
-        // =========================
+  
 
         JLabel password = new JLabel("Contraseña:");
 
@@ -156,9 +149,7 @@ public class FormularioMaestro extends JFrame {
 
         panel.add(lblErrorPassword);
 
-        // =========================
-        // EDAD
-        // =========================
+
 
         JLabel edad = new JLabel("Edad:");
 
@@ -176,9 +167,7 @@ public class FormularioMaestro extends JFrame {
 
         panel.add(lblErrorEdad);
 
-        // =========================
-        // MAESTRIA
-        // =========================
+  
 
         JLabel maestria = new JLabel("Maestría:");
 
@@ -198,15 +187,13 @@ public class FormularioMaestro extends JFrame {
 
         panel.add(Box.createVerticalStrut(15));
 
-        // =========================
-        // SEXO - GRUPO - AÑO
-        // =========================
+ 
 
         JPanel panelOpciones = new JPanel();
 
         panelOpciones.setLayout(new BoxLayout(panelOpciones, BoxLayout.X_AXIS));
 
-        // SEXO
+    
 
         JPanel panelSexo = new JPanel();
 
@@ -232,7 +219,6 @@ public class FormularioMaestro extends JFrame {
 
         panelSexo.add(rbHombre);
 
-        // GRUPO
 
         JPanel panelGrupo = new JPanel();
 
@@ -258,7 +244,6 @@ public class FormularioMaestro extends JFrame {
 
         panelGrupo.add(rbB);
 
-        // AÑO
 
         JPanel panelAnio = new JPanel();
 
@@ -376,7 +361,6 @@ public class FormularioMaestro extends JFrame {
         add(panelBotones, BorderLayout.SOUTH);
     }
 
-    // GETTERS
 
     public JTextField getTxtNombre() {
         return txtNombre;
@@ -430,10 +414,6 @@ public class FormularioMaestro extends JFrame {
         return rb3;
     }
 
-    
-	 // =========================
-	 // METODOS DE ERROR
-	 // =========================
 	
 	 public void setErrorNombre(String msg) {
 	
@@ -459,9 +439,7 @@ public class FormularioMaestro extends JFrame {
 	
 	     lblErrorMaestria.setText(msg);
 	 }
-	
-	 // ESTOS NO TENIAN LABELS
-	 // LOS AGREGAMOS VACIOS PARA NO MARCAR ERROR
+
 	
 	 public void setErrorSexo(String msg) {
 	 }
@@ -472,7 +450,7 @@ public class FormularioMaestro extends JFrame {
 	
 	public void setErrorAnio(String msg) {
 	}
-    // CARGAR DATOS
+
 
     public void cargarDatos(Maestro maestro) {
 

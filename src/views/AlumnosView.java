@@ -75,10 +75,6 @@ public class AlumnosView extends JPanel {
 		return btnPdf; 
 	} 
 
-	/*public void setTableModel(AlumnoTableModels model) {
-        tabla.setModel(model);
-    }*/
-
 	public JButton getBtnCalificar() {
 	    return btnCalificar;
 	}
@@ -228,10 +224,6 @@ public class AlumnosView extends JPanel {
         //Centrar
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-
-        /*if (tabla.getColumnCount() >= 1) {
-            tabla.getColumnModel().getColumn(0).setCellRenderer(center);
-        }*/
         
         //Centrar columna sexo
         if (tabla.getColumnCount() >= 5) {

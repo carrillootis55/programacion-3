@@ -109,10 +109,7 @@ public class HomeController {
         }
     }
     
-    
- // =========================
- // NUEVO METODO EXPORTAR PDF MAESTROS
- // =========================
+    //Exportar maestros
     private void exportMaestrosPDF() {
 
      // Seleccionar archivo

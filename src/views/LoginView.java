@@ -201,7 +201,7 @@ public class LoginView extends JPanel {
 		
 	}
 	
-	//ICONO DEL BOTON
+	//icono boton
 	private void colocarIcono(JButton boton, String ruta) { 
 		try {
 			Image icono = ImageIO.read(getClass().getResource(ruta));
