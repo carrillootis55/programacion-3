@@ -207,7 +207,7 @@ public class LoginController {
 
             // Verificamos la contraseña
             if (!PasswordUtils.checkPassword(password, maestro.getPassword())) {
-                throw new InvalidPasswordException("Contraseña incorrecta");
+                throw new InvalidPasswordException("Datos invalidos");
             }
             System.out.println("Login exitoso:");
             System.out.println("ID: " + maestro.getId());

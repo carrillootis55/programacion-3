@@ -329,22 +329,95 @@ public class PDFExporter {
             doc.add(table);
         }
     }
+    
+    public void exportBoleta(Alumno alumno, File file) throws IOException {
+
+        try (
+
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
+
+            Document doc = new Document(pdfDoc,PageSize.LETTER)) {
+
+            CalificacionRepository repo = new CalificacionRepository();
+
+            // TITULO
+            doc.add(new Paragraph("BOLETA ESCOLAR").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER));
+
+            doc.add(new Paragraph(" "));
+
+            // DATOS ALUMNO
+            doc.add(
+                new Paragraph(
+                    "Alumno: " + alumno.getNombre()
+                    + " " + alumno.getApellidoPaterno()
+                    + " " + alumno.getApellidoMaterno()
+                ));
+
+            doc.add(new Paragraph("Matrícula: " + alumno.getMatricula()));
+
+            doc.add(new Paragraph(
+                    "Grupo: " + alumno.getGrupo()));
+
+            doc.add(new Paragraph("Año: " + alumno.getAnio()));
+
+            doc.add(new Paragraph(" "));
+
+            // MATERIAS
+            List<String> materias = repo.getMateriasPorAnio(alumno.getAnio());
+
+            float[] columnas = {5, 2};
+
+            Table table = new Table(UnitValue.createPercentArray(columnas)).useAllAvailableWidth();
+
+            table.addHeaderCell(crearHeader("Materia"));
+            table.addHeaderCell(crearHeader("Calificación"));
+
+            double suma = 0;
+
+            int contador = 0;
+
+            for (String materia : materias) {
+
+                Double calificacion = repo.obtenerCalificacion(alumno.getMatricula(),materia);
+
+                table.addCell(new Cell().add(new Paragraph(materia)));
+
+                if (calificacion != null) {
+
+                    table.addCell( new Cell().add(new Paragraph(String.valueOf(calificacion))).setTextAlignment(TextAlignment.CENTER));
+
+                    suma += calificacion;
+
+                    contador++;
+
+                } else {
+
+                    table.addCell(new Cell().add(new Paragraph("Sin calificación")).setTextAlignment(TextAlignment.CENTER));
+                }
+            }
+
+            doc.add(table);
+
+            doc.add(new Paragraph(" "));
+
+            double promedio = 0;
+
+            if (contador > 0) {
+
+                promedio = suma / contador;
+            }
+
+            promedio = Math.round(promedio * 10.0) / 10.0;
+
+            doc.add(new Paragraph("PROMEDIO FINAL: "+ promedio).setBold().setFontSize(16).setTextAlignment(TextAlignment.RIGHT));
+        }
+    }
   //=================================================================================================================================================================
     private Cell crearHeader(String texto) {
 
         return new Cell()
-                .add(new Paragraph(texto))
-                .setBackgroundColor(
-                        new DeviceRgb(45,111,164)
-                )
-                .setFontColor(DeviceGray.WHITE)
-                .setTextAlignment(
-                        TextAlignment.CENTER
-                );
+                .add(new Paragraph(texto)).setBackgroundColor(
+                        new DeviceRgb(45,111,164)).setFontColor(DeviceGray.WHITE).setTextAlignment(TextAlignment.CENTER);
     }
-    
-    
-    
-    
     
 }

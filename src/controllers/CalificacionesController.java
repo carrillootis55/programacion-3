@@ -4,14 +4,18 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import models.Alumno;
-import repository.AlumnoRepository;
 import repository.CalificacionRepository;
 import views.CalificarAlumnoView;
+import java.awt.Desktop;
+import java.io.File;
+import services.PDFExporter;
 
 public class CalificacionesController {
 
@@ -23,6 +27,7 @@ public class CalificacionesController {
 
 
     private CalificacionRepository repo;
+    
 
     public CalificacionesController(CalificarAlumnoView view, Alumno alumno,int index,List<String> materias) {
         this.view = view;
@@ -36,7 +41,8 @@ public class CalificacionesController {
 
     private void iniciar() {
     	configurarValidaciones();
-        view.btnGuardar.addActionListener(
+       
+    	view.btnGuardar.addActionListener(
                 e -> guardar()
         );
     }
@@ -172,7 +178,37 @@ public class CalificacionesController {
             JOptionPane.showMessageDialog( view, "Error al guardar");
         }
     }
+	   private void cargarCalificaciones() {
 
-    
-	
+	        try {
+
+	            for (int i = 0; i < materias.size(); i++) {
+
+	                String materia = materias.get(i);
+
+	                Double calificacion =
+	                        repo.obtenerCalificacion(
+	                                alumno.getMatricula(),
+	                                materia
+	                        );
+
+	                if (calificacion != null) {
+
+	                    view.getCamposCalificaciones()
+	                            .get(i)
+	                            .setText(
+	                                    String.valueOf(calificacion)
+	                            );
+	                }
+	            }
+
+	        } catch (Exception e) {
+
+	            JOptionPane.showMessageDialog(
+	                    view,
+	                    "Error al cargar calificaciones"
+	            );
+	        }
+	    }
+   
 }

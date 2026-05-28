@@ -53,7 +53,7 @@ public class Formulario extends JFrame{
 	
 	private JTextField txtContactoEmergencia;
 	private JTextField txtNumeroEmergencia;
-	
+	private JTextField txtFechaNacimiento;
 	private JRadioButton rbMujer;
 	private JRadioButton rbHombre;
 	private ButtonGroup bgSexo;
@@ -79,7 +79,7 @@ public class Formulario extends JFrame{
 	private JLabel lblErrorNumeroContacto;
 	private JLabel lblErrorSexo;
 	private JLabel lblErrorGrupo;
-	
+	private JLabel lblErrorFechaNacimiento;
 	private JLabel lblErrorAnio;
 	
 	private JLabel lblErrorParentesco;
@@ -132,7 +132,9 @@ public class Formulario extends JFrame{
 	public JTextField getTxtNumeroEmergencia() {
 		return txtNumeroEmergencia;
 	}
-
+	public JTextField getFechaNacimiento() {
+		return txtFechaNacimiento;
+	}
 	public JRadioButton getRbMujer() {
 		return rbMujer;
 	}
@@ -222,6 +224,11 @@ public class Formulario extends JFrame{
 	    lblErrorContactoEmergencia.setText(msg);
 	}
 
+	public void setErrorFechaNacimiento(String msg) {
+		lblErrorFechaNacimiento.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+		lblErrorFechaNacimiento.setText(msg);
+	}
+
 	public void setErrorNumero(String msg) {
 		lblErrorNumeroContacto.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 	    lblErrorNumeroContacto.setText(msg);
@@ -240,6 +247,7 @@ public class Formulario extends JFrame{
 		lblErrorContactoEmergencia.setText("");
 		lblErrorParentesco.setText("");
 		lblErrorDomicilio.setText("");
+		lblErrorFechaNacimiento.setText("");
 	}
 	//=================================================================================================================================================================
 	public void inicializarComponentes() {
@@ -379,7 +387,36 @@ public class Formulario extends JFrame{
 		lblErrorNombre.setForeground(Color.RED);
 		lblErrorNombre.setAlignmentX(LEFT_ALIGNMENT);
 		panelComponentes.add(lblErrorNombre);
+
+		JLabel fechaNacimiento = new JLabel("Fecha de nacimiento:");
+		fechaNacimiento.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(fechaNacimiento);
+		fechaNacimiento.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+
 		
+		txtFechaNacimiento = new JTextField(30);
+		txtFechaNacimiento.addFocusListener(new FocusAdapter() {
+
+		    @Override
+		    public void focusGained(FocusEvent e) {
+		    	txtFechaNacimiento.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+		    }
+
+		    @Override
+		    public void focusLost(FocusEvent e) {
+		    	txtFechaNacimiento.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+		    }
+
+		});
+		
+		txtFechaNacimiento.setMaximumSize(txtFechaNacimiento.getPreferredSize()); 
+		txtFechaNacimiento.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(txtFechaNacimiento);
+		
+		lblErrorFechaNacimiento = new JLabel();
+		lblErrorFechaNacimiento.setForeground(Color.RED);
+		lblErrorFechaNacimiento.setAlignmentX(LEFT_ALIGNMENT);
+		panelComponentes.add(lblErrorFechaNacimiento);
 		
 		
 		JPanel panelSexo = new JPanel();
@@ -529,7 +566,7 @@ public class Formulario extends JFrame{
 	    parentesco.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
 		String[] opcionesParentesco = {"Seleccione","Padre","Madre","Hermana/Hermano",
-				"Tio/Tia", "Abuelo/Abuela"};
+				"Tio/Tia", "Abuelo/Abuela", "Otro"};
 		
 		parentescoAlumno = new JComboBox<String>(opcionesParentesco);
 

@@ -68,7 +68,12 @@ public class FormularioMaestroController {
                 validateNombre();
             }
         });
-
+        
+        view.getFechaNacimiento().getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+            public void removeUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+            public void changedUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+        });
 
         view.getTxtEmail().getDocument().addDocumentListener(
                 new DocumentListener() {
@@ -295,6 +300,16 @@ public class FormularioMaestroController {
 
         return true;
     }
+    
+    private boolean validateFechaNacimiento() {
+        if (view.getFechaNacimiento().getText().trim().isEmpty()) {
+            view.setErrorFechaNacimiento("La fecha de nacimiento es obligatoria");
+            return false;
+        }
+        view.setErrorFechaNacimiento("");
+        return true;
+    }
+    
   //=================================================================================================================================================================
     private boolean validateSexo() {
 
@@ -385,6 +400,8 @@ public class FormularioMaestroController {
             JOptionPane.showMessageDialog(view, "Error al cargar grupos");
         }
     }
+    
+    
   //=================================================================================================================================================================
     private void validarFormulario() {
 
@@ -395,7 +412,7 @@ public class FormularioMaestroController {
         if (!validateEmail()) validacion = false;
 
         if (!validatePassword()) validacion = false;
-
+        if (!validateFechaNacimiento()) validacion = false;
 
         if (!validateEdad()) validacion = false;
 
@@ -445,7 +462,7 @@ public class FormularioMaestroController {
 
             maestro.setEdad(Integer.parseInt(view.getTxtEdad().getText() ));
 
-
+            maestro.setFechaNacimiento(view.getFechaNacimiento().getText());
             maestro.setMaestria( view.getTxtMaestria().getText());
 
             maestro.setSexo(view.getRbHombre().isSelected()? "H": "M");

@@ -3,6 +3,7 @@ package controllers;
 import java.awt.Desktop;
 import java.util.List;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.io.File; 
 import models.Alumno;
@@ -14,6 +15,7 @@ import tablemodels.AlumnoTableModels;
 import views.AlumnosView;
 import views.CalificarAlumnoView;
 import views.Formulario;
+import views.DetallesAlumno;
 
 public class AlumnoController {
 	
@@ -72,6 +74,7 @@ public class AlumnoController {
 		    ventana.setVisible(true);
 		});
 		
+		
 		//EDITAR
 		view.getBtnEditar().addActionListener(e ->{
 			int fila = view.getTabla().getSelectedRow();
@@ -106,7 +109,6 @@ public class AlumnoController {
 				JOptionPane.showMessageDialog(null, "Error al abrir el formulario");
 			}
 		});
-		
 		//ELIMINAR
 		
 		view.getBtnEliminar().addActionListener(e ->{
@@ -152,7 +154,124 @@ public class AlumnoController {
 		});
 		
 		view.getBtnPdf().addActionListener(e -> generarPdf());
+		view.getBtnBoleta().addActionListener(e -> {
+
+		    int fila = view.getSelectedRow();
+
+		    if(fila == -1) {
+
+		        JOptionPane.showMessageDialog(
+		                null,
+		                "Selecciona un alumno"
+		        );
+
+		        return;
+		    }
+
+		    AlumnoTableModels model =
+		            (AlumnoTableModels) view.getTabla().getModel();
+
+		    Alumno alumno = model.getAlumnoAt(fila);
+
+		    generarBoleta(alumno);
+		});
 		
+		view.getBtnEditarCalificaciones().addActionListener(e -> {
+
+		    int fila = view.getSelectedRow();
+
+		    if(fila == -1) {
+
+		        JOptionPane.showMessageDialog(
+		                null,
+		                "Selecciona un alumno"
+		        );
+
+		        return;
+		    }
+
+		    AlumnoTableModels model =
+		            (AlumnoTableModels) view.getTabla().getModel();
+
+		    Alumno alumno = model.getAlumnoAt(fila);
+
+		    CalificacionRepository repo =
+		            new CalificacionRepository();
+
+		    List<String> materias =
+		            repo.getMateriasPorAnio(
+		                    maestroActual.getAnio()
+		            );
+
+		    CalificarAlumnoView ventana =
+		            new CalificarAlumnoView(
+		                    alumno,
+		                    materias
+		            );
+
+		    new CalificacionesController(
+		            ventana,
+		            alumno,
+		            fila,
+		            materias
+		    );
+
+		    ventana.cargarCalificaciones(
+		            obtenerCalificaciones(alumno, materias)
+		    );
+
+		    ventana.setLocationRelativeTo(null);
+
+		    ventana.setVisible(true);
+		});
+		
+		
+		//VER DETALLES
+		view.getBtnDetallesA().addActionListener(e -> {
+
+		    int fila = view.getSelectedRow();
+
+		    if (fila == -1) {
+
+		        JOptionPane.showMessageDialog(
+		                null,
+		                "Selecciona un alumno"
+		        );
+
+		        return;
+		    }
+
+		    AlumnoTableModels model =
+		            (AlumnoTableModels) view.getTabla().getModel();
+
+		    Alumno alumno = model.getAlumnoAt(fila);
+
+		    DetallesAlumno detalles =
+		            new DetallesAlumno(alumno);
+
+		    detalles.setVisible(true);
+		});
+		
+	
+	}
+	private List<Double> obtenerCalificaciones(Alumno alumno, List<String> materias) {
+
+	    List<Double> lista = new java.util.ArrayList<>();
+
+	    CalificacionRepository repo = new CalificacionRepository();
+
+	    for(String materia : materias) {
+
+	        Double calificacion = repo.obtenerCalificacion(alumno.getMatricula(),materia);
+
+	        if(calificacion == null) {
+	            calificacion = 0.0;
+	        }
+
+	        lista.add(calificacion);
+	    }
+
+	    return lista;
 	}
 	//=================================================================================================================================================================
 	private void actualizarTabla() {
@@ -211,5 +330,40 @@ public class AlumnoController {
 			JOptionPane.showMessageDialog(null, "Error al exportar PDF");
 		}
 	}
+		
+	    
+	    private void generarBoleta(Alumno alumno) {
 
+	        JFileChooser chooser = new JFileChooser();
+
+	        chooser.setSelectedFile(
+	                new File("boleta.pdf")
+	        );
+
+	        int option = chooser.showSaveDialog(view);
+
+	        if(option != JFileChooser.APPROVE_OPTION) {
+	            return;
+	        }
+
+	        File file = chooser.getSelectedFile();
+
+	        try {
+
+	            PDFExporter pdf = new PDFExporter();
+
+	            pdf.exportBoleta(alumno, file);
+
+	            Desktop.getDesktop().open(file);
+
+	        } catch(Exception e) {
+
+	            e.printStackTrace();
+
+	            JOptionPane.showMessageDialog(
+	                    view,
+	                    "Error al generar boleta"
+	            );
+	        }
+	    }
 }

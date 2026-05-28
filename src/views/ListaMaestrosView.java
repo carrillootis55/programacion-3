@@ -28,7 +28,7 @@ public class ListaMaestrosView extends JPanel {
 
     private JButton btnAgregar;
     private JButton btnEditar;
-   // private JButton btnEliminar;
+    private JButton btnEliminar;
     private JButton btnPdf;
 
     public ListaMaestrosView() {
@@ -41,14 +41,14 @@ public class ListaMaestrosView extends JPanel {
         
         btnAgregar = new JButton("Agregar");
         btnEditar = new JButton("Editar");
-        //btnEliminar = new JButton("Eliminar");
+        btnEliminar = new JButton("Eliminar");
         btnPdf = new JButton("Exportar PDF");
 
         JPanel panelBotones = new JPanel();
 
         panelBotones.add(btnAgregar);
         panelBotones.add(btnEditar);
-        //panelBotones.add(btnEliminar);
+        panelBotones.add(btnEliminar);
 
         panelBotones.add(new JSeparator(SwingConstants.VERTICAL));
 
@@ -72,10 +72,10 @@ public class ListaMaestrosView extends JPanel {
         return btnEditar;
     }
 
-   /* public JButton getBtnEliminar() {
+   public JButton getBtnEliminar() {
         return btnEliminar;
     }
-*/
+
     public JButton getBtnPdf() {
         return btnPdf;
     }

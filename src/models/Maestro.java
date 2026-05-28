@@ -14,7 +14,7 @@ public class Maestro {
 	private String grupo;
 	private List<String> materias;
 	private String role;
-	
+	private String fechaNacimiento;
 	public Maestro() {
 		
 	}
@@ -33,8 +33,9 @@ public class Maestro {
 		 this.role = role;
 	}
 
-	public Maestro(String nombre, String email, String password, String sexo, int edad, String maestria, String anio, String grupo) {
+	public Maestro(String nombre, String fechaNacimiento, String email, String password, String sexo, int edad, String maestria, String anio, String grupo) {
 		 this.nombre = nombre;
+		 this.fechaNacimiento = fechaNacimiento;
 		 this.email = email;
 		 this.password = password;
 		 this.sexo = sexo;
@@ -42,8 +43,7 @@ public class Maestro {
 		 this.maestria = maestria;
 		 this.anio = anio;
 		 this.grupo = grupo;
-	}
-	
+	}	
 	public Maestro(int id, String nombre, String email, String password) {
 		 this.id = id;
 		 this.nombre = nombre;
@@ -90,7 +90,13 @@ public class Maestro {
 	public String getNombre() {
 		return nombre;
 	}
+	public String getFechaNacimiento() {
+		return fechaNacimiento;
+	}
 
+	public void setFechaNacimiento(String fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -145,14 +151,16 @@ public class Maestro {
 
 	@Override
 	public String toString() {
-		return "Descripcion del maestro:/n" + 
-				"Nombre:" + nombre + 
-				"\nSexo: " + sexo +
-				"/nEdad: " + edad + 
-				"/nMaestria: " + maestria + 
-				"\nAño: " + anio +
-	            "\nGrupo: " + grupo;
+		return "Descripcion del maestro:\n" + 
+				"Nombre: " + nombre + "\n" +
+				"Fecha de nacimiento: " + fechaNacimiento + "\n" +
+				"Sexo: " + sexo + "\n" +
+				"Edad: " + edad + "\n" +
+				"Maestria: " + maestria + "\n" +
+	            "Año: " + anio + "\n" +
+	            "Grupo: " + grupo;
 	}
-	
+
+
 	
 }

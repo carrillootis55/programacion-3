@@ -74,11 +74,11 @@ public class ListaMaestrosController {
 
         view.getBtnEditar().addActionListener(e -> editarMaestro() );
 
-        /*
+        
         view.getBtnEliminar().addActionListener(
                 e -> eliminarMaestro()
         );
-        */
+        
     }
   //=================================================================================================================================================================
     private void cargarTabla() {
@@ -95,7 +95,7 @@ public class ListaMaestrosController {
         }
     }
 
-    /*
+    
     private void eliminarMaestro() {
 
         int fila = view.getSelectedRow();
@@ -157,7 +157,7 @@ public class ListaMaestrosController {
             );
         }
     }
-    */
+   
   //=================================================================================================================================================================
     private void editarMaestro() {
 

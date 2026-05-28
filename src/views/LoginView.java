@@ -98,7 +98,6 @@ public class LoginView extends JPanel {
         //Se centra el texto
 
         add(lblSaludo, BorderLayout.NORTH); 
-        //Se ubicara en el norte 
     }
 	
     //BOTON
@@ -169,11 +168,6 @@ public class LoginView extends JPanel {
         lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));
 
         
-        //CheckBox para recordar al usuario
-        JCheckBox chkRecordar = new JCheckBox("Recordar usuario", false);
-        chkRecordar.setBackground(Color.WHITE);
-        chkRecordar.setFont(fuente.deriveFont(14f));
-		
 		
         //SE AGREGA LO CREADO
 		panelito.add(lblEmail);
@@ -190,12 +184,9 @@ public class LoginView extends JPanel {
 		panelito.add(new JLabel());
 		panelito.add(lblContrasenaCorreccion);
 		
-		//Se agrega el Recordar Usuario
-		panelito.add(new JLabel());
-        panelito.add(chkRecordar);
 		
 		//Iguala el ancho de todas las columnas al componente mas grande
-		SpringUtilities.makeCompactGrid(panelito, 5, 2, 20, 10, 15, 15);
+		SpringUtilities.makeCompactGrid(panelito, 4, 2, 20, 10, 15, 15);
 
 		add(panelito, BorderLayout.CENTER);
 		

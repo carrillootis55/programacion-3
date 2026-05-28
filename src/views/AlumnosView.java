@@ -31,6 +31,10 @@ public class AlumnosView extends JPanel {
 	private JButton btnPdf;
 	
 	private JButton btnCalificar;
+	private JButton btnDetallesA;
+	private JButton btnBoleta;
+	private JButton btnEditarCalificaciones;
+	
 	
     public AlumnosView() {
         setLayout(new BorderLayout());
@@ -43,7 +47,9 @@ public class AlumnosView extends JPanel {
         btnEliminar = new JButton ("Eliminar");
         btnPdf = new JButton("Exportar PDF");
         btnCalificar = new JButton("Calificar");
-        
+        btnDetallesA = new JButton ("Vista alumno");
+        btnBoleta = new JButton("Boleta PDF");
+        btnEditarCalificaciones = new JButton("Editar calificaciones");
         JPanel panelBotones = new JPanel();
         panelBotones.add(btnAgregar);
         panelBotones.add(btnEditar);
@@ -52,7 +58,10 @@ public class AlumnosView extends JPanel {
         panelBotones.add(new JSeparator(SwingConstants.VERTICAL));
         panelBotones.add(btnCalificar);
         panelBotones.add(btnPdf);
-        
+        panelBotones.add(btnDetallesA);
+        panelBotones.add(btnEditarCalificaciones);
+        panelBotones.add(btnBoleta);
+
         add(panelBotones, BorderLayout.NORTH);
         add(new JScrollPane(tabla), BorderLayout.CENTER);
         
@@ -78,9 +87,18 @@ public class AlumnosView extends JPanel {
 	public JButton getBtnCalificar() {
 	    return btnCalificar;
 	}
-	
+	public JButton getBtnDetallesA() {
+		return btnDetallesA;
+	}
     public JTable getTabla() {
         return tabla;
+    }
+    public JButton getBtnBoleta() {
+        return btnBoleta;
+    }
+
+    public JButton getBtnEditarCalificaciones() {
+        return btnEditarCalificaciones;
     }
     
     public File selectPdfFile() {

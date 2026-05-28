@@ -24,15 +24,19 @@ public class CalificacionesView extends JPanel{
 	
 	private JTable tabla;
 	private JButton btnPdf;
+	private JButton btnEditarCalificaciones;
+	private JButton btnBoleta;
 	
 	public CalificacionesView() {
 		setLayout(new BorderLayout());
 		
 		tabla = new JTable();
 		btnPdf = new JButton("Exportar a PDF");
-		
+        
+        
 		JPanel panelBoton = new JPanel();
 		panelBoton.add(btnPdf);
+
 		styleTable();
 		
 		add(panelBoton, BorderLayout.NORTH);
@@ -47,6 +51,13 @@ public class CalificacionesView extends JPanel{
 	public JButton getBtnPdf() {
 	    return btnPdf;
 	
+	}
+	public JButton getBtnEditarCalificaciones() {
+	    return btnEditarCalificaciones;
+	}
+
+	public JButton getBtnBoletaPdf() {
+	    return btnBoleta;
 	}
 	
 	public File selectPdfFile() {

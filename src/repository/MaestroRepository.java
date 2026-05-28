@@ -423,7 +423,7 @@ public class MaestroRepository {
     }
     
  
-    /*public boolean eliminar(int id)throws SQLException {
+    public boolean eliminar(int id)throws SQLException {
     	if (contarMaestros() <= 6) {
 
             return false;
@@ -439,7 +439,7 @@ public class MaestroRepository {
             return statement.executeUpdate() > 0;
         }
         
-    }*/
+    }
   //=================================================================================================================================================================
     
     public boolean esAdmin(Maestro maestro) {
