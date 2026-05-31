@@ -10,20 +10,20 @@ public class AlumnoTableModels extends AbstractTableModel {
 	
 	private List<Alumno> alumnos;
 
-    private final String[] columnas = {
-        "Matrícula",
-        "Nombre",
-        "Apellido Paterno",
-        "Apellido Materno",
-        "Sexo",
-        "Año",
-        "Grupo",
-        "Contacto",
-        "Número",
-        "Parentesco",
-        "Domicilio"
-    };
-
+	private final String[] columnas = {
+	    "Matrícula",
+	    "Nombre",
+	    "Apellido Paterno",
+	    "Apellido Materno", 
+	    "Fecha Nacimiento",
+	    "Sexo",
+	    "Año",
+	    "Grupo",
+	    "Contacto",
+	    "Número",
+	    "Parentesco",
+	    "Domicilio"
+		};
     public AlumnoTableModels(List<Alumno> alumnos) {
         this.alumnos = alumnos;
     }
@@ -50,33 +50,18 @@ public class AlumnoTableModels extends AbstractTableModel {
         Alumno a = alumnos.get(rowIndex);
 
         switch (columnIndex) {
-            case 0: 
-            	return a.getMatricula();
-            case 1: 
-            	return a.getNombre();
-            case 2: 
-            	return a.getApellidoPaterno();
-            case 3: 
-            	return a.getApellidoMaterno();
-            case 4: 
-            	return a.getSexo();
-            case 5: 
-            	return a.getAnio();
-            	
-            case 6:
-                return a.getGrupo();
-
-            case 7: 
-                return a.getContactoEmergencia();
-
-            case 8: 
-                return a.getNumeroEmergencia();
-
-            case 9: 
-                return a.getParentesco();
-
-            case 10: 
-                return a.getDomicilio();
+        case 0: return a.getMatricula();
+        case 1: return a.getNombre();
+        case 2: return a.getApellidoPaterno();
+        case 3: return a.getApellidoMaterno();
+        case 4: return a.getFechaNacimiento(); 
+        case 5: return a.getSexo();            
+        case 6: return a.getAnio();
+        case 7: return a.getGrupo();
+        case 8: return a.getContactoEmergencia();
+        case 9: return a.getNumeroEmergencia();
+        case 10: return a.getParentesco();
+        case 11: return a.getDomicilio();
         }
 
         return null;

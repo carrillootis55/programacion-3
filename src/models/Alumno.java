@@ -7,6 +7,7 @@ public class Alumno{
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
+    private String fechaNacimiento; 
     private char sexo;
     private String grupo;
     private String anio;
@@ -15,19 +16,19 @@ public class Alumno{
     private String parentesco;
     private String domicilio; 
     
-    
     //Constructores
     public Alumno(){
     	
     }
 
-    public Alumno(String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, char sexo, String anio,String grupo,String contactoEmergencia, 
+    public Alumno(String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento,char sexo, String anio,String grupo,String contactoEmergencia, 
     		String numeroEmergencia, String parentesco, String domicilio){
 
         this.matricula = matricula;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
+        this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
         this.anio = anio;
         this.grupo = grupo;
@@ -69,7 +70,13 @@ public class Alumno{
 	public void setApellidoMaterno(String apellidoMaterno) {
 		this.apellidoMaterno = apellidoMaterno;
 	}
+	public String getFechaNacimiento() {
+	    return fechaNacimiento;
+	}
 
+	public void setFechaNacimiento(String fechaNacimiento) {
+	    this.fechaNacimiento = fechaNacimiento;
+	}
 	public char getSexo() {
 		return sexo;
 	}
@@ -134,6 +141,7 @@ public class Alumno{
                "\nNombre: " + nombre +
                "\nApellido Paterno: " + apellidoPaterno +
                "\nApellido Materno: " + apellidoMaterno +
+               "\nFecha Nacimiento: " + fechaNacimiento +
                "\nSexo: " + sexo +
                "\nAño: " + anio +
                "\nGrupo: " + grupo +
@@ -149,6 +157,7 @@ public class Alumno{
                nombre + "," +
                apellidoPaterno + "," +
                apellidoMaterno + "," +
+               fechaNacimiento + "," +
                sexo + "," +
                anio + "," +
                grupo + "," +
@@ -166,18 +175,16 @@ public class Alumno{
             data[1],
             data[2],
             data[3],
-            data[4].charAt(0),
             data[5],
-            data[6],
-            data[7],
+            data[4].charAt(0),
+            data[6], 
+            data[7], 
             data[8],
             data[9],
-            data[10]
-            	
+            data[10],
+            data[11]
         );
     }
-    
-    
     
     
 }

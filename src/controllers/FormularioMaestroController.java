@@ -3,6 +3,9 @@ package controllers;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -69,12 +72,14 @@ public class FormularioMaestroController {
             }
         });
         
-        view.getFechaNacimiento().getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { validateFechaNacimiento(); }
-            public void removeUpdate(DocumentEvent e) { validateFechaNacimiento(); }
-            public void changedUpdate(DocumentEvent e) { validateFechaNacimiento(); }
-        });
-
+        view.getFechaNacimiento().getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+		    @Override
+		    public void insertUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+		    @Override
+		    public void removeUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+		    @Override
+		    public void changedUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+		});
         view.getTxtEmail().getDocument().addDocumentListener(
                 new DocumentListener() {
 
@@ -140,6 +145,20 @@ public class FormularioMaestroController {
                 validateMaestria();
             }
         });
+        
+        view.getFechaNacimiento().addKeyListener(new KeyAdapter() {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+            char c = e.getKeyChar();
+
+            if (!Character.isDigit(c)&& c != '/'&& c != KeyEvent.VK_BACK_SPACE) {
+            	e.consume();
+            }
+        }
+    });
+
 
 
         view.getRbHombre().addActionListener(
@@ -295,20 +314,41 @@ public class FormularioMaestroController {
 
             return false;
         }
-
         view.setErrorMaestria("");
 
         return true;
     }
     
-    private boolean validateFechaNacimiento() {
-        if (view.getFechaNacimiento().getText().trim().isEmpty()) {
-            view.setErrorFechaNacimiento("La fecha de nacimiento es obligatoria");
-            return false;
-        }
-        view.setErrorFechaNacimiento("");
-        return true;
-    }
+    //LocalDate sirve para manejar fechas, dia, anio y mes sin hora  el parse(textp, formato) convierte el string en una fecha real)
+   	private boolean validateFechaNacimiento() {
+   	    String fecha = view.getFechaNacimiento().getText().trim();
+
+   	    if (fecha.isEmpty()) {
+   	        view.setErrorFechaNacimiento("Campo obligatorio");
+   	        return false;
+   	    }
+   	 // EXPRESIÓN REGULAR: VA A VALIDAR que el usuario SOLO escriba números y diagonales en orden
+   	    
+   	    String procesoEscribe = "^\\d{0,2}(/?\\d{0,2})?(/?\\d{0,4})?$";
+   	    
+   	    if (!fecha.matches(procesoEscribe)) {
+   	        view.setErrorFechaNacimiento("Formato invalido: DD/MM/AAAA");
+   	        return false;
+   	    }
+
+   	    try {
+   	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+
+   	        LocalDate.parse(fecha, formatter);
+   	        view.setErrorFechaNacimiento(""); 
+   	        return true;
+
+   	    } catch (Exception e) {
+   	        view.setErrorFechaNacimiento("Fecha irreal o inválida");
+   	        return false;
+   	    }
+   	}
+   	
     
   //=================================================================================================================================================================
     private boolean validateSexo() {

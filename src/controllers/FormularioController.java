@@ -4,6 +4,9 @@ import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -79,7 +82,14 @@ public class FormularioController {
 			public void removeUpdate(DocumentEvent e) {validateNombre();}
 			public void changedUpdate(DocumentEvent e) {validateNombre();}
 			});
-		
+		view.getFechaNacimiento().getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+		    @Override
+		    public void insertUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+		    @Override
+		    public void removeUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+		    @Override
+		    public void changedUpdate(DocumentEvent e) { validateFechaNacimiento(); }
+		});
 		view.getTxtApellidoPaterno().getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {validateApellidoPaterno();}
 			public void removeUpdate(DocumentEvent e) {validateApellidoPaterno();}
@@ -212,6 +222,19 @@ public class FormularioController {
 				}
 			}
 		});
+		 view.getFechaNacimiento().addKeyListener(new KeyAdapter() {
+
+	        @Override
+	        public void keyTyped(KeyEvent e) {
+
+	            char c = e.getKeyChar();
+
+	            if (!Character.isDigit(c)&& c != '/'&& c != KeyEvent.VK_BACK_SPACE) {
+	            	e.consume();
+	            }
+	        }
+	    });
+	
 	}
 	
 	private boolean validateMatricula() {
@@ -224,6 +247,7 @@ public class FormularioController {
 	        view.setErrorMatricula("La matrícula es obligatoria");
 	        return false;
 	    }
+	    
 	    if (matricula.length() != 10) {
 
 	        view.setErrorMatricula("La matrícula debe tener 10 dígitos");
@@ -271,6 +295,39 @@ public class FormularioController {
 	    view.setErrorNombre("");
 	    return true;
 	}
+	
+	
+	 //LocalDate sirve para manejar fechas, dia, anio y mes sin hora  el parse(textp, formato) convierte el string en una fecha real)
+	private boolean validateFechaNacimiento() {
+	    String fecha = view.getFechaNacimiento().getText().trim();
+
+	    if (fecha.isEmpty()) {
+	        view.setErrorFechaNacimiento("Campo obligatorio");
+	        return false;
+	    }
+	 // EXPRESIÓN REGULAR: VA A VALIDAR que el usuario SOLO escriba números y diagonales en orden
+	    
+	    String procesoEscribe = "^\\d{0,2}(/?\\d{0,2})?(/?\\d{0,4})?$";
+	    
+	    if (!fecha.matches(procesoEscribe)) {
+	        view.setErrorFechaNacimiento("Formato invalido: DD/MM/AAAA");
+	        return false;
+	    }
+	  
+
+	    try {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+
+	        LocalDate.parse(fecha, formatter);
+	        view.setErrorFechaNacimiento(""); 
+	        return true;
+
+	    } catch (Exception e) {
+	        view.setErrorFechaNacimiento("Fecha irreal o inválida");
+	        return false;
+	    }
+	}
+	
 	
 	private boolean validateSexo() {
 	    if (!view.getRbMujer().isSelected() && !view.getRbHombre().isSelected()) {
@@ -359,6 +416,7 @@ public class FormularioController {
 	        if (!validateApellidoPaterno()) validacion = false;
 	        if (!validateApellidoMaterno()) validacion = false;
 	        if (!validateSexo()) validacion = false;
+	        if (!validateFechaNacimiento()) validacion = false;
 	        if (!validateAnio()) validacion = false;
 	        if (!validateGrupo()) validacion = false;
 	        if (!validateNumeroEmergencia()) validacion = false;
@@ -368,36 +426,40 @@ public class FormularioController {
 	        if (!validateContactoEmergencia()) validacion = false;
 
 	        if (!validacion) return;
-
-	            //Si es valido se crea la lista
-	            Alumno alumno = new Alumno(
-	                view.getTxtMatricula().getText(),
-	                view.getTxtNombre().getText(),
-	                view.getTxtApellidoPaterno().getText(),
-	                view.getTxtApellidoMaterno().getText(),
-	                view.getRbHombre().isSelected() ? 'H' : 'M',
-            		view.getRb1().isSelected() ? "1" :
-        			view.getRb2().isSelected() ? "2" : "3",
-	                view.getRbA().isSelected() ? "A" : "B",
-	                view.getTxtContactoEmergencia().getText(),
-	                view.getTxtNumeroEmergencia().getText(),
-	                view.getParentescoAlumno().getSelectedItem().toString(),
-	                view.getDomicilio().getSelectedItem().toString()
-	            );
-
-	            //Se crea el repositorio para guardar
+	        String fechaUsuario = view.getFechaNacimiento().getText().trim(); 
+	        String fechaParaBD = "";
+	        try {
+	            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+	            LocalDate fechaLocalDate = LocalDate.parse(fechaUsuario, formatoEntrada);
+	            fechaParaBD = fechaLocalDate.toString(); //  genera el String en formato YYYY-MM-DD para el mysql
+	        } catch (Exception ex) {
+	            view.setErrorFechaNacimiento("Formato inválido (DD/MM/AAAA)");
+	            return;
+	        }
+	        Alumno alumno = new Alumno(
+	        	    view.getTxtMatricula().getText(),
+	        	    view.getTxtNombre().getText(),
+	        	    view.getTxtApellidoPaterno().getText(),
+	        	    view.getTxtApellidoMaterno().getText(),
+	        	    fechaParaBD,
+	        	    view.getRbHombre().isSelected() ? 'H' : 'M',
+	        	    view.getRb1().isSelected() ? "1" :
+	        	    view.getRb2().isSelected() ? "2" : "3",
+	        	    view.getRbA().isSelected() ? "A" : "B",
+	        	    view.getTxtContactoEmergencia().getText(),
+	        	    view.getTxtNumeroEmergencia().getText(),
+	        	    view.getParentescoAlumno().getSelectedItem().toString(),
+	        	    view.getDomicilio().getSelectedItem().toString()
+	        	);
 	            AlumnoRepository repository = new AlumnoRepository();
 
 	            try {
-	                //Guarda el alumno en el archivo
 	            	if(editando) {
-	            		//para el metodo de update se creo dentro del alumnoRepositorio
 	            		repository.updateAlumno(alumno);
 	            	}else {
 	            		
 	            		repository.save(alumno);
 	            	}
-	                //Imprime todos los alumnos en consola
 	                System.out.println("=== LISTA DE ALUMNOS ===");
 	                for (Alumno a : repository.getAlumnos()) {
 	                    System.out.println(a);
@@ -408,7 +470,6 @@ public class FormularioController {
 	                JOptionPane.showMessageDialog(view, "Alumno registrado correctamente");
 
 	            } catch (Exception e) {
-	                //Manejo de errores
 	                JOptionPane.showMessageDialog(view, "Error al guardar: " + e.getMessage());
 	            }
 	            
