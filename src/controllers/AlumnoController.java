@@ -32,6 +32,20 @@ public class AlumnoController {
 		
 		//AGREGAR
 		view.getBtnAgregar().addActionListener(e -> {
+			String anio = maestroActual.getAnio();
+		    String grupo = maestroActual.getGrupo();
+		    
+		    AlumnoRepository repo = new AlumnoRepository();
+		    int totalAlumnos = repo.contarAlumnosPorGrupo(anio, grupo);
+		    
+		    if (totalAlumnos >= 10) {
+		        JOptionPane.showMessageDialog(view, 
+		            "Ya existen los 10 alumnos permitidos para el grupo de " + anio + "° '" + grupo + "'", 
+		            "Grupo Lleno", 
+		            JOptionPane.INFORMATION_MESSAGE);
+		        return; 
+		    }
+		    
 			Formulario form = new Formulario();
 	
 			FormularioController controller =new FormularioController(form,maestroActual);
@@ -252,7 +266,7 @@ public class AlumnoController {
 		    detalles.setVisible(true);
 		});
 		
-	
+		
 	}
 	private List<Double> obtenerCalificaciones(Alumno alumno, List<String> materias) {
 

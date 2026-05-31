@@ -238,4 +238,7 @@ public class AlumnoRepository {
 
 	    return false;
 	}
+	public int contarAlumnosPorGrupo(String anio, String grupo) {
+        return getAlumnosPorGrupo(anio, grupo).size();
+    }
 }
