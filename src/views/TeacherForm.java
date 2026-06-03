@@ -25,9 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import models.Maestro;
+import models.Teacher;
 
-public class FormularioMaestro extends JFrame {
+public class TeacherForm extends JFrame {
 
 	private JTextField txtNombre;
     private JTextField txtEmail;
@@ -57,7 +57,7 @@ public class FormularioMaestro extends JFrame {
     private JLabel lblErrorFechaNacimiento;
     private JButton btnGuardar;
     
-    public FormularioMaestro() {
+    public TeacherForm() {
 
         setTitle("FORMULARIO MAESTRO");
 
@@ -416,18 +416,18 @@ public class FormularioMaestro extends JFrame {
 	public void setErrorFechaNacimiento(String msg) { 
 		lblErrorFechaNacimiento.setText(msg); 
 	}
-    public void cargarDatos(Maestro maestro) {
+    public void cargarDatos(Teacher teacher) {
 
-        txtNombre.setText(maestro.getNombre());
+        txtNombre.setText(teacher.getNombre());
 
-        txtEmail.setText(maestro.getEmail());
+        txtEmail.setText(teacher.getEmail());
 
-        txtEdad.setText(String.valueOf(maestro.getEdad()));
+        txtEdad.setText(String.valueOf(teacher.getEdad()));
 
-        txtMaestria.setText(maestro.getMaestria());
+        txtMaestria.setText(teacher.getMaestria());
 
-        txtFechaNacimiento.setText(maestro.getFechaNacimiento());
-        if ("M".equals(maestro.getSexo())) {
+        txtFechaNacimiento.setText(teacher.getFechaNacimiento());
+        if ("M".equals(teacher.getSexo())) {
 
             rbMujer.setSelected(true);
 
@@ -436,7 +436,7 @@ public class FormularioMaestro extends JFrame {
             rbHombre.setSelected(true);
         }
 
-        if ("A".equals(maestro.getGrupo())) {
+        if ("A".equals(teacher.getGrupo())) {
 
             rbA.setSelected(true);
 
@@ -445,11 +445,11 @@ public class FormularioMaestro extends JFrame {
             rbB.setSelected(true);
         }
 
-        if ("1".equals(maestro.getAnio())) {
+        if ("1".equals(teacher.getAnio())) {
 
             rb1.setSelected(true);
 
-        } else if ("2".equals(maestro.getAnio())) {
+        } else if ("2".equals(teacher.getAnio())) {
 
             rb2.setSelected(true);
 

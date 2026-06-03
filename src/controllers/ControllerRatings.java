@@ -10,44 +10,44 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import models.Alumno;
-import repository.CalificacionRepository;
-import views.CalificarAlumnoView;
+import models.Student;
+import repository.QualificationRepository;
+import views.StudentsRateView;
 import java.awt.Desktop;
 import java.io.File;
 import services.PDFExporter;
 
-public class CalificacionesController {
+public class ControllerRatings {
 
-	private CalificarAlumnoView view;
-	private Alumno alumno;
+	private StudentsRateView view;
+	private Student student;
 	private int index;
 	
     private List<String> materias;
 
 
-    private CalificacionRepository repo;
+    private QualificationRepository repo;
     
 
-    public CalificacionesController(CalificarAlumnoView view, Alumno alumno,int index,List<String> materias) {
+    public ControllerRatings(StudentsRateView view, Student student,int index,List<String> materias) {
         this.view = view;
-        this.alumno = alumno;
+        this.student = student;
         this.index = index;
         this.materias = materias;
-        this.repo = new CalificacionRepository();
+        this.repo = new QualificationRepository();
 
-        iniciar();
+        start();
     }
 
-    private void iniciar() {
-    	configurarValidaciones();
+    private void start() {
+    	setUpValidation();
        
     	view.btnGuardar.addActionListener(
                 e -> guardar()
         );
     }
     
-    private void configurarValidaciones() {
+    private void setUpValidation() {
 
         List<JTextField> campos =
                 view.getCamposCalificaciones();
@@ -118,11 +118,11 @@ public class CalificacionesController {
 
         try {
 
-            List<JTextField> campos = view.getCamposCalificaciones();
+            List<JTextField> fields = view.getCamposCalificaciones();
 
-            for (JTextField campo : campos) {
+            for (JTextField field : fields) {
 
-                String texto = campo.getText().trim();
+                String texto = field.getText().trim();
                 if (texto.isEmpty()) {
 
                     JOptionPane.showMessageDialog( view,"Todas las calificaciones son obligatorias");
@@ -130,10 +130,10 @@ public class CalificacionesController {
                     return;
                 }
 
-                double calificacion = Double.parseDouble(texto);
+                double qualification = Double.parseDouble(texto);
                
 
-                if (calificacion < 0 ||calificacion > 10) {
+                if (qualification < 0 ||qualification > 10) {
 
                     JOptionPane.showMessageDialog( view, "La calificación debe estar entre 0 y 10" );
 
@@ -143,21 +143,21 @@ public class CalificacionesController {
 
             for (int i = 0; i < materias.size(); i++) {
 
-                String nombreMateria = materias.get(i);
+                String subjectName = materias.get(i);
 
-                JTextField campo = campos.get(i);
+                JTextField field = fields.get(i);
 
-                double calificacion =Double.parseDouble( campo.getText());
+                double qualification =Double.parseDouble( field.getText());
 
-                int materiaId = repo.getMateriaId(nombreMateria, alumno.getAnio());
+                int idSubject = repo.getMateriaId(subjectName, student.getAnio());
 
-                boolean existe = repo.existeCalificacion( alumno.getMatricula(),materiaId );
+                boolean exists = repo.existeCalificacion( student.getMatricula(),idSubject );
 
-                if (existe) {
-                    repo.actualizarCalificacion(alumno.getMatricula(),materiaId, calificacion );
+                if (exists) {
+                    repo.actualizarCalificacion(student.getMatricula(),idSubject, qualification );
 
                 } else {
-                    repo.guardarCalificacion( alumno.getMatricula(), materiaId, calificacion  );
+                    repo.guardarCalificacion( student.getMatricula(), idSubject, qualification  );
                 }
             }
 
@@ -188,7 +188,7 @@ public class CalificacionesController {
 
 	                Double calificacion =
 	                        repo.obtenerCalificacion(
-	                                alumno.getMatricula(),
+	                                student.getMatricula(),
 	                                materia
 	                        );
 

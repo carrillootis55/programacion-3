@@ -6,27 +6,27 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.io.File; 
-import models.Alumno;
-import models.Maestro;
-import repository.AlumnoRepository;
-import repository.CalificacionRepository;
+import models.Student;
+import models.Teacher;
+import repository.StudentsRepository;
+import repository.QualificationRepository;
 import services.PDFExporter;
-import tablemodels.AlumnoTableModels;
-import views.AlumnosView;
-import views.CalificarAlumnoView;
-import views.Formulario;
-import views.DetallesAlumno;
+import tablemodels.StudentsTableModels;
+import views.StudentsView;
+import views.StudentsRateView;
+import views.Form;
+import views.StudentDetails;
 
-public class AlumnoController {
+public class StudentController {
 	
-	private AlumnosView view;
+	private StudentsView view;
 	private PDFExporter pdfExporter;
-	private Maestro maestroActual;
+	private Teacher maestroActual;
 		
-	public AlumnoController(AlumnosView view, Maestro maestro) {
+	public StudentController(StudentsView view, Teacher teacher) {
 		this.view = view;
 		
-		this.maestroActual = maestro;
+		this.maestroActual = teacher;
 		
 		pdfExporter = new PDFExporter();
 		
@@ -35,7 +35,7 @@ public class AlumnoController {
 			String anio = maestroActual.getAnio();
 		    String grupo = maestroActual.getGrupo();
 		    
-		    AlumnoRepository repo = new AlumnoRepository();
+		    StudentsRepository repo = new StudentsRepository();
 		    int totalAlumnos = repo.contarAlumnosPorGrupo(anio, grupo);
 		    
 		    if (totalAlumnos >= 10) {
@@ -46,9 +46,9 @@ public class AlumnoController {
 		        return; 
 		    }
 		    
-			Formulario form = new Formulario();
+			Form form = new Form();
 	
-			FormularioController controller =new FormularioController(form,maestroActual);
+			FormController controller =new FormController(form,maestroActual);
 			
 			//Actualiza tabla
 			form.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -73,16 +73,16 @@ public class AlumnoController {
 		        return;
 		    }
 
-		    AlumnoTableModels model = (AlumnoTableModels) view.getTabla().getModel();
+		    StudentsTableModels model = (StudentsTableModels) view.getTabla().getModel();
 
-		    Alumno alumno = model.getAlumnoAt(fila);
-            CalificacionRepository repo = new CalificacionRepository();
+		    Student student = model.getAlumnoAt(fila);
+            QualificationRepository repo = new QualificationRepository();
 
             List<String> materias = repo.getMateriasPorAnio(maestroActual.getAnio());
 
-            CalificarAlumnoView ventana = new CalificarAlumnoView( alumno,materias );
+            StudentsRateView ventana = new StudentsRateView( student,materias );
             
-            new CalificacionesController(ventana, alumno, fila,  materias );
+            new ControllerRatings(ventana, student, fila,  materias );
 
 		    ventana.setLocationRelativeTo(null);
 		    ventana.setVisible(true);
@@ -98,13 +98,13 @@ public class AlumnoController {
 				return;
 			}
 			try {
-			AlumnoTableModels model = (AlumnoTableModels) view.getTabla().getModel();
-			Alumno alumno = model.getAlumnoAt(fila);
+			StudentsTableModels model = (StudentsTableModels) view.getTabla().getModel();
+			Student student = model.getAlumnoAt(fila);
 			
-			Formulario form = new Formulario();
-			FormularioController controller =new FormularioController(form,maestroActual);
+			Form form = new Form();
+			FormController controller =new FormController(form,maestroActual);
 			
-			form.cargarDatos(alumno);
+			form.cargarDatos(student);
 			controller.setModoEdicion(fila);
 			
 			//Actualizar tabla
@@ -137,27 +137,27 @@ public class AlumnoController {
 			
 			if(confirm == JOptionPane.YES_OPTION) {
 				try {
-					AlumnoRepository repo = new AlumnoRepository();
+					StudentsRepository repo = new StudentsRepository();
 
-		            AlumnoTableModels model = (AlumnoTableModels) view.getTabla().getModel();
+		            StudentsTableModels model = (StudentsTableModels) view.getTabla().getModel();
 
-		            Alumno alumno = model.getAlumnoAt(fila);
+		            Student student = model.getAlumnoAt(fila);
 
-		            repo.delete(alumno.getMatricula());
+		            repo.delete(student.getMatricula());
 		            
 		            
 					//List<Alumno> alumnos = repo.getAlumnos();
-					List<Alumno> alumnos =
+					List<Student> students =
                             repo.getAlumnosPorGrupo(
                                     maestroActual.getAnio(),
                                     maestroActual.getGrupo()
                             );
 
                     view.setTableModel(
-                            new AlumnoTableModels(alumnos)
+                            new StudentsTableModels(students)
                     );
 					
-					view.setTableModel(new AlumnoTableModels(alumnos));
+					view.setTableModel(new StudentsTableModels(students));
 					
 					JOptionPane.showMessageDialog(null, "Alumno eliminado");
 					
@@ -182,12 +182,12 @@ public class AlumnoController {
 		        return;
 		    }
 
-		    AlumnoTableModels model =
-		            (AlumnoTableModels) view.getTabla().getModel();
+		    StudentsTableModels model =
+		            (StudentsTableModels) view.getTabla().getModel();
 
-		    Alumno alumno = model.getAlumnoAt(fila);
+		    Student student = model.getAlumnoAt(fila);
 
-		    generarBoleta(alumno);
+		    generarBoleta(student);
 		});
 		
 		view.getBtnEditarCalificaciones().addActionListener(e -> {
@@ -204,34 +204,34 @@ public class AlumnoController {
 		        return;
 		    }
 
-		    AlumnoTableModels model =
-		            (AlumnoTableModels) view.getTabla().getModel();
+		    StudentsTableModels model =
+		            (StudentsTableModels) view.getTabla().getModel();
 
-		    Alumno alumno = model.getAlumnoAt(fila);
+		    Student student = model.getAlumnoAt(fila);
 
-		    CalificacionRepository repo =
-		            new CalificacionRepository();
+		    QualificationRepository repo =
+		            new QualificationRepository();
 
 		    List<String> materias =
 		            repo.getMateriasPorAnio(
 		                    maestroActual.getAnio()
 		            );
 
-		    CalificarAlumnoView ventana =
-		            new CalificarAlumnoView(
-		                    alumno,
+		    StudentsRateView ventana =
+		            new StudentsRateView(
+		                    student,
 		                    materias
 		            );
 
-		    new CalificacionesController(
+		    new ControllerRatings(
 		            ventana,
-		            alumno,
+		            student,
 		            fila,
 		            materias
 		    );
 
 		    ventana.cargarCalificaciones(
-		            obtenerCalificaciones(alumno, materias)
+		            obtenerCalificaciones(student, materias)
 		    );
 
 		    ventana.setLocationRelativeTo(null);
@@ -255,28 +255,28 @@ public class AlumnoController {
 		        return;
 		    }
 
-		    AlumnoTableModels model =
-		            (AlumnoTableModels) view.getTabla().getModel();
+		    StudentsTableModels model =
+		            (StudentsTableModels) view.getTabla().getModel();
 
-		    Alumno alumno = model.getAlumnoAt(fila);
+		    Student student = model.getAlumnoAt(fila);
 
-		    DetallesAlumno detalles =
-		            new DetallesAlumno(alumno);
+		    StudentDetails detalles =
+		            new StudentDetails(student);
 
 		    detalles.setVisible(true);
 		});
 		
 		
 	}
-	private List<Double> obtenerCalificaciones(Alumno alumno, List<String> materias) {
+	private List<Double> obtenerCalificaciones(Student student, List<String> materias) {
 
 	    List<Double> lista = new java.util.ArrayList<>();
 
-	    CalificacionRepository repo = new CalificacionRepository();
+	    QualificationRepository repo = new QualificationRepository();
 
 	    for(String materia : materias) {
 
-	        Double calificacion = repo.obtenerCalificacion(alumno.getMatricula(),materia);
+	        Double calificacion = repo.obtenerCalificacion(student.getMatricula(),materia);
 
 	        if(calificacion == null) {
 	            calificacion = 0.0;
@@ -292,17 +292,17 @@ public class AlumnoController {
 
         try {
 
-            AlumnoRepository repo =
-                    new AlumnoRepository();
+            StudentsRepository repo =
+                    new StudentsRepository();
 
-            List<Alumno> alumnos =
+            List<Student> students =
                     repo.getAlumnosPorGrupo(
                             maestroActual.getAnio(),
                             maestroActual.getGrupo()
                     );
 
             view.setTableModel(
-                    new AlumnoTableModels(alumnos)
+                    new StudentsTableModels(students)
             );
 
         } catch (Exception e) {
@@ -325,15 +325,15 @@ public class AlumnoController {
 		}
 
 		try {
-			AlumnoRepository repo = new AlumnoRepository();
+			StudentsRepository repo = new StudentsRepository();
 			
-			List<Alumno> alumnos =
+			List<Student> students =
                     repo.getAlumnosPorGrupo(
                             maestroActual.getAnio(),
                             maestroActual.getGrupo()
                     );
 
-			pdfExporter.exportAlumnos(alumnos, file);
+			pdfExporter.exportAlumnos(students, file);
 
 			if (Desktop.isDesktopSupported()) {
 				Desktop.getDesktop().open(file);
@@ -346,7 +346,7 @@ public class AlumnoController {
 	}
 		
 	    
-	    private void generarBoleta(Alumno alumno) {
+	    private void generarBoleta(Student student) {
 
 	        JFileChooser chooser = new JFileChooser();
 
@@ -366,7 +366,7 @@ public class AlumnoController {
 
 	            PDFExporter pdf = new PDFExporter();
 
-	            pdf.exportBoleta(alumno, file);
+	            pdf.exportBoleta(student, file);
 
 	            Desktop.getDesktop().open(file);
 

@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import models.Maestro;
+import models.Teacher;
 
-public class MaestroTableModel extends AbstractTableModel {
+public class TeacherTableModel extends AbstractTableModel {
 
-    private List<Maestro> maestros;
+    private List<Teacher> teachers;
 
     private final String[] columnas = {
         "ID",
@@ -21,15 +21,15 @@ public class MaestroTableModel extends AbstractTableModel {
         "Grupo"
     };
 
-    public MaestroTableModel(List<Maestro> maestros) {
+    public TeacherTableModel(List<Teacher> teachers) {
 
-        this.maestros = maestros;
+        this.teachers = teachers;
     }
 
     @Override
     public int getRowCount() {
 
-        return maestros.size();
+        return teachers.size();
     }
 
     @Override
@@ -47,41 +47,41 @@ public class MaestroTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        Maestro maestro = maestros.get(rowIndex);
+        Teacher teacher = teachers.get(rowIndex);
 
         switch (columnIndex) {
 
             case 0:
-                return maestro.getId();
+                return teacher.getId();
 
             case 1:
-                return maestro.getNombre();
+                return teacher.getNombre();
 
             case 2:
-                return maestro.getEmail();
+                return teacher.getEmail();
 
             case 3:
-                return maestro.getSexo();
+                return teacher.getSexo();
 
             case 4:
-                return maestro.getEdad();
+                return teacher.getEdad();
 
             case 5:
-                return maestro.getMaestria();
+                return teacher.getMaestria();
 
             case 6:
-                return maestro.getAnio();
+                return teacher.getAnio();
 
             case 7:
-                return maestro.getGrupo();
+                return teacher.getGrupo();
 
             default:
                 return null;
         }
     }
 
-    public Maestro getMaestro(int row) {
+    public Teacher getMaestro(int row) {
 
-        return maestros.get(row);
+        return teachers.get(row);
     }
 }

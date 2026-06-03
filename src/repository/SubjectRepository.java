@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.DatabaseConnection;
-import models.Materia;
+import models.Subject;
 
-public class MateriaRepository {
+public class SubjectRepository {
 	
-	public List<Materia> getMateriasPorAnio(String anio) {
+	public List<Subject> getMateriasPorAnio(String anio) {
 
-        List<Materia> materias = new ArrayList<>();
+        List<Subject> subjects = new ArrayList<>();
 
         String sql = """
                 SELECT *
@@ -35,20 +35,20 @@ public class MateriaRepository {
 
             while (rs.next()) {
 
-                Materia materia = new Materia(
+                Subject subject = new Subject(
                         rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("anio")
                 );
 
-                materias.add(materia);
+                subjects.add(subject);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return materias;
+        return subjects;
     }
 
 }

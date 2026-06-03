@@ -11,24 +11,24 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import models.Maestro;
-import repository.MaestroRepository;
-import views.FormularioMaestro;
+import models.Teacher;
+import repository.TeacherRepository;
+import views.TeacherForm;
 
-public class FormularioMaestroController {
+public class FormTeacherController {
 
-    private FormularioMaestro view;
-    private MaestroRepository repository;
+    private TeacherForm view;
+    private TeacherRepository repository;
 
     private boolean editando = false;
 
-    public FormularioMaestroController(FormularioMaestro view) {
+    public FormTeacherController(TeacherForm view) {
 
         this.view = view;
 
         try {
 
-            this.repository = new MaestroRepository();
+            this.repository = new TeacherRepository();
 
         } catch (SQLException e) {
 
@@ -491,35 +491,55 @@ public class FormularioMaestroController {
         }
 
         try {
+        	
+        	 String fechaUsuario = view.getFechaNacimiento().getText().trim();
 
-            Maestro maestro = new Maestro();
+             String fechaParaBD = "";
 
-            maestro.setNombre(view.getTxtNombre().getText());
+             try {
 
-            maestro.setEmail( view.getTxtEmail().getText());
+                 DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/uuuu") .withResolverStyle(ResolverStyle.STRICT);
 
-            maestro.setPassword( new String(view.getTxtPassword() .getPassword()) );
+                 LocalDate fechaLocalDate =LocalDate.parse(fechaUsuario,formatoEntrada);
 
-            maestro.setEdad(Integer.parseInt(view.getTxtEdad().getText() ));
+                 fechaParaBD = fechaLocalDate.toString();
 
-            maestro.setFechaNacimiento(view.getFechaNacimiento().getText());
-            maestro.setMaestria( view.getTxtMaestria().getText());
+             } catch (Exception ex) {
 
-            maestro.setSexo(view.getRbHombre().isSelected()? "H": "M");
+                 view.setErrorFechaNacimiento("Formato inválido (DD/MM/AAAA)" );
 
-            maestro.setAnio( view.getRb1().isSelected() ? "1": view.getRb2().isSelected() ? "2": "3");
+                 return;
+             }
 
-            maestro.setGrupo( view.getRbA().isSelected() ? "A": "B");
+            Teacher teacher = new Teacher();
 
-            maestro.setRole("MAESTRO");
+            teacher.setNombre(view.getTxtNombre().getText());
+
+            teacher.setEmail( view.getTxtEmail().getText());
+
+            teacher.setPassword( new String(view.getTxtPassword() .getPassword()) );
+
+            teacher.setEdad(Integer.parseInt(view.getTxtEdad().getText() ));
+            
+            teacher.setFechaNacimiento(fechaParaBD);
+            
+            teacher.setMaestria( view.getTxtMaestria().getText());
+
+            teacher.setSexo(view.getRbHombre().isSelected()? "H": "M");
+
+            teacher.setAnio( view.getRb1().isSelected() ? "1": view.getRb2().isSelected() ? "2": "3");
+
+            teacher.setGrupo( view.getRbA().isSelected() ? "A": "B");
+
+            teacher.setRole("MAESTRO");
 
 
             if (editando) {
-                repository.actualizar(maestro);
+                repository.actualizar(teacher);
 
             } else {
 
-                repository.guardar(maestro);
+                repository.guardar(teacher);
             }
 
             JOptionPane.showMessageDialog(view, editando? "Maestro actualizado correctamente": "Maestro registrado correctamente");

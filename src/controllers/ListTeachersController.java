@@ -4,24 +4,24 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import models.Maestro;
-import repository.MaestroRepository;
-import tablemodels.MaestroTableModel;
-import views.FormularioMaestro;
-import views.ListaMaestrosView;
+import models.Teacher;
+import repository.TeacherRepository;
+import tablemodels.TeacherTableModel;
+import views.TeacherForm;
+import views.TeacherListView;
 
-public class ListaMaestrosController {
+public class ListTeachersController {
 
-    private ListaMaestrosView view;
-    private MaestroRepository repository;
+    private TeacherListView view;
+    private TeacherRepository repository;
 
-    public ListaMaestrosController(ListaMaestrosView view) {
+    public ListTeachersController(TeacherListView view) {
 
         this.view = view;
 
         try {
 
-            repository = new MaestroRepository();
+            repository = new TeacherRepository();
 
             cargarTabla();
 
@@ -34,7 +34,6 @@ public class ListaMaestrosController {
     }
   //=================================================================================================================================================================
     private void asignarEventos() {
-
     	view.getBtnAgregar().addActionListener(e -> {
 
     	    try {
@@ -47,13 +46,13 @@ public class ListaMaestrosController {
     	        }
 
     	        // Crear formulario
-    	        FormularioMaestro formulario = new FormularioMaestro();
+    	        TeacherForm form = new TeacherForm();
 
     	        // Crear controller
-    	        FormularioMaestroController controller = new FormularioMaestroController(formulario);
+    	        FormTeacherController controller = new FormTeacherController(form);
 
     	        // Actualizar tabla al cerrar
-    	        formulario.addWindowListener(new java.awt.event.WindowAdapter() {
+    	        form.addWindowListener(new java.awt.event.WindowAdapter() {
 
     	            @Override
     	            public void windowClosed(java.awt.event.WindowEvent e) {
@@ -62,7 +61,7 @@ public class ListaMaestrosController {
     	        });
 
     	        // Mostrar formulario
-    	        formulario.setVisible(true);
+    	        form.setVisible(true);
 
     	    } catch (SQLException ex) {
 
@@ -85,7 +84,7 @@ public class ListaMaestrosController {
 
         try {
 
-            MaestroTableModel model =new MaestroTableModel(repository.obtenerSoloMaestros() );
+            TeacherTableModel model =new TeacherTableModel(repository.obtenerSoloMaestros() );
 
             view.setTableModel(model);
 
@@ -110,8 +109,8 @@ public class ListaMaestrosController {
             return;
         }
 
-        MaestroTableModel model =
-                (MaestroTableModel)
+        TeacherTableModel model =
+                (TeacherTableModel)
                         view.getTabla().getModel();
 
         int id = model.getMaestro(fila).getId();
@@ -172,19 +171,19 @@ public class ListaMaestrosController {
         }
 
         // Obtener modelo
-        MaestroTableModel model =(MaestroTableModel)view.getTabla().getModel();
+        TeacherTableModel model =(TeacherTableModel)view.getTabla().getModel();
 
         // Obtener maestro seleccionado
-        Maestro maestro =model.getMaestro(fila);
+        Teacher teacher =model.getMaestro(fila);
 
         // Crear formulario
-        FormularioMaestro formulario =new FormularioMaestro();
+        TeacherForm formulario =new TeacherForm();
 
         // Cargar datos
-        formulario.cargarDatos(maestro);
+        formulario.cargarDatos(teacher);
 
         // Crear controller
-        FormularioMaestroController controller =new FormularioMaestroController(formulario);
+        FormTeacherController controller =new FormTeacherController(formulario);
 
         // Activar modo edición
         controller.setModoEdicion();

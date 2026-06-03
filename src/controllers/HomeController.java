@@ -7,16 +7,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import models.Maestro;
-import models.Materia;
-import models.Alumno;
-import repository.AlumnoRepository;
+import models.Teacher;
+import models.Subject;
+import models.Student;
+import repository.StudentsRepository;
 import services.PDFExporter;
-import tablemodels.AlumnoTableModels;
-import tablemodels.CalificacionTableModel;
-import repository.CalificacionRepository;
-import repository.MateriaRepository;
-import views.Formulario;
+import tablemodels.StudentsTableModels;
+import tablemodels.QualificationTableModel;
+import repository.QualificationRepository;
+import repository.SubjectRepository;
+import views.Form;
 import views.LoginWindow;
 import views.MainView;
 import config.Config;
@@ -24,14 +24,14 @@ import config.Config;
 public class HomeController {
 
     private MainView view;
-    private Maestro maestroActual;
+    private Teacher maestroActual;
 
-    public HomeController(MainView view, Maestro maestro) {
+    public HomeController(MainView view, Teacher teacher) {
         this.view = view;
-        this.maestroActual = maestro;
-        new AlumnoController(view.alumnosPanel, maestro);
+        this.maestroActual = teacher;
+        new StudentController(view.alumnosPanel, teacher);
         
-        new ListaMaestrosController( view.listaMaestrosPanel);
+        new ListTeachersController( view.listaMaestrosPanel);
         registerListeners();
     }
 
@@ -80,24 +80,24 @@ public class HomeController {
 
         try {
 
-            AlumnoRepository repo = new AlumnoRepository();
+            StudentsRepository repo = new StudentsRepository();
 
-            List<Alumno> alumnos = repo.getAlumnosPorGrupo( maestroActual.getAnio(), maestroActual.getGrupo());
+            List<Student> students = repo.getAlumnosPorGrupo( maestroActual.getAnio(), maestroActual.getGrupo());
 
-            MateriaRepository materiaRepo = new MateriaRepository();
+            SubjectRepository materiaRepo = new SubjectRepository();
 
-            List<Materia> listaMaterias = materiaRepo.getMateriasPorAnio( maestroActual.getAnio()  );
+            List<Subject> listaMaterias = materiaRepo.getMateriasPorAnio( maestroActual.getAnio()  );
 
             List<String> materias = new ArrayList<>();
 
-            for (Materia materia : listaMaterias) {
+            for (Subject subject : listaMaterias) {
 
-                materias.add( materia.getNombre());
+                materias.add( subject.getNombre());
             }
 
             PDFExporter exporter = new PDFExporter();
 
-            exporter.exportCalificaciones(alumnos, materias, file );
+            exporter.exportCalificaciones(students, materias, file );
 
             JOptionPane.showMessageDialog( view,"PDF exportado correctamente" );
 
@@ -122,12 +122,12 @@ public class HomeController {
      try {
 
          // Obtener maestros
-         repository.MaestroRepository repo =new repository.MaestroRepository();
+         repository.TeacherRepository repo =new repository.TeacherRepository();
 
-         List<Maestro> maestros =repo.obtenerSoloMaestros();
+         List<Teacher> teachers =repo.obtenerSoloMaestros();
 
          // Validar lista vacía
-         if (maestros == null || maestros.isEmpty()) {
+         if (teachers == null || teachers.isEmpty()) {
 
              JOptionPane.showMessageDialog(view,"No hay maestros registrados");
 
@@ -137,7 +137,7 @@ public class HomeController {
          // Exportar PDF
          PDFExporter exporter = new PDFExporter();
 
-         exporter.exportMaestros(maestros, file);
+         exporter.exportMaestros(teachers, file);
 
          JOptionPane.showMessageDialog(view,"PDF exportado correctamente");
 
@@ -152,7 +152,7 @@ public class HomeController {
 
     private void mostrarAlumnos() {
 
-        AlumnoRepository repository = new AlumnoRepository();
+        StudentsRepository repository = new StudentsRepository();
 
         try {
             /*List<Alumno> alumnos = repository.getAlumnos();
@@ -170,20 +170,20 @@ public class HomeController {
             new AlumnoController(view.alumnosPanel);
 
             view.showView(MainView.ALUMNOS);*/
-        	List<Alumno> alumnos =
+        	List<Student> students =
                     repository.getAlumnosPorGrupo(
                             maestroActual.getAnio(),
                             maestroActual.getGrupo()
                     );
 
-            AlumnoTableModels modelAlumnos = new AlumnoTableModels(alumnos);
+            StudentsTableModels modelAlumnos = new StudentsTableModels(students);
 
             view.alumnosPanel.setTableModel(modelAlumnos);
             //new AlumnoController(view.alumnosPanel);
 
             view.showView(MainView.ALUMNOS);
 
-            if (alumnos == null || alumnos.isEmpty()) {
+            if (students == null || students.isEmpty()) {
                 JOptionPane.showMessageDialog(view,
                         "No hay alumnos registrados");
             }
@@ -206,21 +206,21 @@ public class HomeController {
     private void mostrarCalificaciones() {
     	try {
 
-            AlumnoRepository repo =
-                    new AlumnoRepository();
+            StudentsRepository repo =
+                    new StudentsRepository();
 
             // Obtener alumnos del grupo
-            List<Alumno> alumnos =
+            List<Student> students =
                     repo.getAlumnosPorGrupo(
                             maestroActual.getAnio(),
                             maestroActual.getGrupo()
                     );
 
             // Obtener materias 
-            MateriaRepository materiaRepo =
-                    new MateriaRepository();
+            SubjectRepository materiaRepo =
+                    new SubjectRepository();
 
-            List<Materia> listaMaterias =
+            List<Subject> listaMaterias =
                     materiaRepo.getMateriasPorAnio(
                             maestroActual.getAnio()
                     );
@@ -229,12 +229,12 @@ public class HomeController {
             List<String> materias =
                     new ArrayList<>();
 
-            for (Materia materia : listaMaterias) {
+            for (Subject subject : listaMaterias) {
 
-                materias.add(materia.getNombre());
+                materias.add(subject.getNombre());
             }
 
-            if (alumnos == null || alumnos.isEmpty()) {
+            if (students == null || students.isEmpty()) {
 
                 JOptionPane.showMessageDialog(
                         view,
@@ -245,7 +245,7 @@ public class HomeController {
             }
 
             // Crear modelo
-            CalificacionTableModel model =new CalificacionTableModel(alumnos,materias);
+            QualificationTableModel model =new QualificationTableModel(students,materias);
 
             // Asignar tabla
             view.calificacionesPanel.setTableModel(model);

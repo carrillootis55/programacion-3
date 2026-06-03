@@ -1,16 +1,16 @@
 package utils;
 
-import models.Maestro;
+import models.Teacher;
 
 public class Session {
 	
-	private static Maestro currentUser;
+	private static Teacher currentUser;
 	
-	public static void login(Maestro user) {
+	public static void login(Teacher user) {
 		currentUser = user;
 	}
 	
-	public static Maestro getCurrentUser() {
+	public static Teacher getCurrentUser() {
 		return currentUser;
 	}
 	

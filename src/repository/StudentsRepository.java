@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.DatabaseConnection;
-import models.Alumno;
+import models.Student;
 
-public class AlumnoRepository {
+public class StudentsRepository {
 	
 	//=================================================================================================================================================================
-	public void save(Alumno alumno) throws Exception {
+	public void save(Student student) throws Exception {
         String sql = """
             INSERT INTO alumno(
                 matricula,
@@ -43,25 +43,25 @@ public class AlumnoRepository {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setString(1, alumno.getMatricula());
-        ps.setString(2, alumno.getNombre());
-        ps.setString(3, alumno.getApellidoPaterno());
-        ps.setString(4, alumno.getApellidoMaterno());
-        ps.setString(5, alumno.getFechaNacimiento()); 
-        ps.setString(6, String.valueOf(alumno.getSexo()));
-        ps.setInt(7, Integer.parseInt(alumno.getAnio()));
-        ps.setInt(8, alumno.getGrupo().equals("A") ? 1 : 2);
-        ps.setString(9, alumno.getContactoEmergencia());
-        ps.setString(10, alumno.getNumeroEmergencia());
-        ps.setString(11, alumno.getParentesco());
-        ps.setString(12, alumno.getDomicilio());
+        ps.setString(1, student.getMatricula());
+        ps.setString(2, student.getNombre());
+        ps.setString(3, student.getApellidoPaterno());
+        ps.setString(4, student.getApellidoMaterno());
+        ps.setString(5, student.getFechaNacimiento()); 
+        ps.setString(6, String.valueOf(student.getSexo()));
+        ps.setInt(7, Integer.parseInt(student.getAnio()));
+        ps.setInt(8, student.getGrupo().equals("A") ? 1 : 2);
+        ps.setString(9, student.getContactoEmergencia());
+        ps.setString(10, student.getNumeroEmergencia());
+        ps.setString(11, student.getParentesco());
+        ps.setString(12, student.getDomicilio());
 
         ps.executeUpdate();
         ps.close();
     }
 	
 	//=================================================================================================================================================================
-	public void updateAlumno(Alumno alumno) throws Exception {
+	public void updateAlumno(Student student) throws Exception {
         String sql = """
             UPDATE alumno
             SET
@@ -82,18 +82,18 @@ public class AlumnoRepository {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setString(1, alumno.getNombre());
-        ps.setString(2, alumno.getApellidoPaterno());
-        ps.setString(3, alumno.getApellidoMaterno());
-        ps.setString(4, alumno.getFechaNacimiento()); 
-        ps.setString(5, String.valueOf(alumno.getSexo()));
-        ps.setInt(6, Integer.parseInt(alumno.getAnio()));
-        ps.setInt(7, alumno.getGrupo().equals("A") ? 1 : 2);
-        ps.setString(8, alumno.getContactoEmergencia());
-        ps.setString(9, alumno.getNumeroEmergencia());
-        ps.setString(10, alumno.getParentesco());
-        ps.setString(11, alumno.getDomicilio());
-        ps.setString(12, alumno.getMatricula()); // 
+        ps.setString(1, student.getNombre());
+        ps.setString(2, student.getApellidoPaterno());
+        ps.setString(3, student.getApellidoMaterno());
+        ps.setString(4, student.getFechaNacimiento()); 
+        ps.setString(5, String.valueOf(student.getSexo()));
+        ps.setInt(6, Integer.parseInt(student.getAnio()));
+        ps.setInt(7, student.getGrupo().equals("A") ? 1 : 2);
+        ps.setString(8, student.getContactoEmergencia());
+        ps.setString(9, student.getNumeroEmergencia());
+        ps.setString(10, student.getParentesco());
+        ps.setString(11, student.getDomicilio());
+        ps.setString(12, student.getMatricula()); // 
 
         ps.executeUpdate();
         ps.close();
@@ -115,10 +115,10 @@ public class AlumnoRepository {
     }
     
 	//=================================================================================================================================================================
-	public List<Alumno> getAlumnos() {
+	public List<Student> getAlumnos() {
 
         System.out.println("Conectado");
-        List<Alumno> alumnos = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         
         String sql = """
             SELECT
@@ -139,7 +139,7 @@ public class AlumnoRepository {
         ) {
 
             while (rs.next()) {
-                Alumno alumno = new Alumno(
+                Student student = new Student(
                     rs.getString("matricula"),
                     rs.getString("nombre"),
                     rs.getString("apellido_paterno"),
@@ -154,20 +154,20 @@ public class AlumnoRepository {
                     rs.getString("domicilio")
                 );
 
-                alumnos.add(alumno);
+                students.add(student);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return alumnos;
+        return students;
     }
 
 	//=================================================================================================================================================================
-	public List<Alumno> getAlumnosPorGrupo(String anio, String grupo) {
+	public List<Student> getAlumnosPorGrupo(String anio, String grupo) {
 
-        List<Alumno> alumnos = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
 
         String sql = """
             SELECT
@@ -193,7 +193,7 @@ public class AlumnoRepository {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Alumno alumno = new Alumno(
+                Student student = new Student(
                     rs.getString("matricula"),
                     rs.getString("nombre"),
                     rs.getString("apellido_paterno"),
@@ -208,14 +208,14 @@ public class AlumnoRepository {
                     rs.getString("domicilio")
                 );
 
-                alumnos.add(alumno);
+                students.add(student);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return alumnos;
+        return students;
     }
 	 
 	//=================================================================================================================================================================

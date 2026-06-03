@@ -9,11 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import models.Alumno;
+import models.Student;
 
-public class DetallesAlumno extends JFrame {
+public class StudentDetails extends JFrame {
 
-    public DetallesAlumno(Alumno alumno) {
+    public StudentDetails(Student student) {
 
         setTitle("Detalles del Alumno");
 
@@ -40,43 +40,43 @@ public class DetallesAlumno extends JFrame {
         panel.add(titulo);
 
         JLabel lblMatricula =
-                new JLabel("Matrícula: " + alumno.getMatricula());
+                new JLabel("Matrícula: " + student.getMatricula());
 
         JLabel lblNombre =
-                new JLabel("Nombre: " + alumno.getNombre());
+                new JLabel("Nombre: " + student.getNombre());
 
         JLabel lblApellidoP =
                 new JLabel("Apellido Paterno: " +
-                        alumno.getApellidoPaterno());
+                        student.getApellidoPaterno());
 
         JLabel lblApellidoM =
                 new JLabel("Apellido Materno: " +
-                        alumno.getApellidoMaterno());
+                        student.getApellidoMaterno());
 
         JLabel lblSexo =
-                new JLabel("Sexo: " + alumno.getSexo());
+                new JLabel("Sexo: " + student.getSexo());
 
         JLabel lblGrupo =
-                new JLabel("Grupo: " + alumno.getGrupo());
+                new JLabel("Grupo: " + student.getGrupo());
 
         JLabel lblAnio =
-                new JLabel("Año: " + alumno.getAnio());
+                new JLabel("Año: " + student.getAnio());
 
         JLabel lblContacto =
                 new JLabel("Contacto Emergencia: " +
-                        alumno.getContactoEmergencia());
+                        student.getContactoEmergencia());
 
         JLabel lblNumero =
                 new JLabel("Número Emergencia: " +
-                        alumno.getNumeroEmergencia());
+                        student.getNumeroEmergencia());
 
         JLabel lblParentesco =
                 new JLabel("Parentesco: " +
-                        alumno.getParentesco());
+                        student.getParentesco());
 
         JLabel lblDomicilio =
                 new JLabel("Domicilio: " +
-                        alumno.getDomicilio());
+                        student.getDomicilio());
 
         lblMatricula.setFont(font);
         lblNombre.setFont(font);

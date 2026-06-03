@@ -1,30 +1,30 @@
 package main;
 
 import java.io.IOException;
-import models.Alumno;
-import repository.AlumnoRepository;
+import models.Student;
+import repository.StudentsRepository;
 
 public class addTestAlumno {
 
     public static void main(String[] args) {
-        AlumnoRepository repo = new AlumnoRepository();
+        StudentsRepository repo = new StudentsRepository();
 
         // Crear un alumno con todos los atributos
-        Alumno alumno = new Alumno();
-        alumno.setMatricula("232342424");
-        alumno.setNombre("Luah");
-        alumno.setApellidoPaterno("Mendivil");
-        alumno.setApellidoMaterno("Reyes");
-        alumno.setSexo('M');
-        alumno.setAnio("1");
-        alumno.setGrupo("A");
-        alumno.setContactoEmergencia("Luca");
-        alumno.setNumeroEmergencia("555349634");
-        alumno.setParentesco("Padre");
-        alumno.setDomicilio("Calle Ficus 3489");
+        Student student = new Student();
+        student.setMatricula("232342424");
+        student.setNombre("Luah");
+        student.setApellidoPaterno("Mendivil");
+        student.setApellidoMaterno("Reyes");
+        student.setSexo('M');
+        student.setAnio("1");
+        student.setGrupo("A");
+        student.setContactoEmergencia("Luca");
+        student.setNumeroEmergencia("555349634");
+        student.setParentesco("Padre");
+        student.setDomicilio("Calle Ficus 3489");
 
         try {
-            repo.save(alumno);
+            repo.save(student);
             System.out.println("Alumno agregado exitosamente.");
         } catch (Exception e) {
             System.err.println("Error al guardar el alumno: " + e.getMessage());

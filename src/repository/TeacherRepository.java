@@ -8,23 +8,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import utils.PasswordUtils;
-import models.Maestro;
+import models.Teacher;
 import config.DatabaseConnection;
 
-public class MaestroRepository {
+public class TeacherRepository {
     
     private Connection connection;
     
-    public MaestroRepository() throws SQLException {
+    public TeacherRepository() throws SQLException {
         this.connection = DatabaseConnection.getConnection();
     }
     
   //=================================================================================================================================================================
-    public Maestro buscarEmail(String email) throws SQLException {
+    public Teacher buscarEmail(String email) throws SQLException {
         String sql = """
                 SELECT
                     m.id,
                     m.nombre,
+                    m.fecha_nacimiento,
                     m.email,
                     m.password,
                     m.sexo,
@@ -55,11 +56,13 @@ public class MaestroRepository {
 
                 if (resultSet.next()) {
 
-                    Maestro maestro = new Maestro();
+                    Teacher maestro = new Teacher();
 
                     maestro.setId(resultSet.getInt("id"));
 
                     maestro.setNombre(resultSet.getString("nombre"));
+                    
+                    maestro.setFechaNacimiento(resultSet.getString("fecha_nacimiento"));
 
                     maestro.setEmail(resultSet.getString("email"));
 
@@ -109,12 +112,13 @@ public class MaestroRepository {
     }
     
   //=================================================================================================================================================================
-    public Maestro obtenerMaestroPorEmail(String email)throws SQLException {
+    public Teacher obtenerMaestroPorEmail(String email)throws SQLException {
 
         String sql = """
                 SELECT
                     m.id,
                     m.nombre,
+                    m.fecha_nacimiento,
                     m.email,
                     m.password,
                     m.sexo,
@@ -146,12 +150,13 @@ public class MaestroRepository {
 
                 if (resultSet.next()) {
 
-                    Maestro maestro = new Maestro();
+                    Teacher maestro = new Teacher();
 
-                    maestro.setId(resultSet.getInt("id")
-                    );
+                    maestro.setId(resultSet.getInt("id"));
 
                     maestro.setNombre(resultSet.getString("nombre"));
+                    
+                    maestro.setFechaNacimiento(resultSet.getString("fecha_nacimiento"));
 
                     maestro.setEmail( resultSet.getString("email"));
 
@@ -178,14 +183,15 @@ public class MaestroRepository {
     }
 
   //=================================================================================================================================================================
-    public List<Maestro> obtenerTodos()throws SQLException {
+    public List<Teacher> obtenerTodos()throws SQLException {
 
-        List<Maestro> maestros = new ArrayList<>();
+        List<Teacher> maestros = new ArrayList<>();
 
         String sql = """
                 SELECT
                     m.id,
                     m.nombre,
+                    m.fecha_nacimiento,
                     m.email,
                     m.password,
                     m.sexo,
@@ -213,11 +219,13 @@ public class MaestroRepository {
 
             while (resultSet.next()) {
 
-                Maestro maestro = new Maestro();
+            	Teacher maestro = new Teacher();
 
                 maestro.setId(resultSet.getInt("id"));
 
                 maestro.setNombre(resultSet.getString("nombre") );
+                
+                maestro.setFechaNacimiento(resultSet.getString("fecha_nacimiento"));
 
                 maestro.setEmail( resultSet.getString("email") );
 
@@ -242,15 +250,16 @@ public class MaestroRepository {
         return maestros;
     }
   //=================================================================================================================================================================
-    public List<Maestro> obtenerSoloMaestros()throws SQLException {
+    public List<Teacher> obtenerSoloMaestros()throws SQLException {
 
-        List<Maestro> maestros =
+        List<Teacher> maestros =
                 new ArrayList<>();
 
         String sql = """
                 SELECT
                     m.id,
                     m.nombre,
+                    m.fecha_nacimiento,
                     m.email,
                     m.password,
                     m.sexo,
@@ -282,11 +291,13 @@ public class MaestroRepository {
 
             while (resultSet.next()) {
 
-                Maestro maestro = new Maestro();
+            	Teacher maestro = new Teacher();
 
                 maestro.setId( resultSet.getInt("id"));
 
                 maestro.setNombre( resultSet.getString("nombre"));
+                
+                maestro.setFechaNacimiento(resultSet.getString("fecha_nacimiento"));
 
                 maestro.setEmail( resultSet.getString("email"));
 
@@ -340,12 +351,13 @@ public class MaestroRepository {
     }
     
   //=================================================================================================================================================================
-    public boolean guardar(Maestro maestro) throws SQLException {
+    public boolean guardar(Teacher maestro) throws SQLException {
 
         String sql = """
                 INSERT INTO maestro
                 (
                     nombre,
+                    fecha_nacimiento,
                     email,
                     password,
                     sexo,
@@ -355,39 +367,42 @@ public class MaestroRepository {
                     grupo_id,
                     role
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (PreparedStatement statement =connection.prepareStatement(sql)) {
 
             statement.setString(1,maestro.getNombre() );
-
-            statement.setString(2,maestro.getEmail());
-
-            statement.setString(3, PasswordUtils.hashPassword(maestro.getPassword()));
             
-            statement.setString(4, maestro.getSexo());
+            statement.setString(2, maestro.getFechaNacimiento());
 
-            statement.setInt(5,maestro.getEdad());
+            statement.setString(3,maestro.getEmail());
 
-            statement.setString(6,maestro.getMaestria());
+            statement.setString(4, PasswordUtils.hashPassword(maestro.getPassword()));
+            
+            statement.setString(5, maestro.getSexo());
 
-            statement.setInt(7,Integer.parseInt(maestro.getAnio()));
+            statement.setInt(6,maestro.getEdad());
 
-            statement.setInt(8,maestro.getGrupo().equals("A")? 1 : 2);
+            statement.setString(7,maestro.getMaestria());
 
-            statement.setString(9, "MAESTRO");
+            statement.setInt(8,Integer.parseInt(maestro.getAnio()));
+
+            statement.setInt(9,maestro.getGrupo().equals("A")? 1 : 2);
+
+            statement.setString(10, "MAESTRO");
 
             return statement.executeUpdate() > 0;
         }
     }
     
   //=================================================================================================================================================================
-    public boolean actualizar(Maestro maestro)throws SQLException {
+    public boolean actualizar(Teacher maestro)throws SQLException {
         String sql = """
                 UPDATE maestro
                 SET
                     nombre = ?,
+                    fecha_nacimiento = ?,
                     email = ?,
                     password = ?,
                     sexo = ?,
@@ -401,22 +416,24 @@ public class MaestroRepository {
         try (PreparedStatement statement =connection.prepareStatement(sql)) {
 
             statement.setString( 1,maestro.getNombre());
-
-            statement.setString(2,maestro.getEmail() );
-
-            statement.setString(3,PasswordUtils.hashPassword(maestro.getPassword()));
             
-            statement.setString(4, maestro.getSexo());
+            statement.setString(2, maestro.getFechaNacimiento());
 
-            statement.setInt(5,maestro.getEdad());
+            statement.setString(3,maestro.getEmail() );
 
-            statement.setString(6, maestro.getMaestria());
+            statement.setString(4,PasswordUtils.hashPassword(maestro.getPassword()));
             
-            statement.setInt(7,Integer.parseInt(maestro.getAnio()));
+            statement.setString(5, maestro.getSexo());
 
-            statement.setInt(8, maestro.getGrupo().equals("A")? 1 : 2);
+            statement.setInt(6,maestro.getEdad());
 
-            statement.setInt( 9,maestro.getId());
+            statement.setString(7, maestro.getMaestria());
+            
+            statement.setInt(8,Integer.parseInt(maestro.getAnio()));
+
+            statement.setInt(9, maestro.getGrupo().equals("A")? 1 : 2);
+
+            statement.setInt(10,maestro.getId());
 
             return statement.executeUpdate() > 0;
         }
@@ -442,7 +459,7 @@ public class MaestroRepository {
     }
   //=================================================================================================================================================================
     
-    public boolean esAdmin(Maestro maestro) {
+    public boolean esAdmin(Teacher maestro) {
 
         return maestro.getRole().equals("ADMIN");
     }

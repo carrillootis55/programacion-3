@@ -7,7 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Panel;
-import models.Maestro;
+import models.Teacher;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,16 +15,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MaestroView extends JPanel{
+public class TeacherView extends JPanel{
 	
-	private Maestro maestro;
+	private Teacher teacher;
 	
-	public MaestroView() {
-		this(new Maestro());
+	public TeacherView() {
+		this(new Teacher());
 	}
 	
-	public MaestroView(Maestro maestro) {
-		this.maestro = maestro;
+	public TeacherView(Teacher teacher) {
+		this.teacher = teacher;
 		iniciarComponentes();
 	}
 
@@ -39,7 +39,7 @@ public class MaestroView extends JPanel{
        
         String rutaImagen;
 
-        if(maestro.getSexo() != null &&maestro.getSexo().equalsIgnoreCase("M")) {
+        if(teacher.getSexo() != null &&teacher.getSexo().equalsIgnoreCase("M")) {
             rutaImagen = "src/img/maestra.png";
 
         } else {
@@ -69,32 +69,32 @@ public class MaestroView extends JPanel{
 		gbc.gridx = 0; gbc.gridy = 0;
 		panelDer.add(new JLabel("Nombre: "), gbc);
 		gbc.gridx = 1;
-		panelDer.add(new JLabel(maestro.getNombre() != null ? maestro.getNombre() : "No asignado"), gbc);
+		panelDer.add(new JLabel(teacher.getNombre() != null ? teacher.getNombre() : "No asignado"), gbc);
 		
 		gbc.gridx = 0; gbc.gridy = 1;
 		panelDer.add(new JLabel("Edad: "), gbc);
 		gbc.gridx = 1;
-		panelDer.add(new JLabel(String.valueOf(maestro.getEdad())), gbc);
+		panelDer.add(new JLabel(String.valueOf(teacher.getEdad())), gbc);
 		
 		
 		gbc.gridx = 0; gbc.gridy = 3;
 		panelDer.add(new JLabel("Maestria: "), gbc);
 		gbc.gridx = 1;
-		String maestriaText = maestro.getMaestria() != null ? maestro.getMaestria() : "N/A";
+		String maestriaText = teacher.getMaestria() != null ? teacher.getMaestria() : "N/A";
 		panelDer.add(new JLabel(maestriaText), gbc);
 				
 		gbc.gridx = 0;
         gbc.gridy = 5;
         panelDer.add(new JLabel("Año: "), gbc);
         gbc.gridx = 1;
-        panelDer.add(new JLabel(maestro.getAnio() != null? maestro.getAnio(): "No asignado"),gbc);
+        panelDer.add(new JLabel(teacher.getAnio() != null? teacher.getAnio(): "No asignado"),gbc);
 
         
         gbc.gridx = 0;
         gbc.gridy = 6;
         panelDer.add(new JLabel("Grupo: "), gbc);
         gbc.gridx = 1;
-        panelDer.add(new JLabel(maestro.getGrupo() != null? maestro.getGrupo(): "No asignado"), gbc);
+        panelDer.add(new JLabel(teacher.getGrupo() != null? teacher.getGrupo(): "No asignado"), gbc);
 
 		
         add(panelImagenContenedor, BorderLayout.WEST);
@@ -103,8 +103,8 @@ public class MaestroView extends JPanel{
 		
 	}
 	
-	public void updateMaestro(Maestro maestro) {
-		this.maestro = maestro;
+	public void updateMaestro(Teacher teacher) {
+		this.teacher = teacher;
 		iniciarComponentes();
 		revalidate();
 		repaint();

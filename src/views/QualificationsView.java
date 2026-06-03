@@ -16,18 +16,18 @@ import javax.swing.table.JTableHeader;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import tablemodels.CalificacionTableModel;
+import tablemodels.QualificationTableModel;
 import utils.AppFont;
 import utils.ConfigManager;
 
-public class CalificacionesView extends JPanel{
+public class QualificationsView extends JPanel{
 	
 	private JTable tabla;
 	private JButton btnPdf;
 	private JButton btnEditarCalificaciones;
 	private JButton btnBoleta;
 	
-	public CalificacionesView() {
+	public QualificationsView() {
 		setLayout(new BorderLayout());
 		
 		tabla = new JTable();
@@ -43,7 +43,7 @@ public class CalificacionesView extends JPanel{
 		add(new JScrollPane(tabla), BorderLayout.CENTER);
 	}
 	
-	public void setTableModel(CalificacionTableModel model) {
+	public void setTableModel(QualificationTableModel model) {
         tabla.setModel(model);
     }
 	

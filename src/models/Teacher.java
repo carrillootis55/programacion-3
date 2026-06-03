@@ -1,7 +1,7 @@
 package models;
 import java.util.List;
 
-public class Maestro {
+public class Teacher {
 	
 	private int id;
 	private String password;
@@ -15,17 +15,17 @@ public class Maestro {
 	private List<String> materias;
 	private String role;
 	private String fechaNacimiento;
-	public Maestro() {
+	public Teacher() {
 		
 	}
 
-	public Maestro(String nombre, int edad, String maestria) {
+	public Teacher(String nombre, int edad, String maestria) {
 	    this.nombre = nombre;
 	    this.edad = edad;
 	    this.maestria = maestria;
 	}
 	
-	public Maestro(int id, String nombre, String email,String password, String role) {
+	public Teacher(int id, String nombre, String email,String password, String role) {
 		 this.id = id;
 		 this.nombre = nombre;
 		 this.email = email;
@@ -33,7 +33,7 @@ public class Maestro {
 		 this.role = role;
 	}
 
-	public Maestro(String nombre, String fechaNacimiento, String email, String password, String sexo, int edad, String maestria, String anio, String grupo) {
+	public Teacher(String nombre, String fechaNacimiento, String email, String password, String sexo, int edad, String maestria, String anio, String grupo) {
 		 this.nombre = nombre;
 		 this.fechaNacimiento = fechaNacimiento;
 		 this.email = email;
@@ -44,14 +44,14 @@ public class Maestro {
 		 this.anio = anio;
 		 this.grupo = grupo;
 	}	
-	public Maestro(int id, String nombre, String email, String password) {
+	public Teacher(int id, String nombre, String email, String password) {
 		 this.id = id;
 		 this.nombre = nombre;
 		 this.email = email;
 		 this.password = password;
 	}
 	
-	public Maestro(String nombre, String email, String password,String sexo, int edad, String maestria, List<String> materias, String role) {
+	public Teacher(String nombre, String email, String password,String sexo, int edad, String maestria, List<String> materias, String role) {
 		 this.nombre = nombre;
 		 this.email = email;
 		 this.password = password;

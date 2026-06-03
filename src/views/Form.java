@@ -34,7 +34,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import controllers.LoginController;
-import models.Alumno;
+import models.Student;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -44,7 +44,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Formulario extends JFrame{
+public class Form extends JFrame{
 	
 	private JTextField txtMatricula;
 	private JTextField txtApellidoMaterno;
@@ -86,7 +86,7 @@ public class Formulario extends JFrame{
 	private JLabel lblErrorDomicilio;
 	private JButton botonRegistro;
 	
-	public Formulario() {
+	public Form() {
 		
 		setLayout(new BorderLayout());
 		setSize(400, 600); //lo reemplazo por pack
@@ -646,8 +646,8 @@ public class Formulario extends JFrame{
 	    domicilio.setSelectedIndex(0);
 	}
 	//=================================================================================================================================================================
-	public void cargarDatos(Alumno alumno) {
-		txtMatricula.setText(alumno.getMatricula());
+	public void cargarDatos(Student student) {
+		txtMatricula.setText(student.getMatricula());
 		txtMatricula.setEditable(false);
 		
 		txtMatricula.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -667,37 +667,37 @@ public class Formulario extends JFrame{
 		    }
 		});
 		
-	    txtNombre.setText(alumno.getNombre());
-	    txtApellidoPaterno.setText(alumno.getApellidoPaterno());
-	    txtApellidoMaterno.setText(alumno.getApellidoMaterno());
-	    txtContactoEmergencia.setText(alumno.getContactoEmergencia());
-	    txtNumeroEmergencia.setText(alumno.getNumeroEmergencia());
+	    txtNombre.setText(student.getNombre());
+	    txtApellidoPaterno.setText(student.getApellidoPaterno());
+	    txtApellidoMaterno.setText(student.getApellidoMaterno());
+	    txtContactoEmergencia.setText(student.getContactoEmergencia());
+	    txtNumeroEmergencia.setText(student.getNumeroEmergencia());
 	    
 	    /*Se utiliza equals PORQUE en FormularioController tenemos view.getRbA().isSelected() ? "A" : "B"
 	    Y en formulario si se pone grupo = char  se mezclaria un string y un char, lo que marca error*/
 	    
-	    if ("M".equals(alumno.getSexo())) {
+	    if ("M".equals(student.getSexo())) {
 	    	rbMujer.setSelected(true);
 	    }else {
 	    	rbHombre.setSelected(true);
 	    }
 	    
-	    if ("A".equals(alumno.getGrupo())) {
+	    if ("A".equals(student.getGrupo())) {
 	    	rbA.setSelected(true);
 	    }else {
 	    	rbB.setSelected(true);
 	    }
 	    
-	    if ("1".equals(alumno.getAnio())) {
+	    if ("1".equals(student.getAnio())) {
 	    	rb1.setSelected(true);
-	    }else if ("2".equals(alumno.getAnio())) {
+	    }else if ("2".equals(student.getAnio())) {
 	    	rb2.setSelected(true);
 	    }else {
 	    	rb3.setSelected(true);
 	    }
 	    
-	    parentescoAlumno.setSelectedItem(alumno.getParentesco());
-	    domicilio.setSelectedItem(alumno.getDomicilio());
+	    parentescoAlumno.setSelectedItem(student.getParentesco());
+	    domicilio.setSelectedItem(student.getDomicilio());
 	    
 	}
 	//=================================================================================================================================================================

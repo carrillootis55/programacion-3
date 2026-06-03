@@ -1,14 +1,14 @@
 package models;
 
-public class Materia {
+public class Subject {
 	private int id;
     private String nombre;
     private String anio;
 
-    public Materia() {
+    public Subject() {
     }
 
-    public Materia(int id, String nombre, String anio) {
+    public Subject(int id, String nombre, String anio) {
         this.id = id;
         this.nombre = nombre;
         this.anio = anio;

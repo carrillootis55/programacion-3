@@ -7,14 +7,14 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import views.Formulario;
+import views.Form;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
-import models.Maestro;
+import models.Teacher;
 import views.LoginView;
 import views.MainView;
 import java.sql.SQLException;
-import repository.MaestroRepository;
+import repository.TeacherRepository;
 
 
 public class LoginController {
@@ -104,16 +104,16 @@ public class LoginController {
 
 	            JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente");
 	            
-	            MaestroRepository repository = new MaestroRepository();
+	            TeacherRepository repository = new TeacherRepository();
 
-                Maestro maestro =  repository.obtenerMaestroPorEmail(usuario);
+                Teacher teacher =  repository.obtenerMaestroPorEmail(usuario);
 	            //new MainView();
                 
-	            MainView main = new MainView(maestro);
+	            MainView main = new MainView(teacher);
 	            
-	            main.configurarPermisos(maestro);
+	            main.configurarPermisos(teacher);
 	            
-	            new HomeController(main,maestro);
+	            new HomeController(main,teacher);
 	       
 	            main.showView(MainView.HOME);
 	            
@@ -150,18 +150,18 @@ public class LoginController {
   //=================================================================================================================================================================
     private void abrirRegistro() {
 
-        Formulario formulario = new Formulario();
+        Form form = new Form();
         
-        Maestro maestro = new Maestro();
+        Teacher teacher = new Teacher();
 
-        maestro.setAnio("1");
-        maestro.setGrupo("A");
+        teacher.setAnio("1");
+        teacher.setGrupo("A");
         
         //HomeController home = new HomeController(new MainView());
-        new FormularioController(formulario, maestro);
+        new FormController(form, teacher);
         
-        formulario.setLocationRelativeTo(null);
-        formulario.setVisible(true);
+        form.setLocationRelativeTo(null);
+        form.setVisible(true);
 
         //Cerrar login
         view.getWindow().dispose();
@@ -196,24 +196,24 @@ public class LoginController {
         }
 
         try {
-            MaestroRepository repository = new MaestroRepository();
+            TeacherRepository repository = new TeacherRepository();
             
             // Buscamos al maestro por su email
-            models.Maestro maestro = repository.buscarEmail(email);
+            models.Teacher teacher = repository.buscarEmail(email);
             
-            if (maestro == null) {
+            if (teacher == null) {
                 throw new InvalidUserException("Email no registrado");
             }
 
             // Verificamos la contraseña
-            if (!PasswordUtils.checkPassword(password, maestro.getPassword())) {
+            if (!PasswordUtils.checkPassword(password, teacher.getPassword())) {
                 throw new InvalidPasswordException("Datos invalidos");
             }
             System.out.println("Login exitoso:");
-            System.out.println("ID: " + maestro.getId());
-            System.out.println("Nombre: " + maestro.getNombre());
-            System.out.println("Email: " + maestro.getEmail());
-            System.out.println("ROL: " + maestro.getRole());
+            System.out.println("ID: " + teacher.getId());
+            System.out.println("Nombre: " + teacher.getNombre());
+            System.out.println("Email: " + teacher.getEmail());
+            System.out.println("ROL: " + teacher.getRole());
             //System.out.println("ROL RECIBIDO: -" + maestro.getRole() + "-");
             return true;
 	        } catch (SQLException e) {

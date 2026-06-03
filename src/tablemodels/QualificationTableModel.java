@@ -2,27 +2,27 @@ package tablemodels;
 
 import javax.swing.table.AbstractTableModel;
 
-import models.Alumno;
-import repository.CalificacionRepository;
+import models.Student;
+import repository.QualificationRepository;
 
 import java.util.List;
 
-public class CalificacionTableModel extends AbstractTableModel {
+public class QualificationTableModel extends AbstractTableModel {
 	
-	private List<Alumno> alumnos;
+	private List<Student> students;
     private List<String> materias;
     
-    private CalificacionRepository repo;
+    private QualificationRepository repo;
 
-    public CalificacionTableModel( List<Alumno> alumnos,List<String> materias ) {
-        this.alumnos = alumnos;
+    public QualificationTableModel( List<Student> students,List<String> materias ) {
+        this.students = students;
         this.materias = materias;
-        this.repo = new CalificacionRepository();
+        this.repo = new QualificationRepository();
     }
 
     @Override
     public int getRowCount() {
-        return alumnos.size();
+        return students.size();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CalificacionTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int col) {
 
-        Alumno alumno = alumnos.get(row);
+        Student student = students.get(row);
 
         if (col == 0) {
             return row + 1;
@@ -60,7 +60,7 @@ public class CalificacionTableModel extends AbstractTableModel {
 
 
         if (col == 1) {
-            return alumno.getNombre();
+            return student.getNombre();
         }
 
         if (col == materias.size() + 2) {
@@ -73,7 +73,7 @@ public class CalificacionTableModel extends AbstractTableModel {
 
                     Double calificacion =
                             repo.obtenerCalificacion(
-                                    alumno.getMatricula(),
+                                    student.getMatricula(),
                                     materia
                             );
 
@@ -98,7 +98,7 @@ public class CalificacionTableModel extends AbstractTableModel {
 
             Double calificacion =
                     repo.obtenerCalificacion(
-                            alumno.getMatricula(),
+                            student.getMatricula(),
                             materia
                     );
 

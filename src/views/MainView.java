@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import models.Maestro;
+import models.Teacher;
 
 public class MainView extends JFrame {
 	private Font fuente = new Font("Times New Roman", Font.ITALIC, 14);
@@ -51,17 +51,17 @@ public class MainView extends JFrame {
     private CardLayout cardLayout;
     private JPanel container;
 
-    public AlumnosView alumnosPanel;
-	public MaestroView maestroPanel;
-	public CalificacionesView calificacionesPanel;
+    public StudentsView alumnosPanel;
+	public TeacherView maestroPanel;
+	public QualificationsView calificacionesPanel;
 	
 	public AdminView adminPanel;
-	public ListaMaestrosView listaMaestrosPanel;
+	public TeacherListView listaMaestrosPanel;
 	
-	private Maestro maestro;
+	private Teacher teacher;
 	
-	public MainView(Maestro maestro) {
-		this.maestro = maestro;
+	public MainView(Teacher teacher) {
+		this.teacher = teacher;
 		
 		setTitle("SISTEMA DE CALIFICACIONES DE SECUNDARIA");
 		setLocationRelativeTo(null);
@@ -185,10 +185,10 @@ public class MainView extends JFrame {
 		}
 	}*/
 	
-	public void configurarPermisos(Maestro maestro) {
+	public void configurarPermisos(Teacher teacher) {
 
 	    //Obtener rol seguro
-	    String rol = maestro.getRole();
+	    String rol = teacher.getRole();
 
 	    //Verificar si es ADMIN
 	    if (rol != null && rol.trim().equalsIgnoreCase("ADMIN")) {
@@ -253,15 +253,15 @@ public class MainView extends JFrame {
 
 	    JPanel homePanel = setPanelInicio();
 
-	    alumnosPanel = new AlumnosView();
+	    alumnosPanel = new StudentsView();
 	    //maestroPanel = new MaestroView(new Maestro());
-	    maestroPanel = new MaestroView(maestro);
-	    calificacionesPanel = new CalificacionesView();
+	    maestroPanel = new TeacherView(teacher);
+	    calificacionesPanel = new QualificationsView();
 	    
 	    //adminPanel = new AdminView(new Maestro());s
-	    adminPanel = new AdminView(maestro);
+	    adminPanel = new AdminView(teacher);
 
-		listaMaestrosPanel = new ListaMaestrosView();
+		listaMaestrosPanel = new TeacherListView();
 	    
 	    container.add(homePanel, HOME);
 	    container.add(alumnosPanel, ALUMNOS);

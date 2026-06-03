@@ -21,7 +21,7 @@ public class MiVentana extends JFrame {
 		setIconImage(icono);
 
 		//Agregar panel
-		MiPanel panelito= new MiPanel();
+		MyPanel panelito= new MyPanel();
 		add(panelito);//Se muestra el panelito en la ventana, NECESARIO USAR add PARA QUE SE MUESTRE
 
 		

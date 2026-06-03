@@ -4,9 +4,9 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 
-import controllers.FormularioController;
+import controllers.FormController;
 import controllers.LoginController;
-import views.Formulario;
+import views.Form;
 import views.LoginView;
 import views.LoginWindow;
 import views.MainView;

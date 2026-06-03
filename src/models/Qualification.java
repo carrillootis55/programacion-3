@@ -1,6 +1,6 @@
 package models;
 
-public class Calificacion {
+public class Qualification {
 	
 	private int id;
 
@@ -10,10 +10,10 @@ public class Calificacion {
 
     private double calificacion;
 
-    public Calificacion() {
+    public Qualification() {
     }
 
-    public Calificacion(String alumnoMatricula, int materiaId, double calificacion) {
+    public Qualification(String alumnoMatricula, int materiaId, double calificacion) {
 
         this.alumnoMatricula = alumnoMatricula;
         this.materiaId = materiaId;

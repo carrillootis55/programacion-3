@@ -12,17 +12,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import models.Maestro;
+import models.Teacher;
 
 public class AdminView extends JPanel {
 
-    private Maestro admin;
+    private Teacher admin;
 
     public AdminView() {
-        this(new Maestro());
+        this(new Teacher());
     }
 
-    public AdminView(Maestro admin) {
+    public AdminView(Teacher admin) {
 
         this.admin = admin;
 
@@ -122,7 +122,7 @@ public class AdminView extends JPanel {
     }
 
 
-    public void updateAdmin(Maestro admin) {
+    public void updateAdmin(Teacher admin) {
 
         this.admin = admin;
 

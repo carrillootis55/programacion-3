@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import models.Alumno;
+import models.Student;
 
-public class AlumnoTableModels extends AbstractTableModel {
+public class StudentsTableModels extends AbstractTableModel {
 	
-	private List<Alumno> alumnos;
+	private List<Student> students;
 
 	private final String[] columnas = {
 	    "Matrícula",
@@ -24,14 +24,14 @@ public class AlumnoTableModels extends AbstractTableModel {
 	    "Parentesco",
 	    "Domicilio"
 		};
-    public AlumnoTableModels(List<Alumno> alumnos) {
-        this.alumnos = alumnos;
+    public StudentsTableModels(List<Student> students) {
+        this.students = students;
     }
     
     
     @Override
     public int getRowCount() {
-        return alumnos.size();
+        return students.size();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AlumnoTableModels extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        Alumno a = alumnos.get(rowIndex);
+        Student a = students.get(rowIndex);
 
         switch (columnIndex) {
         case 0: return a.getMatricula();
@@ -66,8 +66,8 @@ public class AlumnoTableModels extends AbstractTableModel {
 
         return null;
     }
-    public Alumno getAlumnoAt(int row) {
-    	return alumnos.get(row);
+    public Student getAlumnoAt(int row) {
+    	return students.get(row);
     }
 
 }

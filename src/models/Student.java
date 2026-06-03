@@ -1,6 +1,6 @@
 package models;
 
-public class Alumno{
+public class Student{
 	
 	//Atributos
     private String matricula;
@@ -17,11 +17,11 @@ public class Alumno{
     private String domicilio; 
     
     //Constructores
-    public Alumno(){
+    public Student(){
     	
     }
 
-    public Alumno(String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento,char sexo, String anio,String grupo,String contactoEmergencia, 
+    public Student(String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento,char sexo, String anio,String grupo,String contactoEmergencia, 
     		String numeroEmergencia, String parentesco, String domicilio){
 
         this.matricula = matricula;
@@ -167,10 +167,10 @@ public class Alumno{
                domicilio;
     }
     
-    public static Alumno fromCsv(String linea) {
+    public static Student fromCsv(String linea) {
         String[] data = linea.split(",");
 
-        return new Alumno(
+        return new Student(
             data[0],
             data[1],
             data[2],

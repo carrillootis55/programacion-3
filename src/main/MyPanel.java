@@ -4,15 +4,12 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
-public class MiPanel extends JPanel{
+public class MyPanel extends JPanel{
 	
-	public MiPanel(){
+	public MyPanel(){
 		setBackground(Color.BLACK);
 		//setBackground(new Color(210,65,35));
 		
 	}
-	
-	
-	
 
 }

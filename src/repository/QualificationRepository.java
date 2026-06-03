@@ -8,7 +8,7 @@ import java.util.List;
 
 import config.DatabaseConnection;
 
-public class CalificacionRepository {
+public class QualificationRepository {
 	
     public void guardarCalificacion( String matricula,int materiaId,double calificacion) throws Exception {
     	 String sql = """

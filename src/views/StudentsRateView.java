@@ -10,7 +10,7 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.Alumno;
+import models.Student;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -24,14 +24,14 @@ import javax.swing.SwingConstants;
 
 import lib.SpringUtilities;
 
-public class CalificarAlumnoView extends JFrame{
+public class StudentsRateView extends JFrame{
 	
 	private List<JTextField> camposCalificaciones;
 	private List<JLabel> labelsError;
 	
 	public JButton btnGuardar = new JButton("Guardar");
 	
-	public CalificarAlumnoView(Alumno alumno,List<String> materias) {
+	public StudentsRateView(Student student,List<String> materias) {
 
 	    setTitle("Calificaciones");
 
@@ -43,7 +43,7 @@ public class CalificarAlumnoView extends JFrame{
 
 	    labelsError = new ArrayList<>();
 
-	    JLabel lblAlumno =new JLabel( "Alumno: " + alumno.getNombre() + " " + alumno.getApellidoPaterno() );
+	    JLabel lblAlumno =new JLabel( "Alumno: " + student.getNombre() + " " + student.getApellidoPaterno() );
 
 	    lblAlumno.setHorizontalAlignment(SwingConstants.CENTER );
 

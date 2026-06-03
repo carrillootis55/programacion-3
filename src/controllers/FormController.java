@@ -11,47 +11,47 @@ import java.time.format.ResolverStyle;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 
-import models.Alumno;
-import models.Maestro;
-import repository.AlumnoRepository;
-import views.Formulario;
+import models.Student;
+import models.Teacher;
+import repository.StudentsRepository;
+import views.Form;
 
-public class FormularioController {
+public class FormController {
 	
-	private Formulario view;
-	private AlumnoRepository repository;
+	private Form view;
+	private StudentsRepository repository;
+	//Maestro actual
+	private Teacher currentTeacher;
 	
-	private Maestro maestroActual;
-	
-	private boolean editando = false;
+	private boolean editing = false;
 	private int indexEditar = -1;
 	
-	public FormularioController(Formulario view,  Maestro maestro) {
+	public FormController(Form view,  Teacher teacher) {
 		this.view = view;
-		this.maestroActual = maestro;
-		this.repository = new AlumnoRepository();
+		this.currentTeacher = teacher;
+		this.repository = new StudentsRepository();
 		configurarGrupoYAnio();
 		assignListeners();
 	}
 	
 	public void setModoEdicion(int index) {
-		this.editando = true;
+		this.editing = true;
 		this.indexEditar = index;
 	}
 	
 	private void configurarGrupoYAnio() {
 
 	    //Año
-	    if (maestroActual.getAnio().equals("1")) {
+	    if (currentTeacher.getAnio().equals("1")) {
 	        view.getRb1().setSelected(true);
-	    } else if (maestroActual.getAnio().equals("2")) {
+	    } else if (currentTeacher.getAnio().equals("2")) {
 	        view.getRb2().setSelected(true);
 	    } else {
 	        view.getRb3().setSelected(true);
 	    }
 
 	    //Grupo
-	    if (maestroActual.getGrupo().equals("A")) {
+	    if (currentTeacher.getGrupo().equals("A")) {
 	        view.getRbA().setSelected(true);
 	    } else {
 	        view.getRbB().setSelected(true);
@@ -254,7 +254,7 @@ public class FormularioController {
 	        return false;
 	    }
 	    
-	    if (!editando && repository.existeMatricula(matricula)) {
+	    if (!editing && repository.existeMatricula(matricula)) {
 
 	        view.setErrorMatricula("La matrícula ya está registrada");
 	        return false;
@@ -323,7 +323,7 @@ public class FormularioController {
 	        return true;
 
 	    } catch (Exception e) {
-	        view.setErrorFechaNacimiento("Fecha irreal o inválida");
+	        view.setErrorFechaNacimiento("Fecha irreal o inválida (DD/MM/AAAA)");
 	        return false;
 	    }
 	}
@@ -436,7 +436,7 @@ public class FormularioController {
 	            view.setErrorFechaNacimiento("Formato inválido (DD/MM/AAAA)");
 	            return;
 	        }
-	        Alumno alumno = new Alumno(
+	        Student student = new Student(
 	        	    view.getTxtMatricula().getText(),
 	        	    view.getTxtNombre().getText(),
 	        	    view.getTxtApellidoPaterno().getText(),
@@ -451,17 +451,17 @@ public class FormularioController {
 	        	    view.getParentescoAlumno().getSelectedItem().toString(),
 	        	    view.getDomicilio().getSelectedItem().toString()
 	        	);
-	            AlumnoRepository repository = new AlumnoRepository();
+	            StudentsRepository repository = new StudentsRepository();
 
 	            try {
-	            	if(editando) {
-	            		repository.updateAlumno(alumno);
+	            	if(editing) {
+	            		repository.updateAlumno(student);
 	            	}else {
 	            		
-	            		repository.save(alumno);
+	            		repository.save(student);
 	            	}
 	                System.out.println("=== LISTA DE ALUMNOS ===");
-	                for (Alumno a : repository.getAlumnos()) {
+	                for (Student a : repository.getAlumnos()) {
 	                    System.out.println(a);
 	                    System.out.println("----------------------");
 	                }

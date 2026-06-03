@@ -20,14 +20,14 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
-import models.Alumno;
-import models.Maestro;
-import repository.CalificacionRepository;
+import models.Student;
+import models.Teacher;
+import repository.QualificationRepository;
 
 public class PDFExporter {
 
 	
-    public void exportAlumnos(List<Alumno> alumnos, File file) throws IOException {
+    public void exportAlumnos(List<Student> students, File file) throws IOException {
 
         try (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
              Document doc = new Document(pdfDoc, PageSize.LETTER.rotate())) {
@@ -119,7 +119,7 @@ public class PDFExporter {
             }
             
             //Datos
-            for (Alumno a : alumnos) {
+            for (Student a : students) {
             	
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
                         .add(new Paragraph(a.getMatricula())));
@@ -158,7 +158,7 @@ public class PDFExporter {
         
     }
   //=================================================================================================================================================================
-    public void exportMaestros(List<Maestro> maestros, File file) throws IOException {
+    public void exportMaestros(List<Teacher> teachers, File file) throws IOException {
 
         try (
 
@@ -190,7 +190,7 @@ public class PDFExporter {
             table.addHeaderCell(crearHeader("Año"));
             table.addHeaderCell(crearHeader("Grupo"));
 
-            for (Maestro m : maestros) {
+            for (Teacher m : teachers) {
 
                 table.addCell(
                     new Cell().add(
@@ -246,7 +246,7 @@ public class PDFExporter {
     }
     
   //=================================================================================================================================================================
-    public void exportCalificaciones(List<Alumno> alumnos, List<String> materias, File file) throws IOException {
+    public void exportCalificaciones(List<Student> students, List<String> materias, File file) throws IOException {
         try (
 
             PdfDocument pdfDoc =new PdfDocument(new PdfWriter(file)  );
@@ -254,7 +254,7 @@ public class PDFExporter {
             Document doc =new Document( pdfDoc,PageSize.LETTER.rotate() )
 
         ) {
-            CalificacionRepository repo =new CalificacionRepository();
+            QualificationRepository repo =new QualificationRepository();
 
             doc.add(new Paragraph( "Reporte de Calificaciones") .setBold() .setFontSize(16)  .setTextAlignment(  TextAlignment.CENTER  ) );
 
@@ -290,10 +290,10 @@ public class PDFExporter {
             int contador = 1;
 
             // FILAS
-            for (Alumno alumno : alumnos) {
+            for (Student student : students) {
                 table.addCell(new Cell().add(new Paragraph(String.valueOf(contador++))).setTextAlignment(TextAlignment.CENTER));
 
-                table.addCell(new Cell() .add(new Paragraph(alumno.getNombre() )) );
+                table.addCell(new Cell() .add(new Paragraph(student.getNombre() )) );
 
                 double suma = 0;
 
@@ -303,7 +303,7 @@ public class PDFExporter {
 
                     try {
 
-                        calificacion =repo.obtenerCalificacion( alumno.getMatricula(), materia );
+                        calificacion =repo.obtenerCalificacion( student.getMatricula(), materia );
 
                         if (calificacion == null) {
                             calificacion = 0.0;
@@ -330,7 +330,7 @@ public class PDFExporter {
         }
     }
     
-    public void exportBoleta(Alumno alumno, File file) throws IOException {
+    public void exportBoleta(Student student, File file) throws IOException {
 
         try (
 
@@ -338,7 +338,7 @@ public class PDFExporter {
 
             Document doc = new Document(pdfDoc,PageSize.LETTER)) {
 
-            CalificacionRepository repo = new CalificacionRepository();
+            QualificationRepository repo = new QualificationRepository();
 
             // TITULO
             doc.add(new Paragraph("BOLETA ESCOLAR").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER));
@@ -348,22 +348,22 @@ public class PDFExporter {
             // DATOS ALUMNO
             doc.add(
                 new Paragraph(
-                    "Alumno: " + alumno.getNombre()
-                    + " " + alumno.getApellidoPaterno()
-                    + " " + alumno.getApellidoMaterno()
+                    "Alumno: " + student.getNombre()
+                    + " " + student.getApellidoPaterno()
+                    + " " + student.getApellidoMaterno()
                 ));
 
-            doc.add(new Paragraph("Matrícula: " + alumno.getMatricula()));
+            doc.add(new Paragraph("Matrícula: " + student.getMatricula()));
 
             doc.add(new Paragraph(
-                    "Grupo: " + alumno.getGrupo()));
+                    "Grupo: " + student.getGrupo()));
 
-            doc.add(new Paragraph("Año: " + alumno.getAnio()));
+            doc.add(new Paragraph("Año: " + student.getAnio()));
 
             doc.add(new Paragraph(" "));
 
             // MATERIAS
-            List<String> materias = repo.getMateriasPorAnio(alumno.getAnio());
+            List<String> materias = repo.getMateriasPorAnio(student.getAnio());
 
             float[] columnas = {5, 2};
 
@@ -378,7 +378,7 @@ public class PDFExporter {
 
             for (String materia : materias) {
 
-                Double calificacion = repo.obtenerCalificacion(alumno.getMatricula(),materia);
+                Double calificacion = repo.obtenerCalificacion(student.getMatricula(),materia);
 
                 table.addCell(new Cell().add(new Paragraph(materia)));
 
@@ -414,10 +414,12 @@ public class PDFExporter {
     }
   //=================================================================================================================================================================
     private Cell crearHeader(String texto) {
-
-        return new Cell()
-                .add(new Paragraph(texto)).setBackgroundColor(
-                        new DeviceRgb(45,111,164)).setFontColor(DeviceGray.WHITE).setTextAlignment(TextAlignment.CENTER);
+        Cell cell = new Cell();
+        cell.add(new Paragraph(texto));
+        cell.setBackgroundColor(new DeviceRgb(45, 111, 164));
+        cell.setFontColor(DeviceGray.WHITE);
+        cell.setTextAlignment(TextAlignment.CENTER);
+        return cell;
     }
     
 }
