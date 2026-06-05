@@ -497,6 +497,23 @@ public class TeacherRepository {
     }
     
     
-    
+    public boolean existeEmail(String email) throws SQLException {
+
+        String sql = "SELECT COUNT(*) total FROM maestro WHERE email = ?";
+
+        try (PreparedStatement statement =
+                connection.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("total") > 0;
+            }
+        }
+
+        return false;
+    }
     
 }

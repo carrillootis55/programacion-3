@@ -3,6 +3,8 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -52,6 +54,23 @@ public class StudentDetails extends JFrame {
         JLabel lblApellidoM =
                 new JLabel("Apellido Materno: " +
                         student.getApellidoMaterno());
+        
+        String fechaFormateada = student.getFechaNacimiento();
+
+        try {
+            LocalDate fecha =
+                    LocalDate.parse(fechaFormateada);
+
+            fechaFormateada =
+                    fecha.format(
+                            DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    );
+        } catch (Exception e) {
+          
+        }
+
+        JLabel lblFechaNacimiento =
+                new JLabel("Fecha de Nacimiento: " + fechaFormateada);
 
         JLabel lblSexo =
                 new JLabel("Sexo: " + student.getSexo());
@@ -82,6 +101,7 @@ public class StudentDetails extends JFrame {
         lblNombre.setFont(font);
         lblApellidoP.setFont(font);
         lblApellidoM.setFont(font);
+        lblFechaNacimiento.setFont(font);
         lblSexo.setFont(font);
         lblGrupo.setFont(font);
         lblAnio.setFont(font);
@@ -94,6 +114,7 @@ public class StudentDetails extends JFrame {
         panel.add(lblNombre);
         panel.add(lblApellidoP);
         panel.add(lblApellidoM);
+        panel.add(lblFechaNacimiento);
         panel.add(lblSexo);
         panel.add(lblGrupo);
         panel.add(lblAnio);

@@ -55,6 +55,10 @@ public class TeacherForm extends JFrame {
     private JLabel lblErrorEdad;
     private JLabel lblErrorMaestria;
     private JLabel lblErrorFechaNacimiento;
+
+    private JLabel lblErrorSexo;
+    private JLabel lblErrorGrupo;
+    private JLabel lblErrorAnio;
     private JButton btnGuardar;
     
     public TeacherForm() {
@@ -63,7 +67,9 @@ public class TeacherForm extends JFrame {
 
         setLayout(new BorderLayout());
 
-        setSize(400, 550);
+        //setSize(400, 550);
+        
+        setSize(450, 600);
 
         setLocationRelativeTo(null);
 
@@ -98,7 +104,8 @@ public class TeacherForm extends JFrame {
         JPanel filaNombre = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         JLabel nombre = new JLabel("Nombre:");
         nombre.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        nombre.setPreferredSize(new Dimension(90, 10)); 
+        //nombre.setPreferredSize(new Dimension(90, 10)); 
+        nombre.setPreferredSize(new Dimension(140, 25));
         txtNombre = new JTextField(22);
         estiloFocus(txtNombre);
         filaNombre.add(nombre);
@@ -115,7 +122,8 @@ public class TeacherForm extends JFrame {
         JPanel filafechaNacimiento = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         JLabel fechaNacimiento = new JLabel("Fecha de nacimiento:");
         fechaNacimiento.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        fechaNacimiento.setPreferredSize(new Dimension(90, 10)); 
+        //fechaNacimiento.setPreferredSize(new Dimension(90, 10)); 
+        fechaNacimiento.setPreferredSize(new Dimension(140, 25));
 
         txtFechaNacimiento = new JTextField(22);
 
@@ -135,7 +143,8 @@ public class TeacherForm extends JFrame {
         JPanel filaEmail = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         JLabel email = new JLabel("Email:");
         email.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        email.setPreferredSize(new Dimension(90, 10));
+        //email.setPreferredSize(new Dimension(90, 10));
+        email.setPreferredSize(new Dimension(140, 25));
         txtEmail = new JTextField(22);
         estiloFocus(txtEmail);
         filaEmail.add(email);
@@ -152,7 +161,8 @@ public class TeacherForm extends JFrame {
         JPanel filaPassword = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         JLabel password = new JLabel("Contraseña:");
         password.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        password.setPreferredSize(new Dimension(90, 10));
+        //password.setPreferredSize(new Dimension(90, 10));
+        password.setPreferredSize(new Dimension(140, 25));
         txtPassword = new JPasswordField(22);
         estiloFocus(txtPassword);
         filaPassword.add(password);
@@ -169,7 +179,8 @@ public class TeacherForm extends JFrame {
         JPanel filaEdad = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         JLabel edad = new JLabel("Edad:");
         edad.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        edad.setPreferredSize(new Dimension(90, 10));
+        //edad.setPreferredSize(new Dimension(90, 10));
+        edad.setPreferredSize(new Dimension(140, 25));
         txtEdad = new JTextField(22);
         estiloFocus(txtEdad);
         filaEdad.add(edad);
@@ -186,7 +197,8 @@ public class TeacherForm extends JFrame {
         JPanel filaMaestria = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         JLabel maestria = new JLabel("Maestría:");
         maestria.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        maestria.setPreferredSize(new Dimension(90, 10));
+        //maestria.setPreferredSize(new Dimension(90, 10));
+        maestria.setPreferredSize(new Dimension(140, 25));
         txtMaestria = new JTextField(22);
         estiloFocus(txtMaestria);
         filaMaestria.add(maestria);
@@ -257,6 +269,21 @@ public class TeacherForm extends JFrame {
         JPanel filaOpciones = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
         filaOpciones.add(panelOpciones);
         panel.add(filaOpciones);
+        
+        lblErrorSexo = crearError();
+        lblErrorGrupo = crearError();
+        lblErrorAnio = crearError();
+        
+        JPanel filaErroresOpciones = new JPanel();
+        filaErroresOpciones.setLayout(new BoxLayout(filaErroresOpciones, BoxLayout.Y_AXIS));
+
+        filaErroresOpciones.add(lblErrorSexo);
+        filaErroresOpciones.add(lblErrorGrupo);
+        filaErroresOpciones.add(lblErrorAnio);
+
+        panel.add(filaErroresOpciones);
+
+        
         //componente invisible que absorberá el espacio sobrante del scroll y empujará lo demás hacia arriba
         panel.add(Box.createVerticalGlue());
         
@@ -373,49 +400,49 @@ public class TeacherForm extends JFrame {
     public JRadioButton getRb3() {
         return rb3;
     }
+    
 
 	
-	 public void setErrorNombre(String msg) {
+	public void setErrorNombre(String msg) {
+	    lblErrorNombre.setText(msg);
+	}
 	
-	     lblErrorNombre.setText(msg);
-	 }
+	public void setErrorEmail(String msg) {
+	    lblErrorEmail.setText(msg);
+	}
 	
-	 public void setErrorEmail(String msg) {
+	public void setErrorPassword(String msg) {
+	    lblErrorPassword.setText(msg);
+	}
 	
-	     lblErrorEmail.setText(msg);
-	 }
+	public void setErrorEdad(String msg) {
+	    lblErrorEdad.setText(msg);
+	}
 	
-	 public void setErrorPassword(String msg) {
-	
-	     lblErrorPassword.setText(msg);
-	 }
-	
-	 public void setErrorEdad(String msg) {
-	
-	     lblErrorEdad.setText(msg);
-	 }
-	
-	 public void setErrorMaestria(String msg) {
-	
-	     lblErrorMaestria.setText(msg);
-	 }
+	public void setErrorMaestria(String msg) {
+	    lblErrorMaestria.setText(msg);
+	}
 
-	
-	 public void setErrorSexo(String msg) {
-	 }
+	public void setErrorSexo(String msg) {
+		lblErrorSexo.setText(msg);
+	}
 	
 	public void setErrorGrupo(String msg) {
-		
+		lblErrorGrupo.setText(msg);
 	}
 	
 	public void setErrorAnio(String msg) {
+		lblErrorAnio.setText(msg);
 	}
+	
 	public JTextField getFechaNacimiento() { 
 		return txtFechaNacimiento; 
 	}
 	public void setErrorFechaNacimiento(String msg) { 
 		lblErrorFechaNacimiento.setText(msg); 
 	}
+	
+	
     public void cargarDatos(Teacher teacher) {
 
         txtNombre.setText(teacher.getNombre());
@@ -426,7 +453,23 @@ public class TeacherForm extends JFrame {
 
         txtMaestria.setText(teacher.getMaestria());
 
-        txtFechaNacimiento.setText(teacher.getFechaNacimiento());
+        String fechaFormateada = teacher.getFechaNacimiento();
+
+        try {
+
+            java.time.LocalDate fecha =
+                    java.time.LocalDate.parse(fechaFormateada);
+
+            fechaFormateada =
+                    fecha.format(
+                        java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    );
+
+        } catch (Exception e) {
+        }
+
+        txtFechaNacimiento.setText(fechaFormateada);
+        
         if ("M".equals(teacher.getSexo())) {
 
             rbMujer.setSelected(true);

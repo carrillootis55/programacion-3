@@ -37,7 +37,7 @@ public class FormTeacherController {
 
         assignListeners();
 
-        bloquearGruposOcupados();
+
     }
   //=================================================================================================================================================================
     public void setModoEdicion() {
@@ -420,27 +420,6 @@ public class FormTeacherController {
         return true;
     }
 
-  //=================================================================================================================================================================
-    private void bloquearGruposOcupados() {
-
-        try {
-
-            if (repository.existeMaestroEnGrupo("1", "A")) {
-
-                view.getRbA().setEnabled(false);
-            }
-
-            if (repository.existeMaestroEnGrupo("1", "B")) {
-
-                view.getRbB().setEnabled(false);
-            }
-
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(view, "Error al cargar grupos");
-        }
-    }
-    
     
   //=================================================================================================================================================================
     private void validarFormulario() {
@@ -465,6 +444,27 @@ public class FormTeacherController {
         if (!validateGrupo()) validacion = false;
 
         if (!validacion) {
+
+            return;
+        }
+        
+        try {
+
+            if (repository.existeEmail(
+                    view.getTxtEmail().getText().trim())) {
+
+                JOptionPane.showMessageDialog(
+                        view,
+                        "El correo ya está registrado");
+
+                return;
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al validar correo");
 
             return;
         }

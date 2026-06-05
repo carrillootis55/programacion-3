@@ -43,6 +43,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Form extends JFrame{
 	
@@ -670,6 +672,18 @@ public class Form extends JFrame{
 	    txtNombre.setText(student.getNombre());
 	    txtApellidoPaterno.setText(student.getApellidoPaterno());
 	    txtApellidoMaterno.setText(student.getApellidoMaterno());
+	    try {
+	        LocalDate fecha = LocalDate.parse(student.getFechaNacimiento());
+
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+	        txtFechaNacimiento.setText(fecha.format(formatter) );
+
+	    } catch (Exception e) {
+	        txtFechaNacimiento.setText(
+	                student.getFechaNacimiento()
+	        );
+	    }
 	    txtContactoEmergencia.setText(student.getContactoEmergencia());
 	    txtNumeroEmergencia.setText(student.getNumeroEmergencia());
 	    

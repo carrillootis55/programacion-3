@@ -165,6 +165,12 @@ public class FormController {
 		        char c = e.getKeyChar();
 		        if (!Character.isDigit(c)) {
 		            e.consume();
+		            return;
+		        }
+		        
+		        //Deja teclear solo 10 digitos
+		        if (view.getTxtNumeroEmergencia().getText().length() >= 10) {
+		            e.consume();
 		        }
 		    }
 		});
@@ -305,7 +311,7 @@ public class FormController {
 	        view.setErrorFechaNacimiento("Campo obligatorio");
 	        return false;
 	    }
-	 // EXPRESIÓN REGULAR: VA A VALIDAR que el usuario SOLO escriba números y diagonales en orden
+	    // EXPRESIÓN REGULAR: VA A VALIDAR que el usuario SOLO escriba números y diagonales en orden
 	    
 	    String procesoEscribe = "^\\d{0,2}(/?\\d{0,2})?(/?\\d{0,4})?$";
 	    
@@ -397,9 +403,14 @@ public class FormController {
 	        return false;
 	    }
 	    
-	    if(numero.length() < 10) {
+	    /*if(numero.length() < 10) {
 	    	view.setErrorNumero("El número es muy corto");
 	    	return false;
+	    }*/
+	    
+	    if (numero.length() != 10) {
+	        view.setErrorNumero("El número debe tener 10 dígitos");
+	        return false;
 	    }
 	    
 	    view.setErrorNumero("");
