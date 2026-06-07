@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import java.io.File; 
+import java.io.File;
+
 import models.Student;
 import models.Teacher;
 import repository.StudentsRepository;
@@ -18,161 +19,230 @@ import views.Form;
 import views.StudentDetails;
 
 public class StudentController {
-	
+
 	private StudentsView view;
 	private PDFExporter pdfExporter;
-	private Teacher maestroActual;
-		
+	private Teacher currentTeacher;
+
 	public StudentController(StudentsView view, Teacher teacher) {
+
 		this.view = view;
-		
-		this.maestroActual = teacher;
-		
+
+		this.currentTeacher = teacher;
+
 		pdfExporter = new PDFExporter();
-		
+
 		//AGREGAR
-		view.getBtnAgregar().addActionListener(e -> {
-			String anio = maestroActual.getAnio();
-		    String grupo = maestroActual.getGrupo();
-		    
-		    StudentsRepository repo = new StudentsRepository();
-		    int totalAlumnos = repo.contarAlumnosPorGrupo(anio, grupo);
-		    
-		    if (totalAlumnos >= 10) {
-		        JOptionPane.showMessageDialog(view, 
-		            "Ya existen los 10 alumnos permitidos para el grupo de " + anio + "° '" + grupo + "'", 
-		            "Grupo Lleno", 
-		            JOptionPane.INFORMATION_MESSAGE);
-		        return; 
+		view.getBtnAdd().addActionListener(e -> {
+
+			String year = currentTeacher.getYear();
+		    String group = currentTeacher.getGroup();
+
+		    StudentsRepository repository = new StudentsRepository();
+
+		    int totalStudents =
+		            repository.countStudentsByGroup(year, group);
+
+		    if (totalStudents >= 10) {
+
+		        JOptionPane.showMessageDialog(
+		        		view,
+		                "Ya existen los 10 alumnos permitidos para el grupo de " + year + "° '" + group + "'",
+		                "Grupo Lleno",
+		                JOptionPane.INFORMATION_MESSAGE
+		        );
+
+		        return;
 		    }
-		    
+
 			Form form = new Form();
-	
-			FormController controller =new FormController(form,maestroActual);
-			
+
+			FormController controller =
+					new FormController(form, currentTeacher);
+
 			//Actualiza tabla
 			form.addWindowListener(new java.awt.event.WindowAdapter() {
 
                 @Override
                 public void windowClosed(java.awt.event.WindowEvent e) {
 
-                    actualizarTabla();
+                    updateTable();
                 }
             });
+
 			form.setLocationRelativeTo(null);
 			form.setVisible(true);
 		});
-		
-		//Calificar
-		view.getBtnCalificar().addActionListener(e -> {
-		    int fila = view.getSelectedRow();
 
-		    if (fila == -1) {
-		        JOptionPane.showMessageDialog(null,
-		                "Selecciona un alumno");
+		//Calificar
+		view.getBtnRate().addActionListener(e -> {
+
+		    int row = view.getSelectedRow();
+
+		    if (row == -1) {
+
+		        JOptionPane.showMessageDialog(
+		        		null,
+		                "Selecciona un alumno"
+		        );
+
 		        return;
 		    }
 
-		    StudentsTableModels model = (StudentsTableModels) view.getTabla().getModel();
+		    StudentsTableModels model =
+		            (StudentsTableModels) view.getTable().getModel();
 
-		    Student student = model.getAlumnoAt(fila);
-            QualificationRepository repo = new QualificationRepository();
+		    Student student = model.getStudentAt(row);
 
-            List<String> materias = repo.getMateriasPorAnio(maestroActual.getAnio());
+            QualificationRepository repository =
+            		new QualificationRepository();
 
-            StudentsRateView ventana = new StudentsRateView( student,materias );
-            
-            new ControllerRatings(ventana, student, fila,  materias );
+            List<String> subjects =
+                    repository.getSubjectsByYear(
+                    		currentTeacher.getYear()
+                    );
 
-		    ventana.setLocationRelativeTo(null);
-		    ventana.setVisible(true);
+            StudentsRateView window =
+            		new StudentsRateView(student, subjects);
+
+            new ControllerRatings(
+            		window,
+            		student,
+            		row,
+            		subjects
+            );
+
+		    window.setLocationRelativeTo(null);
+		    window.setVisible(true);
 		});
-		
-		
+
 		//EDITAR
-		view.getBtnEditar().addActionListener(e ->{
-			int fila = view.getTabla().getSelectedRow();
-			
-			if(fila == -1) {
-				JOptionPane.showMessageDialog(null, "Selecciona un alumno");
+		view.getBtnEdit().addActionListener(e -> {
+
+			int row = view.getTable().getSelectedRow();
+
+			if(row == -1) {
+
+				JOptionPane.showMessageDialog(
+						null,
+						"Selecciona un alumno"
+				);
+
 				return;
 			}
+
 			try {
-			StudentsTableModels model = (StudentsTableModels) view.getTabla().getModel();
-			Student student = model.getAlumnoAt(fila);
-			
-			Form form = new Form();
-			FormController controller =new FormController(form,maestroActual);
-			
-			form.cargarDatos(student);
-			controller.setModoEdicion(fila);
-			
-			//Actualizar tabla
-			form.addWindowListener(new java.awt.event.WindowAdapter() {
 
-                @Override
-                public void windowClosed(java.awt.event.WindowEvent e) {
+				StudentsTableModels model =
+						(StudentsTableModels) view.getTable().getModel();
 
-                    actualizarTabla();
-                }
-            });
-			form.setLocationRelativeTo(null);
-			form.setVisible(true);
+				Student student = model.getStudentAt(row);
+
+				Form form = new Form();
+
+				FormController controller =
+						new FormController(form, currentTeacher);
+
+				form.loadData(student);
+
+				controller.setEditMode(row);
+
+				//Actualizar tabla
+				form.addWindowListener(new java.awt.event.WindowAdapter() {
+
+	                @Override
+	                public void windowClosed(java.awt.event.WindowEvent e) {
+
+	                    updateTable();
+	                }
+	            });
+
+				form.setLocationRelativeTo(null);
+				form.setVisible(true);
+
 			} catch(Exception ex){
-				
-				JOptionPane.showMessageDialog(null, "Error al abrir el formulario");
+
+				JOptionPane.showMessageDialog(
+						null,
+						"Error al abrir el formulario"
+				);
 			}
 		});
+
 		//ELIMINAR
-		
-		view.getBtnEliminar().addActionListener(e ->{
-			int fila = view.getTabla().getSelectedRow();
-			
-			if(fila == -1) {
-				JOptionPane.showMessageDialog(null, "Selecciona un alumno");
+		view.getBtnDelete().addActionListener(e -> {
+
+			int row = view.getTable().getSelectedRow();
+
+			if(row == -1) {
+
+				JOptionPane.showMessageDialog(
+						null,
+						"Selecciona un alumno"
+				);
+
 				return;
 			}
-			
-			int confirm = JOptionPane.showConfirmDialog(null, "Eliminar alumno?");
-			
+
+			int confirm =
+					JOptionPane.showConfirmDialog(
+							null,
+							"Eliminar alumno?"
+					);
+
 			if(confirm == JOptionPane.YES_OPTION) {
+
 				try {
-					StudentsRepository repo = new StudentsRepository();
 
-		            StudentsTableModels model = (StudentsTableModels) view.getTabla().getModel();
+					StudentsRepository repository =
+							new StudentsRepository();
 
-		            Student student = model.getAlumnoAt(fila);
+		            StudentsTableModels model =
+		            		(StudentsTableModels) view.getTable().getModel();
 
-		            repo.delete(student.getMatricula());
-		            
-		            
-					//List<Alumno> alumnos = repo.getAlumnos();
+		            Student student =
+		            		model.getStudentAt(row);
+
+		            repository.delete(
+		            		student.getEnrollment()
+		            );
+
 					List<Student> students =
-                            repo.getAlumnosPorGrupo(
-                                    maestroActual.getAnio(),
-                                    maestroActual.getGrupo()
+                            repository.getStudentsByGroup(
+                                    currentTeacher.getYear(),
+                                    currentTeacher.getGroup()
                             );
 
                     view.setTableModel(
                             new StudentsTableModels(students)
                     );
-					
-					view.setTableModel(new StudentsTableModels(students));
-					
-					JOptionPane.showMessageDialog(null, "Alumno eliminado");
-					
+
+					view.setTableModel(
+							new StudentsTableModels(students)
+					);
+
+					JOptionPane.showMessageDialog(
+							null,
+							"Alumno eliminado"
+					);
+
 				} catch(Exception ex) {
-					JOptionPane.showMessageDialog(null, "Error al eliminar");
+
+					JOptionPane.showMessageDialog(
+							null,
+							"Error al eliminar"
+					);
 				}
 			}
 		});
-		
-		view.getBtnPdf().addActionListener(e -> generarPdf());
-		view.getBtnBoleta().addActionListener(e -> {
 
-		    int fila = view.getSelectedRow();
+		view.getBtnPdf().addActionListener(e -> generatePdf());
 
-		    if(fila == -1) {
+		view.getBtnReportCard().addActionListener(e -> {
+
+		    int row = view.getSelectedRow();
+
+		    if(row == -1) {
 
 		        JOptionPane.showMessageDialog(
 		                null,
@@ -183,18 +253,18 @@ public class StudentController {
 		    }
 
 		    StudentsTableModels model =
-		            (StudentsTableModels) view.getTabla().getModel();
+		            (StudentsTableModels) view.getTable().getModel();
 
-		    Student student = model.getAlumnoAt(fila);
+		    Student student = model.getStudentAt(row);
 
-		    generarBoleta(student);
+		    generateReportCard(student);
 		});
-		
-		view.getBtnEditarCalificaciones().addActionListener(e -> {
 
-		    int fila = view.getSelectedRow();
+		view.getBtnEditGrades().addActionListener(e -> {
 
-		    if(fila == -1) {
+		    int row = view.getSelectedRow();
+
+		    if(row == -1) {
 
 		        JOptionPane.showMessageDialog(
 		                null,
@@ -205,47 +275,46 @@ public class StudentController {
 		    }
 
 		    StudentsTableModels model =
-		            (StudentsTableModels) view.getTabla().getModel();
+		            (StudentsTableModels) view.getTable().getModel();
 
-		    Student student = model.getAlumnoAt(fila);
+		    Student student = model.getStudentAt(row);
 
-		    QualificationRepository repo =
+		    QualificationRepository repository =
 		            new QualificationRepository();
 
-		    List<String> materias =
-		            repo.getMateriasPorAnio(
-		                    maestroActual.getAnio()
+		    List<String> subjects =
+		            repository.getSubjectsByYear(
+		                    currentTeacher.getYear()
 		            );
 
-		    StudentsRateView ventana =
+		    StudentsRateView window =
 		            new StudentsRateView(
 		                    student,
-		                    materias
+		                    subjects
 		            );
 
 		    new ControllerRatings(
-		            ventana,
+		            window,
 		            student,
-		            fila,
-		            materias
+		            row,
+		            subjects
 		    );
 
-		    ventana.cargarCalificaciones(
-		            obtenerCalificaciones(student, materias)
+		    window.loadGrades(
+		            getQualifications(student, subjects)
 		    );
 
-		    ventana.setLocationRelativeTo(null);
+		    window.setLocationRelativeTo(null);
 
-		    ventana.setVisible(true);
+		    window.setVisible(true);
 		});
-		
-		
+
 		//VER DETALLES
-		view.getBtnDetallesA().addActionListener(e -> {
+		view.getBtnStudentDetails().addActionListener(e -> {
 
-		    int fila = view.getSelectedRow();
+		    int row = view.getSelectedRow();
 
-		    if (fila == -1) {
+		    if (row == -1) {
 
 		        JOptionPane.showMessageDialog(
 		                null,
@@ -256,49 +325,59 @@ public class StudentController {
 		    }
 
 		    StudentsTableModels model =
-		            (StudentsTableModels) view.getTabla().getModel();
+		            (StudentsTableModels) view.getTable().getModel();
 
-		    Student student = model.getAlumnoAt(fila);
+		    Student student = model.getStudentAt(row);
 
-		    StudentDetails detalles =
+		    StudentDetails details =
 		            new StudentDetails(student);
 
-		    detalles.setVisible(true);
+		    details.setVisible(true);
 		});
-		
-		
 	}
-	private List<Double> obtenerCalificaciones(Student student, List<String> materias) {
 
-	    List<Double> lista = new java.util.ArrayList<>();
+	private List<Double> getQualifications(
+			Student student,
+			List<String> subjects
+	) {
 
-	    QualificationRepository repo = new QualificationRepository();
+	    List<Double> qualifications =
+	    		new java.util.ArrayList<>();
 
-	    for(String materia : materias) {
+	    QualificationRepository repository =
+	    		new QualificationRepository();
 
-	        Double calificacion = repo.obtenerCalificacion(student.getMatricula(),materia);
+	    for(String subject : subjects) {
 
-	        if(calificacion == null) {
-	            calificacion = 0.0;
+	        Double qualification =
+	        		repository.getQualification(
+	        				student.getEnrollment(),
+	        				subject
+	        		);
+
+	        if(qualification == null) {
+	            qualification = 0.0;
 	        }
 
-	        lista.add(calificacion);
+	        qualifications.add(qualification);
 	    }
 
-	    return lista;
+	    return qualifications;
 	}
+
 	//=================================================================================================================================================================
-	private void actualizarTabla() {
+
+	private void updateTable() {
 
         try {
 
-            StudentsRepository repo =
+            StudentsRepository repository =
                     new StudentsRepository();
 
             List<Student> students =
-                    repo.getAlumnosPorGrupo(
-                            maestroActual.getAnio(),
-                            maestroActual.getGrupo()
+                    repository.getStudentsByGroup(
+                            currentTeacher.getYear(),
+                            currentTeacher.getGroup()
                     );
 
             view.setTableModel(
@@ -316,7 +395,7 @@ public class StudentController {
 
 	//=================================================================================================================================================================
 
-	private void generarPdf() {
+	private void generatePdf() {
 
 		File file = view.selectPdfFile();
 
@@ -325,59 +404,66 @@ public class StudentController {
 		}
 
 		try {
-			StudentsRepository repo = new StudentsRepository();
-			
+
+			StudentsRepository repository =
+					new StudentsRepository();
+
 			List<Student> students =
-                    repo.getAlumnosPorGrupo(
-                            maestroActual.getAnio(),
-                            maestroActual.getGrupo()
+                    repository.getStudentsByGroup(
+                            currentTeacher.getYear(),
+                            currentTeacher.getGroup()
                     );
 
-			pdfExporter.exportAlumnos(students, file);
+			pdfExporter.exportStudents(students, file);
 
 			if (Desktop.isDesktopSupported()) {
+
 				Desktop.getDesktop().open(file);
 			}
 
 		} catch (Exception ex) {
+
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error al exportar PDF");
+
+			JOptionPane.showMessageDialog(
+					null,
+					"Error al exportar PDF"
+			);
 		}
 	}
-		
-	    
-	    private void generarBoleta(Student student) {
 
-	        JFileChooser chooser = new JFileChooser();
+	private void generateReportCard(Student student) {
 
-	        chooser.setSelectedFile(
-	                new File("boleta.pdf")
-	        );
+        JFileChooser chooser = new JFileChooser();
 
-	        int option = chooser.showSaveDialog(view);
+        chooser.setSelectedFile(
+                new File("report_card.pdf")
+        );
 
-	        if(option != JFileChooser.APPROVE_OPTION) {
-	            return;
-	        }
+        int option = chooser.showSaveDialog(view);
 
-	        File file = chooser.getSelectedFile();
+        if(option != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
 
-	        try {
+        File file = chooser.getSelectedFile();
 
-	            PDFExporter pdf = new PDFExporter();
+        try {
 
-	            pdf.exportBoleta(student, file);
+            PDFExporter pdfExporter = new PDFExporter();
 
-	            Desktop.getDesktop().open(file);
+            pdfExporter.exportReportCard(student, file);
 
-	        } catch(Exception e) {
+            Desktop.getDesktop().open(file);
 
-	            e.printStackTrace();
+        } catch(Exception e) {
 
-	            JOptionPane.showMessageDialog(
-	                    view,
-	                    "Error al generar boleta"
-	            );
-	        }
-	    }
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al generar boleta"
+            );
+        }
+    }
 }

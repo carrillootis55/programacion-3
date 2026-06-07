@@ -1,4 +1,5 @@
 package views;
+
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -8,6 +9,7 @@ import javax.swing.JFrame;
 import controllers.LoginController;
 
 public class LoginWindow extends JFrame {
+	
 	public LoginWindow() {
 		
 		//setSize(400, 400); lo reemplazo por pack
@@ -19,14 +21,14 @@ public class LoginWindow extends JFrame {
 		setTitle("SISTEMA DE CALIFICACIONES");
 		setLocationRelativeTo(null);
 		
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		Image icono = tk.getImage("src/img/icono.png");
-		setIconImage(icono);
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image icon = toolkit.getImage("src/img/icono.png");
+		setIconImage(icon);
 		
-		LoginView panelito = new LoginView(this);
-		add(panelito);
+		LoginView loginView = new LoginView(this);
+		add(loginView);
 		
-		new LoginController(panelito);
+		new LoginController(loginView);
 		
 		pack();//Se usa pack para que se ajuste al tamaño real del texto que se tiene
 		setMinimumSize(new Dimension(450, getHeight())); //Para que el titulo de SISTEMA se vea completo

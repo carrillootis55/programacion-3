@@ -12,7 +12,6 @@ import java.awt.Color;
  */
 import java.awt.Dimension;
 
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -44,180 +43,198 @@ import javax.swing.event.DocumentListener;
 import lib.SpringUtilities;
 
 public class LoginView extends JPanel {
+
 	private LoginWindow window;
-	
-	private Font fuente;
-	
-	private JTextField textoUsuario;
-	
-	private JPasswordField contrasena;
-	
-	private JLabel lblUsuarioCorreccion;
-	
-	private JLabel lblContrasenaCorreccion;
-	
+
+	private Font font;
+
+	private JTextField txtUsername;
+
+	private JPasswordField txtPassword;
+
+	private JLabel lblUsernameError;
+
+	private JLabel lblPasswordError;
+
 	private Color defaultButtonColor;
-	
-	private JButton botonLogin;
-		
+
+	private JButton btnLogin;
+
 	public LoginView(LoginWindow window) {
-		this.window= window;
-		fuente = new Font("Times New Roman", Font.ITALIC , 17);
-		
+
+		this.window = window;
+		font = new Font("Times New Roman", Font.ITALIC, 17);
+
 		setBackground(Color.WHITE);
 		setOpaque(true);
 		setLayout(new BorderLayout());
-		
-		inicializarComponentes();
-		
-		
-	} 
-	
-	private void inicializarComponentes() {
-		crearTitulo();
-		crearFormulario();
-		crearBotones();
-		
+
+		initializeComponents();
+
 	}
-	
+
+	private void initializeComponents() {
+
+		createTitle();
+		createForm();
+		createButtons();
+
+	}
+
 	//Getters
-    public JPasswordField getContrasena() {return contrasena;}
-	public LoginWindow getWindow() {return window;}
-	public JTextField getTextoUsuario() {return textoUsuario;}
-	public JLabel getLblUsuarioCorreccion() {return lblUsuarioCorreccion;}
-	public JLabel getLblContrasenaCorreccion() {return lblContrasenaCorreccion;}
-	public JButton getBotonLogin() {return botonLogin;}
+	public JPasswordField getTxtPassword() {
+		return txtPassword;
+	}
 
-    
+	public LoginWindow getWindow() {
+		return window;
+	}
+
+	public JTextField getTxtUsername() {
+		return txtUsername;
+	}
+
+	public JLabel getLblUsernameError() {
+		return lblUsernameError;
+	}
+
+	public JLabel getLblPasswordError() {
+		return lblPasswordError;
+	}
+
+	public JButton getBtnLogin() {
+		return btnLogin;
+	}
+
 	//METODO PARA CENTRAR INICIO DE SESION
-    private void crearTitulo() {
+	private void createTitle() {
 
-        JLabel lblSaludo = new JLabel("Iniciar sesión", JLabel.CENTER);
-        lblSaludo.setFont(fuente);
-        lblSaludo.setHorizontalAlignment(JLabel.CENTER); 
-        //Se centra el texto
+		JLabel lblGreeting = new JLabel("Iniciar sesión", JLabel.CENTER);
+		lblGreeting.setFont(font);
+		lblGreeting.setHorizontalAlignment(JLabel.CENTER);
+		//Se centra el texto
 
-        add(lblSaludo, BorderLayout.NORTH); 
-    }
-	
-    //BOTON
-	private void crearBotones() {
+		add(lblGreeting, BorderLayout.NORTH);
+	}
 
-	    JPanel panelBoton = new JPanel();
-	    panelBoton.setBackground(Color.WHITE);
-	    panelBoton.setOpaque(true); 
-	    
-	    
-	    botonLogin= new JButton("Iniciar");
-	    defaultButtonColor = botonLogin.getBackground();
-	    botonLogin.setBackground(Color.WHITE);
-	    botonLogin.setForeground(Color.BLACK);
-	    botonLogin.setFont(fuente);
-		botonLogin.setToolTipText("Inicio de sesion");
-	    
-	    //Uso de mouse para cambiar color el boton
-	    botonLogin.addMouseListener(new MouseAdapter() {
-	        public void mouseEntered(MouseEvent e) {
-	        	botonLogin.setForeground(Color.BLUE);
-	        }
-	
-	        public void mouseExited(MouseEvent e) {
-	        	botonLogin.setForeground(Color.BLACK);
-	        }
-	    });
-	    	    		
-	    colocarIcono(botonLogin, "../img/icono.png");
+	//BOTON
+	private void createButtons() {
 
-	    panelBoton.add(botonLogin);	    
-	    add(panelBoton, BorderLayout.SOUTH);
-	    
-	   
+		JPanel pnlButton = new JPanel();
+		pnlButton.setBackground(Color.WHITE);
+		pnlButton.setOpaque(true);
+
+		btnLogin = new JButton("Iniciar");
+		defaultButtonColor = btnLogin.getBackground();
+		btnLogin.setBackground(Color.WHITE);
+		btnLogin.setForeground(Color.BLACK);
+		btnLogin.setFont(font);
+		btnLogin.setToolTipText("Inicio de sesion");
+
+		//Uso de mouse para cambiar color el boton
+		btnLogin.addMouseListener(new MouseAdapter() {
+
+			public void mouseEntered(MouseEvent e) {
+				btnLogin.setForeground(Color.BLUE);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnLogin.setForeground(Color.BLACK);
+			}
+		});
+
+		setButtonIcon(btnLogin, "../img/icono.png");
+
+		pnlButton.add(btnLogin);
+		add(pnlButton, BorderLayout.SOUTH);
+
 	}
 
 	//Formulario
-	private void crearFormulario() {
-		
-		JPanel panelito = new JPanel (new SpringLayout());
-		panelito.setBackground(Color.WHITE);
-		panelito.setOpaque(true);
-		
-		//USUARIO
-		JLabel lblEmail = new JLabel("*Usuario: ");
-		lblEmail.setFont(fuente);
-		
-		//CAMBIOS PARA REDUCIR TAMAÑO DEL CAMPO DE TEXTO QUE ABARCA CASI TODA LA PANTALLA
-		textoUsuario = new JTextField();
-		textoUsuario.setFont(fuente);
-		textoUsuario.setPreferredSize(new Dimension(180, 30));
-        
-        lblUsuarioCorreccion = new JLabel(" ");
-        lblUsuarioCorreccion.setForeground(Color.RED);
-        lblUsuarioCorreccion.setFont(fuente.deriveFont(13f));
-     
-        
-        //CONTRASEÑA
-        JLabel lblContrasena = new JLabel("*Contraseña: ");
-        lblContrasena.setFont(fuente);
-        
-        contrasena = new JPasswordField();
-        contrasena.setFont(fuente);
-        contrasena.setPreferredSize(new java.awt.Dimension(180, 30));    
-        
-        lblContrasenaCorreccion = new JLabel(" ");
-        lblContrasenaCorreccion.setForeground(Color.RED);
-        lblContrasenaCorreccion.setFont(fuente.deriveFont(13f));
+	private void createForm() {
 
-        
-		
-        //SE AGREGA LO CREADO
-		panelito.add(lblEmail);
-		panelito.add(textoUsuario);
+		JPanel pnlForm = new JPanel(new SpringLayout());
+		pnlForm.setBackground(Color.WHITE);
+		pnlForm.setOpaque(true);
+
+		//USUARIO
+		JLabel lblUsername = new JLabel("*Usuario: ");
+		lblUsername.setFont(font);
+
+		//CAMBIOS PARA REDUCIR TAMAÑO DEL CAMPO DE TEXTO QUE ABARCA CASI TODA LA PANTALLA
+		txtUsername = new JTextField();
+		txtUsername.setFont(font);
+		txtUsername.setPreferredSize(new Dimension(180, 30));
+
+		lblUsernameError = new JLabel(" ");
+		lblUsernameError.setForeground(Color.RED);
+		lblUsernameError.setFont(font.deriveFont(13f));
+
+		//CONTRASEÑA
+		JLabel lblPassword = new JLabel("*Contraseña: ");
+		lblPassword.setFont(font);
+
+		txtPassword = new JPasswordField();
+		txtPassword.setFont(font);
+		txtPassword.setPreferredSize(new java.awt.Dimension(180, 30));
+
+		lblPasswordError = new JLabel(" ");
+		lblPasswordError.setForeground(Color.RED);
+		lblPasswordError.setFont(font.deriveFont(13f));
+
+		//SE AGREGA LO CREADO
+		pnlForm.add(lblUsername);
+		pnlForm.add(txtUsername);
 
 		//Se agrega debajo del correo
-		panelito.add(new JLabel());
-		panelito.add(lblUsuarioCorreccion);
+		pnlForm.add(new JLabel());
+		pnlForm.add(lblUsernameError);
 
-		panelito.add(lblContrasena);
-		panelito.add(contrasena);
+		pnlForm.add(lblPassword);
+		pnlForm.add(txtPassword);
 
 		//Se agrega debajo de la contraseña
-		panelito.add(new JLabel());
-		panelito.add(lblContrasenaCorreccion);
-		
-		
-		//Iguala el ancho de todas las columnas al componente mas grande
-		SpringUtilities.makeCompactGrid(panelito, 4, 2, 20, 10, 15, 15);
+		pnlForm.add(new JLabel());
+		pnlForm.add(lblPasswordError);
 
-		add(panelito, BorderLayout.CENTER);
-		
+		//Iguala el ancho de todas las columnas al componente mas grande
+		SpringUtilities.makeCompactGrid(pnlForm, 4, 2, 20, 10, 15, 15);
+
+		add(pnlForm, BorderLayout.CENTER);
+
 	}
-	
+
 	//icono boton
-	private void colocarIcono(JButton boton, String ruta) { 
+	private void setButtonIcon(JButton button, String path) {
+
 		try {
-			Image icono = ImageIO.read(getClass().getResource(ruta));
-			icono = icono.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-			boton.setIcon(new ImageIcon(icono));			
-		}catch(Exception ex) {
+
+			Image icon = ImageIO.read(getClass().getResource(path));
+			icon = icon.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+
+			button.setIcon(new ImageIcon(icon));
+
+		} catch (Exception ex) {
+
 			System.out.println("No está la imagen del ícono");
 		}
 	}
 
-	
-    //Limpia errores
-	public void limpiarErrores() {
-	    lblUsuarioCorreccion.setText(" ");
-	    lblContrasenaCorreccion.setText(" ");
+	//Limpia errores
+	public void clearErrors() {
+
+		lblUsernameError.setText(" ");
+		lblPasswordError.setText(" ");
 	}
-	
-    public void setErrorUsuario(String mensaje) {
-        lblUsuarioCorreccion.setText(mensaje);
-    }
 
-    public void setErrorContrasena(String mensaje) {
-        lblContrasenaCorreccion.setText(mensaje);
-    }
-	
-    
+	public void setUsernameError(String message) {
+
+		lblUsernameError.setText(message);
+	}
+
+	public void setPasswordError(String message) {
+
+		lblPasswordError.setText(message);
+	}
+
 }
-

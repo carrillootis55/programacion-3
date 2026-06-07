@@ -10,7 +10,8 @@ import config.DatabaseConnection;
 
 public class QualificationRepository {
 	
-    public void guardarCalificacion( String matricula,int materiaId,double calificacion) throws Exception {
+    public void saveQualification(String enrollment, int subjectId, double qualification) throws Exception {
+    	
     	 String sql = """
                  INSERT INTO calificacion(
                      alumno_matricula,
@@ -24,9 +25,9 @@ public class QualificationRepository {
 
          PreparedStatement ps = conn.prepareStatement(sql);
 
-         ps.setString(1, matricula);
-         ps.setInt(2, materiaId);
-         ps.setDouble(3, calificacion);
+         ps.setString(1, enrollment);
+         ps.setInt(2, subjectId);
+         ps.setDouble(3, qualification);
 
          ps.executeUpdate();
 
@@ -34,7 +35,8 @@ public class QualificationRepository {
 
     }
   //=================================================================================================================================================================
-    public void actualizarCalificacion( String matricula, int materiaId, double calificacion) throws Exception {
+    public void updateQualification(String enrollment, int subjectId, double qualification) throws Exception {
+    	
     	String sql = """
                 UPDATE calificacion
                 SET calificacion = ?
@@ -46,9 +48,9 @@ public class QualificationRepository {
 
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setDouble(1, calificacion);
-        ps.setString(2, matricula);
-        ps.setInt(3, materiaId);
+        ps.setDouble(1, qualification);
+        ps.setString(2, enrollment);
+        ps.setInt(3, subjectId);
 
         ps.executeUpdate();
 
@@ -56,7 +58,7 @@ public class QualificationRepository {
 
     }
   //=================================================================================================================================================================
-    public boolean existeCalificacion(String matricula, int materiaId ) {
+    public boolean qualificationExists(String enrollment, int subjectId ) {
 
     	String sql = """
                 SELECT *
@@ -70,8 +72,8 @@ public class QualificationRepository {
             PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 
-            ps.setString(1, matricula);
-            ps.setInt(2, materiaId);
+            ps.setString(1, enrollment);
+            ps.setInt(2, subjectId);
 
             ResultSet rs = ps.executeQuery();
 
@@ -84,9 +86,9 @@ public class QualificationRepository {
         return false;
     }
   //=================================================================================================================================================================
-    public List<String> getMateriasPorAnio(String anio) {
+    public List<String> getSubjectsByYear(String year) {
 
-        List<String> materias = new ArrayList<>();
+        List<String> subjects = new ArrayList<>();
 
         String sql = """
                 SELECT nombre
@@ -99,22 +101,22 @@ public class QualificationRepository {
             PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 
-            ps.setString(1, anio);
+            ps.setString(1, year);
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                materias.add(rs.getString("nombre"));
+                subjects.add(rs.getString("nombre"));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return materias;
+        return subjects;
     }
   //=================================================================================================================================================================
-    public int getMateriaId( String nombreMateria, String anio) {
+    public int getSubjectId(String subjectName, String year) {
     	
     	String sql = """
                 SELECT id
@@ -129,8 +131,8 @@ public class QualificationRepository {
             PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 
-            ps.setString(1, nombreMateria);
-            ps.setString(2, anio);
+            ps.setString(1, subjectName);
+            ps.setString(2, year);
 
             ResultSet rs = ps.executeQuery();
 
@@ -145,7 +147,7 @@ public class QualificationRepository {
         return -1;
     }
   //=================================================================================================================================================================
-    public Double obtenerCalificacion(String matricula, String nombreMateria ) {
+    public Double getQualification(String enrollment, String subjectName ) {
 
     	 String sql = """
                  SELECT c.calificacion
@@ -161,8 +163,8 @@ public class QualificationRepository {
              PreparedStatement ps = conn.prepareStatement(sql)
          ) {
 
-             ps.setString(1, matricula);
-             ps.setString(2, nombreMateria);
+             ps.setString(1, enrollment);
+             ps.setString(2, subjectName);
 
              ResultSet rs = ps.executeQuery();
 

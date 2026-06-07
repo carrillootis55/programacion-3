@@ -29,33 +29,37 @@ import models.Teacher;
 
 public class TeacherForm extends JFrame {
 
-	private JTextField txtNombre;
+	private JTextField txtName;
     private JTextField txtEmail;
     private JPasswordField txtPassword;
-    private JTextField txtEdad;
-    private JTextField txtMaestria;
-    private JTextField txtFechaNacimiento;
+    private JTextField txtAge;
+    private JTextField txtMasterDegree;
+    private JTextField txtBirthDate;
     
-    private JRadioButton rbMujer;
-    private JRadioButton rbHombre;
-    private ButtonGroup bgSexo;
+    private JRadioButton rbFemale;
+    private JRadioButton rbMale;
+    private ButtonGroup bgGender;
 
     private JRadioButton rbA;
     private JRadioButton rbB;
-    private ButtonGroup bgGrupo;
+    private ButtonGroup bgGroup;
 
-    private JRadioButton rb1;
-    private JRadioButton rb2;
-    private JRadioButton rb3;
-    private ButtonGroup bgAnio;
+    private JRadioButton rbFirstYear;
+    private JRadioButton rbSecondYear;
+    private JRadioButton rbThirdYear;
+    private ButtonGroup bgYear;
 
-    private JLabel lblErrorNombre;
-    private JLabel lblErrorEmail;
-    private JLabel lblErrorPassword;
-    private JLabel lblErrorEdad;
-    private JLabel lblErrorMaestria;
-    private JLabel lblErrorFechaNacimiento;
-    private JButton btnGuardar;
+    private JLabel lblNameError;
+    private JLabel lblEmailError;
+    private JLabel lblPasswordError;
+    private JLabel lblAgeError;
+    private JLabel lblMasterDegreeError;
+    private JLabel lblBirthDateError;
+
+    private JLabel lblGenderError;
+    private JLabel lblGroupError;
+    private JLabel lblYearError;
+    private JButton btnSave;
     
     public TeacherForm() {
 
@@ -63,7 +67,9 @@ public class TeacherForm extends JFrame {
 
         setLayout(new BorderLayout());
 
-        setSize(400, 550);
+        //setSize(400, 550);
+        
+        setSize(450, 600);
 
         setLocationRelativeTo(null);
 
@@ -73,199 +79,307 @@ public class TeacherForm extends JFrame {
 
         Toolkit tk = Toolkit.getDefaultToolkit();
 
-        Image icono = tk.getImage("src/img/icono.png");
+        Image icon = tk.getImage("src/img/icono.png");
 
-        setIconImage(icono);
+        setIconImage(icon);
 
-        inicializarComponentes();
+        initializeComponents();
 
-        crearBotones();
+        createButtons();
     }
 
-    private void inicializarComponentes() {
+    private void initializeComponents() {
 
-        JLabel titulo = new JLabel("REGISTRO DE MAESTRO");
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
-        titulo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        add(titulo, BorderLayout.NORTH);
+        JLabel title = new JLabel("REGISTRO DE MAESTRO");
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        add(title, BorderLayout.NORTH);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         //NOMBRE
-        JPanel filaNombre = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
-        JLabel nombre = new JLabel("Nombre:");
-        nombre.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        nombre.setPreferredSize(new Dimension(90, 10)); 
-        txtNombre = new JTextField(22);
-        estiloFocus(txtNombre);
-        filaNombre.add(nombre);
-        filaNombre.add(txtNombre);
-        panel.add(filaNombre);
+        JPanel rowName = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        JLabel name = new JLabel("Nombre:");
+        name.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        //name.setPreferredSize(new Dimension(90, 10)); 
+        name.setPreferredSize(new Dimension(140, 25));
+        
+        txtName = new JTextField(22);
+        
+        focusStyle(txtName);
+        
+        rowName.add(name);
+        rowName.add(txtName);
+        panel.add(rowName);
 
-        lblErrorNombre = crearError();
-        JPanel filaErrorNombre = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0)); 
-        filaErrorNombre.add(lblErrorNombre);
-        panel.add(filaErrorNombre);
+        lblNameError = createError();
+        
+        JPanel rowNameError = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0)); 
+        
+        rowNameError.add(lblNameError);
+        
+        panel.add(rowNameError);
         panel.add(Box.createVerticalStrut(5));
 
         //FECHA NACIMIENTO
-        JPanel filafechaNacimiento = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
-        JLabel fechaNacimiento = new JLabel("Fecha de nacimiento:");
-        fechaNacimiento.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        fechaNacimiento.setPreferredSize(new Dimension(90, 10)); 
+        JPanel rowBirthDate = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        
+        JLabel birthDate = new JLabel("Fecha de nacimiento:");
+        
+        birthDate.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        
+        //birthDate.setPreferredSize(new Dimension(90, 10)); 
+        
+        birthDate.setPreferredSize(new Dimension(140, 25));
 
-        txtFechaNacimiento = new JTextField(22);
+        txtBirthDate = new JTextField(22);
 
-        estiloFocus(txtFechaNacimiento);
-        filafechaNacimiento.add(fechaNacimiento);
-        filafechaNacimiento.add(txtFechaNacimiento);
-        panel.add(filafechaNacimiento);
+        focusStyle(txtBirthDate);
+        
+        rowBirthDate.add(birthDate);
+        rowBirthDate.add(txtBirthDate);
+        
+        panel.add(rowBirthDate);
 
-        lblErrorFechaNacimiento = crearError();
-        JPanel filaErrorFechaNacimiento = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0)); 
-        filaErrorFechaNacimiento.add(lblErrorFechaNacimiento);
-        panel.add(filaErrorFechaNacimiento);
+        lblBirthDateError = createError();
+        
+        JPanel rowBirthDateError = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0)); 
+        
+        rowBirthDateError.add(lblBirthDateError);
+        
+        panel.add(rowBirthDateError);
         panel.add(Box.createVerticalStrut(5));
         
         
         //EMAIL
-        JPanel filaEmail = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        JPanel rowEmail = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        
         JLabel email = new JLabel("Email:");
+        
         email.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        email.setPreferredSize(new Dimension(90, 10));
+        
+        //email.setPreferredSize(new Dimension(90, 10));
+        
+        email.setPreferredSize(new Dimension(140, 25));
+        
         txtEmail = new JTextField(22);
-        estiloFocus(txtEmail);
-        filaEmail.add(email);
-        filaEmail.add(txtEmail);
-        panel.add(filaEmail);
+        
+        focusStyle(txtEmail);
+        
+        rowEmail.add(email);
+        rowEmail.add(txtEmail);
+        
+        panel.add(rowEmail);
 
-        lblErrorEmail = crearError();
-        JPanel filaErrorEmail = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0));
-        filaErrorEmail.add(lblErrorEmail);
-        panel.add(filaErrorEmail);
+        lblEmailError = createError();
+        
+        JPanel rowEmailError = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0));
+        
+        rowEmailError.add(lblEmailError);
+        
+        panel.add(rowEmailError);
         panel.add(Box.createVerticalStrut(5));
 
         //CONTRASEÑA
-        JPanel filaPassword = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        JPanel rowPassword = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        
         JLabel password = new JLabel("Contraseña:");
+        
         password.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        password.setPreferredSize(new Dimension(90, 10));
+        
+        //password.setPreferredSize(new Dimension(90, 10));
+        
+        password.setPreferredSize(new Dimension(140, 25));
+        
         txtPassword = new JPasswordField(22);
-        estiloFocus(txtPassword);
-        filaPassword.add(password);
-        filaPassword.add(txtPassword);
-        panel.add(filaPassword);
+        
+        focusStyle(txtPassword);
+        
+        rowPassword.add(password);
+        rowPassword.add(txtPassword);
+        
+        panel.add(rowPassword);
 
-        lblErrorPassword = crearError();
-        JPanel filaErrorPassword = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0));
-        filaErrorPassword.add(lblErrorPassword);
-        panel.add(filaErrorPassword);
+        lblPasswordError = createError();
+        
+        JPanel rowPasswordError = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0));
+        
+        rowPasswordError.add(lblPasswordError);
+        
+        panel.add(rowPasswordError);
         panel.add(Box.createVerticalStrut(5));
 
         //EDAD
-        JPanel filaEdad = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
-        JLabel edad = new JLabel("Edad:");
-        edad.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        edad.setPreferredSize(new Dimension(90, 10));
-        txtEdad = new JTextField(22);
-        estiloFocus(txtEdad);
-        filaEdad.add(edad);
-        filaEdad.add(txtEdad);
-        panel.add(filaEdad);
+        JPanel rowAge = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        
+        JLabel age = new JLabel("Edad:");
+        
+        age.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        
+        //age.setPreferredSize(new Dimension(90, 10));
+        
+        age.setPreferredSize(new Dimension(140, 25));
+        
+        txtAge = new JTextField(22);
+        
+        focusStyle(txtAge);
+        
+        rowAge.add(age);
+        rowAge.add(txtAge);
+        
+        panel.add(rowAge);
 
-        lblErrorEdad = crearError();
-        JPanel filaErrorEdad = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0));
-        filaErrorEdad.add(lblErrorEdad);
-        panel.add(filaErrorEdad);
+        lblAgeError = createError();
+        
+        JPanel rowAgeError = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 55, 0));
+        
+        rowAgeError.add(lblAgeError);
+        
+        panel.add(rowAgeError);
         panel.add(Box.createVerticalStrut(5));
 
         //MAESTRÍA
-        JPanel filaMaestria = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
-        JLabel maestria = new JLabel("Maestría:");
-        maestria.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        maestria.setPreferredSize(new Dimension(90, 10));
-        txtMaestria = new JTextField(22);
-        estiloFocus(txtMaestria);
-        filaMaestria.add(maestria);
-        filaMaestria.add(txtMaestria);
-        panel.add(filaMaestria);
+        JPanel rowMasterDegree = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        
+        JLabel masterDegree = new JLabel("Maestría:");
+        
+        masterDegree.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        
+        //masterDegree.setPreferredSize(new Dimension(90, 10));
+        
+        masterDegree.setPreferredSize(new Dimension(140, 25));
+        
+        txtMasterDegree = new JTextField(22);
+        
+        focusStyle(txtMasterDegree);
+        
+        rowMasterDegree.add(masterDegree);
+        rowMasterDegree.add(txtMasterDegree);
+        
+        panel.add(rowMasterDegree);
 
-        lblErrorMaestria = crearError();
-        JPanel filaErrorMaestria = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 70, 0));
-        filaErrorMaestria.add(lblErrorMaestria);
-        panel.add(filaErrorMaestria);
+        lblMasterDegreeError = createError();
+        
+        JPanel rowMasterDegreeError = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 70, 0));
+        
+        rowMasterDegreeError.add(lblMasterDegreeError);
+        
+        panel.add(rowMasterDegreeError);
         
         panel.add(Box.createVerticalStrut(5));
 
         //SECCIÓN DE RADIO BUTTONS
-        JPanel panelOpciones = new JPanel();
-        panelOpciones.setLayout(new BoxLayout(panelOpciones, BoxLayout.X_AXIS));
-        panelOpciones.setAlignmentX(CENTER_ALIGNMENT); 
+        JPanel optionsPanel = new JPanel();
+        
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
+        optionsPanel.setAlignmentX(CENTER_ALIGNMENT); 
 
-        JPanel panelSexo = new JPanel();
-        panelSexo.setLayout(new BoxLayout(panelSexo, BoxLayout.Y_AXIS));
-        JLabel sexo = new JLabel("Sexo:");
-        sexo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        rbMujer = new JRadioButton("Mujer");
-        rbHombre = new JRadioButton("Hombre");
-        bgSexo = new ButtonGroup();
-        bgSexo.add(rbMujer);
-        bgSexo.add(rbHombre);
-        panelSexo.add(sexo);
-        panelSexo.add(rbMujer);
-        panelSexo.add(rbHombre);
+        JPanel genderPanel = new JPanel();
+        
+        genderPanel.setLayout(new BoxLayout(genderPanel, BoxLayout.Y_AXIS));
+        
+        JLabel gender = new JLabel("Sexo:");
+        
+        gender.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        
+        rbFemale = new JRadioButton("Mujer");
+        rbMale = new JRadioButton("Hombre");
+        
+        bgGender = new ButtonGroup();
+        
+        bgGender.add(rbFemale);
+        bgGender.add(rbMale);
+        
+        genderPanel.add(gender);
+        genderPanel.add(rbFemale);
+        genderPanel.add(rbMale);
 
-        JPanel panelGrupo = new JPanel();
-        panelGrupo.setLayout(new BoxLayout(panelGrupo, BoxLayout.Y_AXIS));
-        JLabel grupo = new JLabel("Grupo:");
-        grupo.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        JPanel groupPanel = new JPanel();
+        
+        groupPanel.setLayout(new BoxLayout(groupPanel, BoxLayout.Y_AXIS));
+        
+        JLabel group = new JLabel("Grupo:");
+        
+        group.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        
         rbA = new JRadioButton("A");
         rbB = new JRadioButton("B");
-        bgGrupo = new ButtonGroup();
-        bgGrupo.add(rbA);
-        bgGrupo.add(rbB);
-        panelGrupo.add(grupo);
-        panelGrupo.add(rbA);
-        panelGrupo.add(rbB);
+        
+        bgGroup = new ButtonGroup();
+        
+        bgGroup.add(rbA);
+        bgGroup.add(rbB);
+        
+        groupPanel.add(group);
+        groupPanel.add(rbA);
+        groupPanel.add(rbB);
 
-        JPanel panelAnio = new JPanel();
-        panelAnio.setLayout(new BoxLayout(panelAnio, BoxLayout.Y_AXIS));
-        JLabel anio = new JLabel("Año:");
-        anio.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        rb1 = new JRadioButton("1");
-        rb2 = new JRadioButton("2");
-        rb3 = new JRadioButton("3");
-        bgAnio = new ButtonGroup();
-        bgAnio.add(rb1);
-        bgAnio.add(rb2);
-        bgAnio.add(rb3);
-        panelAnio.add(anio);
-        panelAnio.add(rb1);
-        panelAnio.add(rb2);
-        panelAnio.add(rb3);
+        JPanel yearPanel = new JPanel();
+        
+        yearPanel.setLayout(new BoxLayout(yearPanel, BoxLayout.Y_AXIS));
+        
+        JLabel year = new JLabel("Año:");
+        
+        year.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        
+        rbFirstYear = new JRadioButton("1");
+        rbSecondYear = new JRadioButton("2");
+        rbThirdYear = new JRadioButton("3");
+        
+        bgYear = new ButtonGroup();
+        
+        bgYear.add(rbFirstYear);
+        bgYear.add(rbSecondYear);
+        bgYear.add(rbThirdYear);
+        
+        yearPanel.add(year);
+        yearPanel.add(rbFirstYear);
+        yearPanel.add(rbSecondYear);
+        yearPanel.add(rbThirdYear);
 
-        panelOpciones.add(panelSexo);
-        panelOpciones.add(Box.createHorizontalStrut(40));
-        panelOpciones.add(panelGrupo);
-        panelOpciones.add(Box.createHorizontalStrut(40));
-        panelOpciones.add(panelAnio);
+        optionsPanel.add(genderPanel);
+        optionsPanel.add(Box.createHorizontalStrut(40));
+        optionsPanel.add(groupPanel);
+        optionsPanel.add(Box.createHorizontalStrut(40));
+        optionsPanel.add(yearPanel);
 
      
-        JPanel filaOpciones = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
-        filaOpciones.add(panelOpciones);
-        panel.add(filaOpciones);
+        JPanel rowOptions = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 0));
+        
+        rowOptions.add(optionsPanel);
+        
+        panel.add(rowOptions);
+        
+        lblGenderError = createError();
+        lblGroupError = createError();
+        lblYearError = createError();
+        
+        JPanel rowOptionsErrors = new JPanel();
+        
+        rowOptionsErrors.setLayout(new BoxLayout(rowOptionsErrors, BoxLayout.Y_AXIS));
+
+        rowOptionsErrors.add(lblGenderError);
+        rowOptionsErrors.add(lblGroupError);
+        rowOptionsErrors.add(lblYearError);
+
+        panel.add(rowOptionsErrors);
+
+        
         //componente invisible que absorberá el espacio sobrante del scroll y empujará lo demás hacia arriba
         panel.add(Box.createVerticalGlue());
         
         JScrollPane scroll = new JScrollPane(panel);
+        
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setBorder(null); 
+        
         add(scroll, BorderLayout.CENTER);
     }
-    private JLabel crearError() {
+    
+    private JLabel createError() {
 
         JLabel lbl = new JLabel(" ");
 
@@ -278,52 +392,58 @@ public class TeacherForm extends JFrame {
         return lbl;
     }
 
-    private void estiloFocus(JTextField txt) {
-        Dimension tamanoFijo = new Dimension(txt.getPreferredSize().width, 25);
-        txt.setMaximumSize(tamanoFijo);
-        txt.setPreferredSize(tamanoFijo); 
+    private void focusStyle(JTextField txt) {
+    	
+        Dimension fixedSize = new Dimension(txt.getPreferredSize().width, 25);
+        
+        txt.setMaximumSize(fixedSize);
+        txt.setPreferredSize(fixedSize); 
+        
         txt.addFocusListener(new FocusAdapter() {
+        	
             @Override
             public void focusGained(FocusEvent e) {
                 txt.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
             }
+            
             @Override
             public void focusLost(FocusEvent e) {
                 txt.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
             }
         });
     }
-    private void crearBotones() {
+    
+    private void createButtons() {
 
-        JPanel panelBotones = new JPanel();
+        JPanel buttonPanel = new JPanel();
 
-        btnGuardar = new JButton("GUARDAR MAESTRO");
+        btnSave = new JButton("GUARDAR MAESTRO");
 
-        JButton btnCerrar = new JButton("CERRAR");
+        JButton btnClose = new JButton("CERRAR");
 
-        btnCerrar.addActionListener(e -> {
+        btnClose.addActionListener(e -> {
 
-            int opcion = JOptionPane.showConfirmDialog(
+            int option = JOptionPane.showConfirmDialog(
                     this,
                     "¿Desea cerrar?"
             );
 
-            if (opcion == JOptionPane.YES_OPTION) {
+            if (option == JOptionPane.YES_OPTION) {
 
                 dispose();
             }
         });
 
-        panelBotones.add(btnGuardar);
+        buttonPanel.add(btnSave);
 
-        panelBotones.add(btnCerrar);
+        buttonPanel.add(btnClose);
 
-        add(panelBotones, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
 
-    public JTextField getTxtNombre() {
-        return txtNombre;
+    public JTextField getTxtName() {
+        return txtName;
     }
 
     public JTextField getTxtEmail() {
@@ -334,24 +454,24 @@ public class TeacherForm extends JFrame {
         return txtPassword;
     }
 
-    public JTextField getTxtEdad() {
-        return txtEdad;
+    public JTextField getTxtAge() {
+        return txtAge;
     }
 
-    public JTextField getTxtMaestria() {
-        return txtMaestria;
+    public JTextField getTxtMasterDegree() {
+        return txtMasterDegree;
     }
 
-    public JButton getBtnGuardar() {
-        return btnGuardar;
+    public JButton getBtnSave() {
+        return btnSave;
     }
 
-    public JRadioButton getRbMujer() {
-        return rbMujer;
+    public JRadioButton getRbFemale() {
+        return rbFemale;
     }
 
-    public JRadioButton getRbHombre() {
-        return rbHombre;
+    public JRadioButton getRbMale() {
+        return rbMale;
     }
 
     public JRadioButton getRbA() {
@@ -362,81 +482,96 @@ public class TeacherForm extends JFrame {
         return rbB;
     }
 
-    public JRadioButton getRb1() {
-        return rb1;
+    public JRadioButton getRbFirstYear() {
+        return rbFirstYear;
     }
 
-    public JRadioButton getRb2() {
-        return rb2;
+    public JRadioButton getRbSecondYear() {
+        return rbSecondYear;
     }
 
-    public JRadioButton getRb3() {
-        return rb3;
+    public JRadioButton getRbThirdYear() {
+        return rbThirdYear;
     }
+    
 
 	
-	 public void setErrorNombre(String msg) {
+	public void setNameError(String msg) {
+	    lblNameError.setText(msg);
+	}
 	
-	     lblErrorNombre.setText(msg);
-	 }
+	public void setEmailError(String msg) {
+	    lblEmailError.setText(msg);
+	}
 	
-	 public void setErrorEmail(String msg) {
+	public void setPasswordError(String msg) {
+	    lblPasswordError.setText(msg);
+	}
 	
-	     lblErrorEmail.setText(msg);
-	 }
+	public void setAgeError(String msg) {
+	    lblAgeError.setText(msg);
+	}
 	
-	 public void setErrorPassword(String msg) {
-	
-	     lblErrorPassword.setText(msg);
-	 }
-	
-	 public void setErrorEdad(String msg) {
-	
-	     lblErrorEdad.setText(msg);
-	 }
-	
-	 public void setErrorMaestria(String msg) {
-	
-	     lblErrorMaestria.setText(msg);
-	 }
+	public void setMasterDegreeError(String msg) {
+	    lblMasterDegreeError.setText(msg);
+	}
 
-	
-	 public void setErrorSexo(String msg) {
-	 }
-	
-	public void setErrorGrupo(String msg) {
-		
+	public void setGenderError(String msg) {
+		lblGenderError.setText(msg);
 	}
 	
-	public void setErrorAnio(String msg) {
+	public void setGroupError(String msg) {
+		lblGroupError.setText(msg);
 	}
-	public JTextField getFechaNacimiento() { 
-		return txtFechaNacimiento; 
+	
+	public void setYearError(String msg) {
+		lblYearError.setText(msg);
 	}
-	public void setErrorFechaNacimiento(String msg) { 
-		lblErrorFechaNacimiento.setText(msg); 
+	
+	public JTextField getTxtBirthDate() { 
+		return txtBirthDate; 
 	}
-    public void cargarDatos(Teacher teacher) {
+	
+	public void setBirthDateError(String msg) { 
+		lblBirthDateError.setText(msg); 
+	}
+	
+	
+    public void loadData(Teacher teacher) {
 
-        txtNombre.setText(teacher.getNombre());
+        txtName.setText(teacher.getName());
 
         txtEmail.setText(teacher.getEmail());
 
-        txtEdad.setText(String.valueOf(teacher.getEdad()));
+        txtAge.setText(String.valueOf(teacher.getAge()));
 
-        txtMaestria.setText(teacher.getMaestria());
+        txtMasterDegree.setText(teacher.getMasterDegree());
 
-        txtFechaNacimiento.setText(teacher.getFechaNacimiento());
-        if ("M".equals(teacher.getSexo())) {
+        String formattedDate = teacher.getBirthDate();
 
-            rbMujer.setSelected(true);
+        try {
+
+            java.time.LocalDate date = java.time.LocalDate.parse(formattedDate);
+
+            formattedDate = date.format(
+                    java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            );
+
+        } catch (Exception e) {
+        }
+
+        txtBirthDate.setText(formattedDate);
+        
+        if ("M".equals(teacher.getGender())) {
+
+            rbFemale.setSelected(true);
 
         } else {
 
-            rbHombre.setSelected(true);
+            rbMale.setSelected(true);
         }
 
-        if ("A".equals(teacher.getGrupo())) {
+        if ("A".equals(teacher.getGroup())) {
 
             rbA.setSelected(true);
 
@@ -445,17 +580,17 @@ public class TeacherForm extends JFrame {
             rbB.setSelected(true);
         }
 
-        if ("1".equals(teacher.getAnio())) {
+        if ("1".equals(teacher.getYear())) {
 
-            rb1.setSelected(true);
+            rbFirstYear.setSelected(true);
 
-        } else if ("2".equals(teacher.getAnio())) {
+        } else if ("2".equals(teacher.getYear())) {
 
-            rb2.setSelected(true);
+            rbSecondYear.setSelected(true);
 
         } else {
 
-            rb3.setSelected(true);
+            rbThirdYear.setSelected(true);
         }
     }
 

@@ -16,51 +16,53 @@ import models.Teacher;
 
 public class AdminView extends JPanel {
 
-    private Teacher admin;
+    private Teacher adminTeacher;
 
     public AdminView() {
         this(new Teacher());
     }
 
-    public AdminView(Teacher admin) {
+    public AdminView(Teacher adminTeacher) {
 
-        this.admin = admin;
+        this.adminTeacher = adminTeacher;
 
-        iniciarComponentes();
+        initializeComponents();
     }
 
-    private void iniciarComponentes() {
+    private void initializeComponents() {
 
         setLayout(new BorderLayout());
 
         removeAll();
 
-        JPanel panelImagenContenedor =new JPanel(new GridBagLayout());
+        JPanel imageContainerPanel = new JPanel(new GridBagLayout());
 
-        panelImagenContenedor.setPreferredSize(new Dimension(400, 400));
+        imageContainerPanel.setPreferredSize(new Dimension(400, 400));
 
-        panelImagenContenedor.setBorder(BorderFactory.createEmptyBorder(0,100, 0,10));
-        String rutaImagen;
+        imageContainerPanel.setBorder(BorderFactory.createEmptyBorder(0,100, 0,10));
+        
+        String imagePath;
 
-        if (admin.getSexo() != null&&admin.getSexo().equalsIgnoreCase("M")) {
-            rutaImagen = "src/img/admin1.png";
+        if (adminTeacher.getGender() != null && adminTeacher.getGender().equalsIgnoreCase("M")) {
+            imagePath = "src/img/admin1.png";
 
         } else {
-            rutaImagen = "src/img/admin2.png";
+            imagePath = "src/img/admin2.png";
         }
 
-        ImageIcon originalIcon =new ImageIcon(rutaImagen);
+        ImageIcon originalIcon = new ImageIcon(imagePath);
 
-        Image imgEscalada =originalIcon.getImage().getScaledInstance(300, 300,Image.SCALE_SMOOTH );
+        Image scaledImage = originalIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
 
-        JLabel imageLabel =new JLabel(new ImageIcon(imgEscalada));
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
 
-        panelImagenContenedor.add(imageLabel);
+        imageContainerPanel.add(imageLabel);
         
-        JPanel panelDer =new JPanel(new GridBagLayout());
-        panelDer.setOpaque(false);
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setOpaque(false);
 
-        GridBagConstraints gbc =new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
+        
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
         
@@ -68,65 +70,74 @@ public class AdminView extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        JLabel titulo = new JLabel("ADMINISTRADOR");
-        titulo.setFont(new java.awt.Font(  "Times New Roman",java.awt.Font.BOLD, 24  ) );
+        
+        JLabel title = new JLabel("ADMINISTRADOR");
+        
+        title.setFont(new java.awt.Font("Times New Roman", java.awt.Font.BOLD,24));
 
-        panelDer.add(titulo, gbc);
+        rightPanel.add(title, gbc);
 
         gbc.gridwidth = 1;
         
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panelDer.add(new JLabel("Nombre: "),gbc);
+        rightPanel.add(new JLabel("Nombre: "), gbc);
+        
         gbc.gridx = 1;
-        panelDer.add(new JLabel( admin.getNombre() != null? admin.getNombre(): "No asignado"), gbc);
+        rightPanel.add(new JLabel(adminTeacher.getName() != null? adminTeacher.getName(): "No asignado"),gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        panelDer.add( new JLabel("Edad: "),gbc);
+        rightPanel.add(new JLabel("Edad: "), gbc);
+        
         gbc.gridx = 1;
-        panelDer.add(new JLabel(String.valueOf(admin.getEdad() )),gbc);
+        rightPanel.add(new JLabel(String.valueOf(adminTeacher.getAge())),gbc);
 
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panelDer.add( new JLabel("Sexo: "),gbc);
+        rightPanel.add(new JLabel("Sexo: "), gbc);
+        
         gbc.gridx = 1;
-        panelDer.add(new JLabel( admin.getSexo() != null? admin.getSexo(): "No asignado"),gbc);
+        rightPanel.add(new JLabel(adminTeacher.getGender() != null? adminTeacher.getGender(): "No asignado"),gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
-        panelDer.add(new JLabel("Email: "),gbc );
+        rightPanel.add(new JLabel("Email: "), gbc);
+        
         gbc.gridx = 1;
-        panelDer.add( new JLabel(admin.getEmail() != null ? admin.getEmail() : "No asignado" ), gbc );
+        rightPanel.add(new JLabel(adminTeacher.getEmail() != null? adminTeacher.getEmail(): "No asignado"),gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
-        panelDer.add(new JLabel("Maestría: "), gbc);
+        rightPanel.add(new JLabel("Maestría: "), gbc);
         
         gbc.gridx = 1;
-        String maestriaText =admin.getMaestria() != null? admin.getMaestria(): "N/A";
-        panelDer.add(new JLabel(maestriaText),gbc);
+        
+        String masterDegreeText = adminTeacher.getMasterDegree() != null? adminTeacher.getMasterDegree(): "N/A";
+        
+        rightPanel.add(new JLabel(masterDegreeText), gbc);
         
         gbc.gridx = 0;
         gbc.gridy = 6;
-        panelDer.add(new JLabel("Rol: "),gbc);
+        rightPanel.add(new JLabel("Rol: "), gbc);
+        
         gbc.gridx = 1;
-        panelDer.add( new JLabel(admin.getRole() != null? admin.getRole(): "ADMIN" ), gbc);
+        rightPanel.add(new JLabel(adminTeacher.getRole() != null? adminTeacher.getRole(): "ADMIN"),gbc);
 
 
-        add(panelImagenContenedor,BorderLayout.WEST);
+        add(imageContainerPanel, BorderLayout.WEST);
 
-        add(panelDer,BorderLayout.CENTER);
+        add(rightPanel, BorderLayout.CENTER);
         
     }
 
 
-    public void updateAdmin(Teacher admin) {
+    public void updateAdmin(Teacher adminTeacher) {
 
-        this.admin = admin;
+        this.adminTeacher = adminTeacher;
 
-        iniciarComponentes();
+        initializeComponents();
 
         revalidate();
 

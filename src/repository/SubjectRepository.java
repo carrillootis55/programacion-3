@@ -11,7 +11,7 @@ import models.Subject;
 
 public class SubjectRepository {
 	
-	public List<Subject> getMateriasPorAnio(String anio) {
+	public List<Subject> getSubjectsByYear(String year) {
 
         List<Subject> subjects = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class SubjectRepository {
                     conn.prepareStatement(sql)
         ) {
 
-            ps.setString(1, anio);
+            ps.setString(1, year);
 
             ResultSet rs = ps.executeQuery();
 

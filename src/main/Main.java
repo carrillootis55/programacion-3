@@ -1,4 +1,5 @@
 package main;
+
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
@@ -15,46 +16,52 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		//MiVentana ventanita= new MiVentana();
-		//LoginWindow ventanita = new LoginWindow(); //SE USA PARA QUE SE VEA LOGIN
-		//Formulario formulario = new Formulario(); //SE USA PARA QUE SE VEA EL FORMULARIO
-		//new FormularioController(formulario);
+		//MiVentana window = new MiVentana();
+		//LoginWindow window = new LoginWindow(); //SE USA PARA QUE SE VEA LOGIN
+		//Form form = new Form(); //SE USA PARA QUE SE VEA EL FORMULARIO
+		//new FormController(form);
 		//new LoginController(view);
 
-        //ventana.add(vista);
+        //window.add(view);
 
-        LoginWindow ventana = new LoginWindow();
-        LoginView vista = new LoginView(ventana);
+        LoginWindow window = new LoginWindow();
+        LoginView view = new LoginView(window);
 
-        ventana.setContentPane(vista);
-        new LoginController(vista);    
+        window.setContentPane(view);
+        
+        new LoginController(view);    
 
-        ventana.pack();
-        ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
 		
-		//MainView ventana = new MainView();//SE VE VENTANA
-		//showOnScreen(0, ventana);
+		//MainView window = new MainView();//SE VE VENTANA
+		//showOnScreen(0, window);
 	}
 	
 	
 	
 	public static void showOnScreen(int screen, JFrame frame ) {
+		
 	    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	    GraphicsDevice[] gd = ge.getScreenDevices();
-	    int width = 0, height = 0;
+	    
+	    int width = 0;
+	    int height = 0;
 	    
 	    if( screen > -1 && screen < gd.length ) {
+	    	
 	        width = gd[screen].getDefaultConfiguration().getBounds().width;
 	        height = gd[screen].getDefaultConfiguration().getBounds().height;
+	        
 	        frame.setLocation(
 	            ((width / 2) - (frame.getSize().width / 2)) + gd[screen].getDefaultConfiguration().getBounds().x, 
 	            ((height / 2) - (frame.getSize().height / 2)) + gd[screen].getDefaultConfiguration().getBounds().y
 	        );
+	        
 	    } else {
+	    	
 	        throw new RuntimeException( "No se encontro la pantalla" );
 	    }
 	}
-	
-
 }

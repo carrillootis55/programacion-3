@@ -4,20 +4,20 @@ public class Qualification {
 	
 	private int id;
 
-    private String alumnoMatricula;
+    private String studentEnrollment;
 
-    private int materiaId;
+    private int subjectId;
 
-    private double calificacion;
+    private double qualification;
 
     public Qualification() {
     }
 
-    public Qualification(String alumnoMatricula, int materiaId, double calificacion) {
+    public Qualification(String studentEnrollment, int subjectId, double qualification) {
 
-        this.alumnoMatricula = alumnoMatricula;
-        this.materiaId = materiaId;
-        this.calificacion = calificacion;
+        this.studentEnrollment = studentEnrollment;
+        this.subjectId = subjectId;
+        this.qualification = qualification;
     }
 
     public int getId() {
@@ -28,28 +28,28 @@ public class Qualification {
         this.id = id;
     }
 
-    public String getAlumnoMatricula() {
-        return alumnoMatricula;
+    public String getStudentEnrollment() {
+        return studentEnrollment;
     }
 
-    public void setAlumnoMatricula(String alumnoMatricula) {
-        this.alumnoMatricula = alumnoMatricula;
+    public void setStudentEnrollment(String studentEnrollment) {
+        this.studentEnrollment = studentEnrollment;
     }
 
-    public int getMateriaId() {
-        return materiaId;
+    public int getSubjectId() {
+        return subjectId;
     }
 
-    public void setMateriaId(int materiaId) {
-        this.materiaId = materiaId;
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
     }
 
-    public double getCalificacion() {
-        return calificacion;
+    public double getQualification() {
+        return qualification;
     }
 
-    public void setCalificacion(double calificacion) {
-        this.calificacion = calificacion;
+    public void setQualification(double qualification) {
+        this.qualification = qualification;
     }
 
 }

@@ -10,14 +10,14 @@ import java.util.List;
 public class QualificationTableModel extends AbstractTableModel {
 	
 	private List<Student> students;
-    private List<String> materias;
+    private List<String> subjects;
     
-    private QualificationRepository repo;
+    private QualificationRepository repository;
 
-    public QualificationTableModel( List<Student> students,List<String> materias ) {
+    public QualificationTableModel(List<Student> students, List<String> subjects) {
         this.students = students;
-        this.materias = materias;
-        this.repo = new QualificationRepository();
+        this.subjects = subjects;
+        this.repository = new QualificationRepository();
     }
 
     @Override
@@ -28,7 +28,7 @@ public class QualificationTableModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
 
-        return 3 + materias.size();
+        return 3 + subjects.size();
     }
 
     @Override
@@ -42,11 +42,11 @@ public class QualificationTableModel extends AbstractTableModel {
             return "Nombre";
         }
 
-        if (column == materias.size() + 2) {
+        if (column == subjects.size() + 2) {
             return "Promedio";
         }
 
-        return materias.get(column - 2);
+        return subjects.get(column - 2);
     }
 
     @Override
@@ -58,27 +58,26 @@ public class QualificationTableModel extends AbstractTableModel {
             return row + 1;
         }
 
-
         if (col == 1) {
-            return student.getNombre();
+            return student.getName();
         }
 
-        if (col == materias.size() + 2) {
+        if (col == subjects.size() + 2) {
 
-            double suma = 0;
+            double total = 0;
 
-            for (String materia : materias) {
+            for (String subject : subjects) {
 
                 try {
 
-                    Double calificacion =
-                            repo.obtenerCalificacion(
-                                    student.getMatricula(),
-                                    materia
+                    Double qualification =
+                            repository.getQualification(
+                                    student.getEnrollment(),
+                                    subject
                             );
 
-                    if (calificacion != null) {
-                        suma += calificacion;
+                    if (qualification != null) {
+                        total += qualification;
                     }
 
                 } catch (Exception e) {
@@ -86,24 +85,24 @@ public class QualificationTableModel extends AbstractTableModel {
                 }
             }
 
-            double promedio = suma / materias.size();
+            double average = total / subjects.size();
 
             //Redondear a 1 decimal
-            return Math.round(promedio * 10.0) / 10.0;
+            return Math.round(average * 10.0) / 10.0;
         }
 
-        String materia = materias.get(col - 2);
+        String subject = subjects.get(col - 2);
 
         try {
 
-            Double calificacion =
-                    repo.obtenerCalificacion(
-                            student.getMatricula(),
-                            materia
+            Double qualification =
+                    repository.getQualification(
+                            student.getEnrollment(),
+                            subject
                     );
 
-            if (calificacion != null) {
-                return calificacion;
+            if (qualification != null) {
+                return qualification;
             }
 
         } catch (Exception e) {
@@ -115,7 +114,7 @@ public class QualificationTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int row, int col) {
-        return col >= 2 && col < materias.size() + 2;
+        return col >= 2 && col < subjects.size() + 2;
     }
 
     @Override

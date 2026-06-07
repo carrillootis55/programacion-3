@@ -10,7 +10,7 @@ public class StudentsTableModels extends AbstractTableModel {
 	
 	private List<Student> students;
 
-	private final String[] columnas = {
+	private final String[] columns = {
 	    "Matrícula",
 	    "Nombre",
 	    "Apellido Paterno",
@@ -23,7 +23,8 @@ public class StudentsTableModels extends AbstractTableModel {
 	    "Número",
 	    "Parentesco",
 	    "Domicilio"
-		};
+	};
+
     public StudentsTableModels(List<Student> students) {
         this.students = students;
     }
@@ -36,37 +37,62 @@ public class StudentsTableModels extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return columnas.length;
+        return columns.length;
     }
 
     @Override
     public String getColumnName(int column) {
-        return columnas[column];
+        return columns[column];
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        Student a = students.get(rowIndex);
+        Student student = students.get(rowIndex);
 
         switch (columnIndex) {
-        case 0: return a.getMatricula();
-        case 1: return a.getNombre();
-        case 2: return a.getApellidoPaterno();
-        case 3: return a.getApellidoMaterno();
-        case 4: return a.getFechaNacimiento(); 
-        case 5: return a.getSexo();            
-        case 6: return a.getAnio();
-        case 7: return a.getGrupo();
-        case 8: return a.getContactoEmergencia();
-        case 9: return a.getNumeroEmergencia();
-        case 10: return a.getParentesco();
-        case 11: return a.getDomicilio();
+
+            case 0:
+                return student.getEnrollment();
+
+            case 1:
+                return student.getName();
+
+            case 2:
+                return student.getFatherLastName();
+
+            case 3:
+                return student.getMotherLastName();
+
+            case 4:
+                return student.getBirthDate();
+
+            case 5:
+                return student.getGender();
+
+            case 6:
+                return student.getYear();
+
+            case 7:
+                return student.getGroup();
+
+            case 8:
+                return student.getEmergencyContact();
+
+            case 9:
+                return student.getEmergencyNumber();
+
+            case 10:
+                return student.getRelationship();
+
+            case 11:
+                return student.getAddress();
         }
 
         return null;
     }
-    public Student getAlumnoAt(int row) {
+
+    public Student getStudentAt(int row) {
     	return students.get(row);
     }
 

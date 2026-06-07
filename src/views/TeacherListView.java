@@ -24,61 +24,62 @@ import utils.ConfigManager;
 
 public class TeacherListView extends JPanel {
 
-    private JTable tabla;
+    private JTable table;
 
-    private JButton btnAgregar;
-    private JButton btnEditar;
-    private JButton btnEliminar;
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDelete;
     private JButton btnPdf;
 
     public TeacherListView() {
 
         setLayout(new BorderLayout());
 
-        tabla = new JTable();
+        table = new JTable();
 
         styleTable();
         
-        btnAgregar = new JButton("Agregar");
-        btnEditar = new JButton("Editar");
-        btnEliminar = new JButton("Eliminar");
+        btnAdd = new JButton("Agregar");
+        btnEdit = new JButton("Editar");
+        btnDelete = new JButton("Eliminar");
         btnPdf = new JButton("Exportar PDF");
 
-        JPanel panelBotones = new JPanel();
+        JPanel buttonPanel = new JPanel();
 
-        panelBotones.add(btnAgregar);
-        panelBotones.add(btnEditar);
-        panelBotones.add(btnEliminar);
+        buttonPanel.add(btnAdd);
+        buttonPanel.add(btnEdit);
+        buttonPanel.add(btnDelete);
 
-        panelBotones.add(new JSeparator(SwingConstants.VERTICAL));
+        buttonPanel.add(new JSeparator(SwingConstants.VERTICAL));
 
-        panelBotones.add(btnPdf);
+        buttonPanel.add(btnPdf);
 
-        add(panelBotones, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.NORTH);
 
-        add(new JScrollPane(tabla), BorderLayout.CENTER);
+        add(new JScrollPane(table), BorderLayout.CENTER);
     }
 
 
-    public JTable getTabla() {
-        return tabla;
+    public JTable getTable() {
+        return table;
     }
 
-    public JButton getBtnAgregar() {
-        return btnAgregar;
+    public JButton getBtnAdd() {
+        return btnAdd;
     }
 
-    public JButton getBtnEditar() {
-        return btnEditar;
+    public JButton getBtnEdit() {
+        return btnEdit;
     }
 
-   public JButton getBtnEliminar() {
-        return btnEliminar;
+   public JButton getBtnDelete() {
+        return btnDelete;
     }
 
     public JButton getBtnPdf() {
         return btnPdf;
     }
+
   //=================================================================================================================================================================
     public File selectPdfFile() {
 
@@ -86,11 +87,11 @@ public class TeacherListView extends JPanel {
 
         try {
 
-            String last = ConfigManager.loadLastDirectory();
+            String lastDirectory = ConfigManager.loadLastDirectory();
 
-            if (last != null) {
+            if (lastDirectory != null) {
 
-                chooser.setCurrentDirectory(new File(last));
+                chooser.setCurrentDirectory(new File(lastDirectory));
             }
 
         } catch (Exception e) {
@@ -124,26 +125,26 @@ public class TeacherListView extends JPanel {
   //=================================================================================================================================================================
     private void styleTable() {
 
-        tabla.setRowHeight(35);
+        table.setRowHeight(35);
 
-        tabla.setShowGrid(true);
+        table.setShowGrid(true);
 
-        tabla.setGridColor(new Color(230, 230, 230));
+        table.setGridColor(new Color(230, 230, 230));
 
-        tabla.setBackground(Color.WHITE);
+        table.setBackground(Color.WHITE);
 
-        tabla.setForeground(Color.BLACK);
+        table.setForeground(Color.BLACK);
 
-        tabla.setFont(AppFont.normal());
+        table.setFont(AppFont.normal());
 
-        tabla.setSelectionBackground(new Color(52, 152, 219));
+        table.setSelectionBackground(new Color(52, 152, 219));
 
-        tabla.setSelectionForeground(Color.WHITE);
+        table.setSelectionForeground(Color.WHITE);
 
         //Solo seleccionar una fila
-        tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JTableHeader header = tabla.getTableHeader();
+        JTableHeader header = table.getTableHeader();
 
         header.setBackground(new Color(44, 62, 80));
 
@@ -155,7 +156,7 @@ public class TeacherListView extends JPanel {
 
         header.setReorderingAllowed(false);
 
-        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 
             @Override
             public Component getTableCellRendererComponent(
@@ -167,7 +168,7 @@ public class TeacherListView extends JPanel {
                     int column
             ) {
 
-                Component c = super.getTableCellRendererComponent(
+                Component component = super.getTableCellRendererComponent(
                         table,
                         value,
                         isSelected,
@@ -180,32 +181,32 @@ public class TeacherListView extends JPanel {
 
                     if (row % 2 == 0) {
 
-                        c.setBackground(Color.WHITE);
+                        component.setBackground(Color.WHITE);
 
                     } else {
 
-                        c.setBackground(new Color(245, 245, 245));
+                        component.setBackground(new Color(245, 245, 245));
                     }
 
-                    c.setForeground(Color.BLACK);
+                    component.setForeground(Color.BLACK);
                 }
 
                 //Primera columna resaltada
                 if (column == 0) {
 
-                    c.setFont(AppFont.bold());
+                    component.setFont(AppFont.bold());
 
                     if (!isSelected) {
 
-                        c.setForeground(new Color(41, 128, 185));
+                        component.setForeground(new Color(41, 128, 185));
                     }
 
                 } else {
 
-                    c.setFont(AppFont.normal());
+                    component.setFont(AppFont.normal());
                 }
 
-                return c;
+                return component;
             }
         });
     }
@@ -213,78 +214,74 @@ public class TeacherListView extends JPanel {
   //=================================================================================================================================================================
     public void setTableModel(TeacherTableModel model) {
 
-        tabla.setModel(model);
+        table.setModel(model);
 
-        if (tabla.getColumnCount() >= 1) {
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+        if (table.getColumnCount() >= 1) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(50);
         }
 
-        if (tabla.getColumnCount() >= 2) {
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(150);
+        if (table.getColumnCount() >= 2) {
+            table.getColumnModel().getColumn(1).setPreferredWidth(150);
         }
 
-        if (tabla.getColumnCount() >= 3) {
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(180);
+        if (table.getColumnCount() >= 3) {
+            table.getColumnModel().getColumn(2).setPreferredWidth(180);
         }
 
-        if (tabla.getColumnCount() >= 4) {
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(50);
+        if (table.getColumnCount() >= 4) {
+            table.getColumnModel().getColumn(3).setPreferredWidth(50);
         }
 
-        if (tabla.getColumnCount() >= 5) {
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(50);
+        if (table.getColumnCount() >= 5) {
+            table.getColumnModel().getColumn(4).setPreferredWidth(50);
         }
 
-        if (tabla.getColumnCount() >= 6) {
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(150);
+        if (table.getColumnCount() >= 6) {
+            table.getColumnModel().getColumn(5).setPreferredWidth(150);
         }
 
-        if (tabla.getColumnCount() >= 7) {
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(50);
+        if (table.getColumnCount() >= 7) {
+            table.getColumnModel().getColumn(6).setPreferredWidth(50);
         }
 
-        if (tabla.getColumnCount() >= 8) {
-            tabla.getColumnModel().getColumn(7).setPreferredWidth(50);
+        if (table.getColumnCount() >= 8) {
+            table.getColumnModel().getColumn(7).setPreferredWidth(50);
         }
 
 
-        DefaultTableCellRenderer center =new DefaultTableCellRenderer();
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 
-        center.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         //Sexo
-        if (tabla.getColumnCount() >= 4) {
+        if (table.getColumnCount() >= 4) {
 
-            tabla.getColumnModel().getColumn(3).setCellRenderer(center);
+            table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
         }
 
         //Edad
-        if (tabla.getColumnCount() >= 5) {
+        if (table.getColumnCount() >= 5) {
 
-            tabla.getColumnModel().getColumn(4).setCellRenderer(center);
+            table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         }
 
         // Año
-        if (tabla.getColumnCount() >= 7) {
+        if (table.getColumnCount() >= 7) {
 
-            tabla.getColumnModel().getColumn(6).setCellRenderer(center);
+            table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
         }
 
         // Grupo
-        if (tabla.getColumnCount() >= 8) {
+        if (table.getColumnCount() >= 8) {
 
-            tabla.getColumnModel().getColumn(7).setCellRenderer(center);
+            table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
         }
     }
 
   //=================================================================================================================================================================
     public int getSelectedRow() {
 
-        return tabla.getSelectedRow();
+        return table.getSelectedRow();
         
     }
-    
-    
-    
-    
 }

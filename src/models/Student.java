@@ -3,172 +3,186 @@ package models;
 public class Student{
 	
 	//Atributos
-    private String matricula;
-    private String nombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
-    private String fechaNacimiento; 
-    private char sexo;
-    private String grupo;
-    private String anio;
-    private String contactoEmergencia;
-    private String numeroEmergencia;
-    private String parentesco;
-    private String domicilio; 
+    private String enrollment;
+    private String name;
+    private String fatherLastName;
+    private String motherLastName;
+    private String birthDate; 
+    private char gender;
+    private String group;
+    private String year;
+    private String emergencyContact;
+    private String emergencyNumber;
+    private String relationship;
+    private String address; 
     
     //Constructores
     public Student(){
     	
     }
 
-    public Student(String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento,char sexo, String anio,String grupo,String contactoEmergencia, 
-    		String numeroEmergencia, String parentesco, String domicilio){
+    public Student(
+    		String enrollment,
+    		String name,
+    		String fatherLastName,
+    		String motherLastName,
+    		String birthDate,
+    		char gender,
+    		String year,
+    		String group,
+    		String emergencyContact, 
+    		String emergencyNumber,
+    		String relationship,
+    		String address
+    ){
 
-        this.matricula = matricula;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.fechaNacimiento = fechaNacimiento;
-        this.sexo = sexo;
-        this.anio = anio;
-        this.grupo = grupo;
-        this.contactoEmergencia = contactoEmergencia;
-        this.numeroEmergencia = numeroEmergencia;
-        this.parentesco = parentesco;
-        this.domicilio = domicilio;
+        this.enrollment = enrollment;
+        this.name = name;
+        this.fatherLastName = fatherLastName;
+        this.motherLastName = motherLastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.year = year;
+        this.group = group;
+        this.emergencyContact = emergencyContact;
+        this.emergencyNumber = emergencyNumber;
+        this.relationship = relationship;
+        this.address = address;
     }
     
     //Getters y Setters
-    public String getMatricula() {
-		return matricula;
+    public String getEnrollment() {
+		return enrollment;
 	}
 
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
+	public void setEnrollment(String enrollment) {
+		this.enrollment = enrollment;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getApellidoPaterno() {
-		return apellidoPaterno;
+	public String getFatherLastName() {
+		return fatherLastName;
 	}
 
-	public void setApellidoPaterno(String apellidoPaterno) {
-		this.apellidoPaterno = apellidoPaterno;
+	public void setFatherLastName(String fatherLastName) {
+		this.fatherLastName = fatherLastName;
 	}
 
-	public String getApellidoMaterno() {
-		return apellidoMaterno;
+	public String getMotherLastName() {
+		return motherLastName;
 	}
 
-	public void setApellidoMaterno(String apellidoMaterno) {
-		this.apellidoMaterno = apellidoMaterno;
-	}
-	public String getFechaNacimiento() {
-	    return fechaNacimiento;
-	}
-
-	public void setFechaNacimiento(String fechaNacimiento) {
-	    this.fechaNacimiento = fechaNacimiento;
-	}
-	public char getSexo() {
-		return sexo;
-	}
-
-	public void setSexo(char sexo) {
-		this.sexo = sexo;
-	}
-
-	public String getGrupo() {
-		return grupo;
-	}
-
-	public void setGrupo(String grupo) {
-		this.grupo = grupo;
+	public void setMotherLastName(String motherLastName) {
+		this.motherLastName = motherLastName;
 	}
 	
-	public String getAnio() {
-		return anio;
+	public String getBirthDate() {
+	    return birthDate;
 	}
 
-	public void setAnio(String anio) {
-		this.anio = anio;
+	public void setBirthDate(String birthDate) {
+	    this.birthDate = birthDate;
+	}
+	
+	public char getGender() {
+		return gender;
 	}
 
-	public String getContactoEmergencia() {
-		return contactoEmergencia;
+	public void setGender(char gender) {
+		this.gender = gender;
 	}
 
-	public void setContactoEmergencia(String contactoEmergencia) {
-		this.contactoEmergencia = contactoEmergencia;
+	public String getGroup() {
+		return group;
 	}
 
-	public String getNumeroEmergencia() {
-		return numeroEmergencia;
+	public void setGroup(String group) {
+		this.group = group;
+	}
+	
+	public String getYear() {
+		return year;
 	}
 
-	public void setNumeroEmergencia(String numeroEmergencia) {
-		this.numeroEmergencia = numeroEmergencia;
+	public void setYear(String year) {
+		this.year = year;
 	}
 
-	public String getParentesco() {
-		return parentesco;
+	public String getEmergencyContact() {
+		return emergencyContact;
 	}
 
-	public void setParentesco(String parentesco) {
-		this.parentesco = parentesco;
+	public void setEmergencyContact(String emergencyContact) {
+		this.emergencyContact = emergencyContact;
 	}
 
-	public String getDomicilio() {
-		return domicilio;
+	public String getEmergencyNumber() {
+		return emergencyNumber;
 	}
 
-	public void setDomicilio(String domicilio) {
-		this.domicilio = domicilio;
+	public void setEmergencyNumber(String emergencyNumber) {
+		this.emergencyNumber = emergencyNumber;
+	}
+
+	public String getRelationship() {
+		return relationship;
+	}
+
+	public void setRelationship(String relationship) {
+		this.relationship = relationship;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	//=================================================================================================================================================================
 
 	@Override
     public String toString() {
-        return "Matrícula: " + matricula +
-               "\nNombre: " + nombre +
-               "\nApellido Paterno: " + apellidoPaterno +
-               "\nApellido Materno: " + apellidoMaterno +
-               "\nFecha Nacimiento: " + fechaNacimiento +
-               "\nSexo: " + sexo +
-               "\nAño: " + anio +
-               "\nGrupo: " + grupo +
-               "\nContacto Emergencia: " + contactoEmergencia +
-               "\nNúmero Emergencia: " + numeroEmergencia +
-               "\nParentesco: " + parentesco +
-               "\nDomicilio: " + domicilio;
+        return "Matrícula: " + enrollment +
+               "\nNombre: " + name +
+               "\nApellido Paterno: " + fatherLastName +
+               "\nApellido Materno: " + motherLastName +
+               "\nFecha Nacimiento: " + birthDate +
+               "\nSexo: " + gender +
+               "\nAño: " + year +
+               "\nGrupo: " + group +
+               "\nContacto Emergencia: " + emergencyContact +
+               "\nNúmero Emergencia: " + emergencyNumber +
+               "\nParentesco: " + relationship +
+               "\nDomicilio: " + address;
     }
     
 	//Se convierte a formato CSV separado por comas
     public String toCsv() {
-        return matricula + "," +
-               nombre + "," +
-               apellidoPaterno + "," +
-               apellidoMaterno + "," +
-               fechaNacimiento + "," +
-               sexo + "," +
-               anio + "," +
-               grupo + "," +
-               contactoEmergencia + "," +
-               numeroEmergencia + "," +
-               parentesco + "," +
-               domicilio;
+        return enrollment + "," +
+               name + "," +
+               fatherLastName + "," +
+               motherLastName + "," +
+               birthDate + "," +
+               gender + "," +
+               year + "," +
+               group + "," +
+               emergencyContact + "," +
+               emergencyNumber + "," +
+               relationship + "," +
+               address;
     }
     
-    public static Student fromCsv(String linea) {
-        String[] data = linea.split(",");
+    public static Student fromCsv(String line) {
+        String[] data = line.split(",");
 
         return new Student(
             data[0],
@@ -185,6 +199,4 @@ public class Student{
             data[11]
         );
     }
-    
-    
 }

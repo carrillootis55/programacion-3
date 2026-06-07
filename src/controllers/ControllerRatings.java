@@ -23,78 +23,85 @@ public class ControllerRatings {
 	private Student student;
 	private int index;
 	
-    private List<String> materias;
+    private List<String> subjects;
 
-
-    private QualificationRepository repo;
+    private QualificationRepository repository;
     
 
-    public ControllerRatings(StudentsRateView view, Student student,int index,List<String> materias) {
+    public ControllerRatings(
+    		StudentsRateView view,
+    		Student student,
+    		int index,
+    		List<String> subjects) {
+
         this.view = view;
         this.student = student;
         this.index = index;
-        this.materias = materias;
-        this.repo = new QualificationRepository();
+        this.subjects = subjects;
+
+        this.repository = new QualificationRepository();
 
         start();
     }
 
     private void start() {
+
     	setUpValidation();
        
-    	view.btnGuardar.addActionListener(
-                e -> guardar()
+    	view.getBtnSave().addActionListener(
+                e -> save()
         );
     }
     
     private void setUpValidation() {
 
-        List<JTextField> campos =
-                view.getCamposCalificaciones();
+        List<JTextField> fields =
+                view.getGradeFields();
 
-        List<JLabel> errores =
-                view.getLabelsError();
+        List<JLabel> errorLabels =
+                view.getErrorLabels();
 
-        for (int i = 0; i < campos.size(); i++) {
+        for (int i = 0; i < fields.size(); i++) {
 
-            JTextField campo = campos.get(i);
+            JTextField field = fields.get(i);
 
-            JLabel lblError = errores.get(i);
+            JLabel errorLabel = errorLabels.get(i);
 
-            campo.addKeyListener(new KeyAdapter() {
+            field.addKeyListener(new KeyAdapter() {
 
                 @Override
                 public void keyReleased(KeyEvent e) {
 
-                    String texto =campo.getText();
+                    String text = field.getText();
 
                     // vacío
-                    if (texto.isEmpty()) {
+                    if (text.isEmpty()) {
 
-                        lblError.setText(" ");
+                        errorLabel.setText(" ");
 
                         return;
                     }
 
                     try {
 
-                        double numero = Double.parseDouble(texto);
+                        double number =
+                                Double.parseDouble(text);
 
-                        if (numero < 0 || numero > 10) {
+                        if (number < 0 || number > 10) {
 
-                            lblError.setText(
+                            errorLabel.setText(
                                     "Solo numeros de 0-10"
                             );
 
                         } else {
 
-                            lblError.setText(" ");
+                            errorLabel.setText(" ");
                         }
 
                     } catch (Exception ex) {
 
                         // letras
-                        lblError.setText(
+                        errorLabel.setText(
                                 "Solo números"
                         );
                     }
@@ -103,9 +110,11 @@ public class ControllerRatings {
                 @Override
                 public void keyTyped(KeyEvent e) {
 
-                    char c = e.getKeyChar();
+                    char character = e.getKeyChar();
 
-                    if (!Character.isDigit(c)&& c != '.'&& c != KeyEvent.VK_BACK_SPACE) {
+                    if (!Character.isDigit(character)
+                    		&& character != '.'
+                    		&& character != KeyEvent.VK_BACK_SPACE) {
 
                         e.consume();
                     }
@@ -114,101 +123,138 @@ public class ControllerRatings {
         }
     }
     
-    private void guardar() {
+    private void save() {
 
         try {
 
-            List<JTextField> fields = view.getCamposCalificaciones();
+            List<JTextField> fields =
+            		view.getGradeFields();
 
             for (JTextField field : fields) {
 
-                String texto = field.getText().trim();
-                if (texto.isEmpty()) {
+                String text = field.getText().trim();
 
-                    JOptionPane.showMessageDialog( view,"Todas las calificaciones son obligatorias");
+                if (text.isEmpty()) {
+
+                    JOptionPane.showMessageDialog(
+                    		view,
+                    		"Todas las calificaciones son obligatorias"
+                    );
 
                     return;
                 }
 
-                double qualification = Double.parseDouble(texto);
-               
+                double qualification =
+                		Double.parseDouble(text);
 
-                if (qualification < 0 ||qualification > 10) {
+                if (qualification < 0
+                		|| qualification > 10) {
 
-                    JOptionPane.showMessageDialog( view, "La calificación debe estar entre 0 y 10" );
+                    JOptionPane.showMessageDialog(
+                    		view,
+                    		"La calificación debe estar entre 0 y 10"
+                    );
 
                     return;
                 }
             }
 
-            for (int i = 0; i < materias.size(); i++) {
+            for (int i = 0; i < subjects.size(); i++) {
 
-                String subjectName = materias.get(i);
+                String subjectName = subjects.get(i);
 
                 JTextField field = fields.get(i);
 
-                double qualification =Double.parseDouble( field.getText());
+                double qualification =
+                		Double.parseDouble(field.getText());
 
-                int idSubject = repo.getMateriaId(subjectName, student.getAnio());
+                int subjectId =
+                		repository.getSubjectId(
+                				subjectName,
+                				student.getYear()
+                		);
 
-                boolean exists = repo.existeCalificacion( student.getMatricula(),idSubject );
+                boolean exists =
+                		repository.qualificationExists(
+                				student.getEnrollment(),
+                				subjectId
+                		);
 
                 if (exists) {
-                    repo.actualizarCalificacion(student.getMatricula(),idSubject, qualification );
+
+                    repository.updateQualification(
+                    		student.getEnrollment(),
+                    		subjectId,
+                    		qualification
+                    );
 
                 } else {
-                    repo.guardarCalificacion( student.getMatricula(), idSubject, qualification  );
+
+                    repository.saveQualification(
+                    		student.getEnrollment(),
+                    		subjectId,
+                    		qualification
+                    );
                 }
             }
 
-            JOptionPane.showMessageDialog( view, "Calificaciones guardadas");
+            JOptionPane.showMessageDialog(
+            		view,
+            		"Calificaciones guardadas"
+            );
 
             view.dispose();
-
         }
         
         catch (NumberFormatException e) {
 
-            JOptionPane.showMessageDialog(view,"Solo se permiten números");
+            JOptionPane.showMessageDialog(
+            		view,
+            		"Solo se permiten números"
+            );
         }
 
         catch (Exception e) {
+
             e.printStackTrace();
 
-            JOptionPane.showMessageDialog( view, "Error al guardar");
+            JOptionPane.showMessageDialog(
+            		view,
+            		"Error al guardar"
+            );
         }
     }
-	   private void cargarCalificaciones() {
 
-	        try {
+	private void loadQualifications() {
 
-	            for (int i = 0; i < materias.size(); i++) {
+        try {
 
-	                String materia = materias.get(i);
+            for (int i = 0; i < subjects.size(); i++) {
 
-	                Double calificacion =
-	                        repo.obtenerCalificacion(
-	                                student.getMatricula(),
-	                                materia
-	                        );
+                String subject = subjects.get(i);
 
-	                if (calificacion != null) {
+                Double qualification =
+                        repository.getQualification(
+                                student.getEnrollment(),
+                                subject
+                        );
 
-	                    view.getCamposCalificaciones()
-	                            .get(i)
-	                            .setText(
-	                                    String.valueOf(calificacion)
-	                            );
-	                }
-	            }
+                if (qualification != null) {
 
-	        } catch (Exception e) {
+                    view.getGradeFields()
+                            .get(i)
+                            .setText(
+                                    String.valueOf(qualification)
+                            );
+                }
+            }
 
-	            JOptionPane.showMessageDialog(
-	                    view,
-	                    "Error al cargar calificaciones"
-	            );
-	        }
-	    }
-   
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al cargar calificaciones"
+            );
+        }
+	}
 }

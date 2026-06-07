@@ -27,7 +27,7 @@ import repository.QualificationRepository;
 public class PDFExporter {
 
 	
-    public void exportAlumnos(List<Student> students, File file) throws IOException {
+    public void exportStudents(List<Student> students, File file) throws IOException {
 
         try (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
              Document doc = new Document(pdfDoc, PageSize.LETTER.rotate())) {
@@ -49,7 +49,7 @@ public class PDFExporter {
             PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
             //encabezado
-            Cell titulo = new Cell(1, 9)
+            Cell title = new Cell(1, 9)
                     .add(new Paragraph("Alumnos"))
                     .setFont(font)
                     .setFontSize(14)
@@ -57,7 +57,7 @@ public class PDFExporter {
                     .setBackgroundColor(new DeviceRgb(45, 111, 164))
                     .setTextAlignment(TextAlignment.CENTER);
 
-            table.addHeaderCell(titulo);
+            table.addHeaderCell(title);
 
             for (int i = 0; i < 2; i++) {
 
@@ -109,46 +109,46 @@ public class PDFExporter {
                             .add(new Paragraph("Teléfono"))
                 };
 
-                for (Cell celda : headerFooter) {
+                for (Cell cell : headerFooter) {
                     if (i == 0) {
-                        table.addHeaderCell(celda);
+                        table.addHeaderCell(cell);
                     } else {
-                        table.addFooterCell(celda);
+                        table.addFooterCell(cell);
                     }
                 }
             }
             
             //Datos
-            for (Student a : students) {
+            for (Student student : students) {
             	
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(a.getMatricula())));
+                        .add(new Paragraph(student.getEnrollment())));
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.LEFT)
-                        .add(new Paragraph(a.getNombre())));
+                        .add(new Paragraph(student.getName())));
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.LEFT)
-                        .add(new Paragraph(a.getApellidoPaterno())));
+                        .add(new Paragraph(student.getFatherLastName())));
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.LEFT)
-                        .add(new Paragraph(a.getApellidoMaterno())));
+                        .add(new Paragraph(student.getMotherLastName())));
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
                 	    .add(new Paragraph(
-                	        "M".equals(a.getSexo()) ? "Mujer" : "Hombre"
+                	        "M".equals(String.valueOf(student.getGender())) ? "Mujer" : "Hombre"
                 	)));
                 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(a.getAnio())));
+                        .add(new Paragraph(student.getYear())));
                 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(a.getGrupo())));
+                        .add(new Paragraph(student.getGroup())));
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.LEFT)
-                        .add(new Paragraph(a.getContactoEmergencia())));
+                        .add(new Paragraph(student.getEmergencyContact())));
 
                 table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(a.getNumeroEmergencia())));
+                        .add(new Paragraph(student.getEmergencyNumber())));
             }
 
             doc.add(table);
@@ -158,7 +158,7 @@ public class PDFExporter {
         
     }
   //=================================================================================================================================================================
-    public void exportMaestros(List<Teacher> teachers, File file) throws IOException {
+    public void exportTeachers(List<Teacher> teachers, File file) throws IOException {
 
         try (
 
@@ -177,66 +177,66 @@ public class PDFExporter {
 
             doc.add(new Paragraph(" "));
 
-            float[] columnas = {1, 3, 4, 1, 1, 3, 1, 1};
+            float[] columns = {1, 3, 4, 1, 1, 3, 1, 1};
 
-            Table table = new Table(UnitValue.createPercentArray(columnas) ).useAllAvailableWidth();
+            Table table = new Table(UnitValue.createPercentArray(columns)).useAllAvailableWidth();
 
-            table.addHeaderCell(crearHeader("ID"));
-            table.addHeaderCell(crearHeader("Nombre"));
-            table.addHeaderCell(crearHeader("Email"));
-            table.addHeaderCell(crearHeader("Sexo"));
-            table.addHeaderCell(crearHeader("Edad"));
-            table.addHeaderCell(crearHeader("Maestría"));
-            table.addHeaderCell(crearHeader("Año"));
-            table.addHeaderCell(crearHeader("Grupo"));
+            table.addHeaderCell(createHeader("ID"));
+            table.addHeaderCell(createHeader("Nombre"));
+            table.addHeaderCell(createHeader("Email"));
+            table.addHeaderCell(createHeader("Sexo"));
+            table.addHeaderCell(createHeader("Edad"));
+            table.addHeaderCell(createHeader("Maestría"));
+            table.addHeaderCell(createHeader("Año"));
+            table.addHeaderCell(createHeader("Grupo"));
 
-            for (Teacher m : teachers) {
+            for (Teacher teacher : teachers) {
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(String.valueOf(m.getId()))
+                        new Paragraph(String.valueOf(teacher.getId()))
                     )
                 );
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(m.getNombre())
+                        new Paragraph(teacher.getName())
                     )
                 );
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(m.getEmail())
+                        new Paragraph(teacher.getEmail())
                     )
                 );
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(String.valueOf(m.getSexo()))
+                        new Paragraph(String.valueOf(teacher.getGender()))
                     )
                 );
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(String.valueOf(m.getEdad()))
+                        new Paragraph(String.valueOf(teacher.getAge()))
                     )
                 );
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(m.getMaestria())
+                        new Paragraph(teacher.getMasterDegree())
                     )
                 );
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(m.getAnio())
+                        new Paragraph(teacher.getYear())
                     )
                 );
 
                 table.addCell(
                     new Cell().add(
-                        new Paragraph(m.getGrupo())
+                        new Paragraph(teacher.getGroup())
                     )
                 );
             }
@@ -246,153 +246,219 @@ public class PDFExporter {
     }
     
   //=================================================================================================================================================================
-    public void exportCalificaciones(List<Student> students, List<String> materias, File file) throws IOException {
+    public void exportQualifications(List<Student> students, List<String> subjects, File file) throws IOException {
         try (
 
-            PdfDocument pdfDoc =new PdfDocument(new PdfWriter(file)  );
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
 
-            Document doc =new Document( pdfDoc,PageSize.LETTER.rotate() )
+            Document doc = new Document(pdfDoc, PageSize.LETTER.rotate())
 
         ) {
-            QualificationRepository repo =new QualificationRepository();
 
-            doc.add(new Paragraph( "Reporte de Calificaciones") .setBold() .setFontSize(16)  .setTextAlignment(  TextAlignment.CENTER  ) );
+            QualificationRepository qualificationRepository = new QualificationRepository();
+
+            doc.add(
+                new Paragraph("Reporte de Calificaciones")
+                .setBold()
+                .setFontSize(16)
+                .setTextAlignment(TextAlignment.CENTER)
+            );
 
             doc.add(new Paragraph(" "));
 
-            int totalColumnas = 2 + materias.size() + 1;
+            int totalColumns = 2 + subjects.size() + 1;
 
-            float[] columnas =new float[totalColumnas];
+            float[] columns = new float[totalColumns];
 
-            columnas[0] = 1;
-            columnas[1] = 4;
+            columns[0] = 1;
+            columns[1] = 4;
 
-            for (int i = 2; i < totalColumnas; i++) {
-                columnas[i] = 2;
+            for (int i = 2; i < totalColumns; i++) {
+                columns[i] = 2;
             }
 
-            Table table = new Table(  UnitValue.createPercentArray( columnas) ).useAllAvailableWidth();
+            Table table = new Table(
+                    UnitValue.createPercentArray(columns)
+            ).useAllAvailableWidth();
 
-            table.addHeaderCell(crearHeader("ID"));
-            table.addHeaderCell(crearHeader("Nombre"));
+            table.addHeaderCell(createHeader("ID"));
+            table.addHeaderCell(createHeader("Nombre"));
 
-            for (String materia : materias) {
+            for (String subject : subjects) {
 
                 table.addHeaderCell(
-                        crearHeader(materia)
+                        createHeader(subject)
                 );
             }
 
             table.addHeaderCell(
-                    crearHeader("Promedio")
+                    createHeader("Promedio")
             );
 
-            int contador = 1;
+            int counter = 1;
 
             // FILAS
             for (Student student : students) {
-                table.addCell(new Cell().add(new Paragraph(String.valueOf(contador++))).setTextAlignment(TextAlignment.CENTER));
 
-                table.addCell(new Cell() .add(new Paragraph(student.getNombre() )) );
+                table.addCell(
+                        new Cell()
+                        .add(new Paragraph(String.valueOf(counter++)))
+                        .setTextAlignment(TextAlignment.CENTER)
+                );
 
-                double suma = 0;
+                table.addCell(
+                        new Cell()
+                        .add(new Paragraph(student.getName()))
+                );
 
-                for (String materia : materias) {
+                double total = 0;
 
-                    Double calificacion = 0.0;
+                for (String subject : subjects) {
+
+                    Double qualification = 0.0;
 
                     try {
 
-                        calificacion =repo.obtenerCalificacion( student.getMatricula(), materia );
+                        qualification =
+                                qualificationRepository.getQualification(
+                                        student.getEnrollment(),
+                                        subject
+                                );
 
-                        if (calificacion == null) {
-                            calificacion = 0.0;
+                        if (qualification == null) {
+                            qualification = 0.0;
                         }
 
                     } catch (Exception e) {
 
-                        calificacion = 0.0;
+                        qualification = 0.0;
                     }
 
-                    suma += calificacion;
+                    total += qualification;
 
-                    table.addCell(new Cell().add( new Paragraph(String.valueOf(calificacion ))).setTextAlignment( TextAlignment.CENTER ));
+                    table.addCell(
+                            new Cell()
+                            .add(new Paragraph(String.valueOf(qualification)))
+                            .setTextAlignment(TextAlignment.CENTER)
+                    );
                 }
 
-                double promedio =suma / materias.size();
+                double average = total / subjects.size();
 
-                promedio = Math.round(promedio * 10.0 ) / 10.0;
+                average = Math.round(average * 10.0) / 10.0;
 
-                table.addCell(new Cell().add(new Paragraph( String.valueOf(promedio ) )).setTextAlignment(TextAlignment.CENTER ) );
+                table.addCell(
+                        new Cell()
+                        .add(new Paragraph(String.valueOf(average)))
+                        .setTextAlignment(TextAlignment.CENTER)
+                );
             }
 
             doc.add(table);
         }
     }
     
-    public void exportBoleta(Student student, File file) throws IOException {
+    public void exportReportCard(Student student, File file) throws IOException {
 
         try (
 
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
 
-            Document doc = new Document(pdfDoc,PageSize.LETTER)) {
+            Document doc = new Document(pdfDoc, PageSize.LETTER)
 
-            QualificationRepository repo = new QualificationRepository();
+        ) {
+
+            QualificationRepository qualificationRepository = new QualificationRepository();
 
             // TITULO
-            doc.add(new Paragraph("BOLETA ESCOLAR").setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER));
+            doc.add(
+                    new Paragraph("BOLETA ESCOLAR")
+                    .setBold()
+                    .setFontSize(20)
+                    .setTextAlignment(TextAlignment.CENTER)
+            );
 
             doc.add(new Paragraph(" "));
 
             // DATOS ALUMNO
             doc.add(
                 new Paragraph(
-                    "Alumno: " + student.getNombre()
-                    + " " + student.getApellidoPaterno()
-                    + " " + student.getApellidoMaterno()
-                ));
+                    "Alumno: " + student.getName()
+                    + " " + student.getFatherLastName()
+                    + " " + student.getMotherLastName()
+                )
+            );
 
-            doc.add(new Paragraph("Matrícula: " + student.getMatricula()));
+            doc.add(
+                    new Paragraph(
+                            "Matrícula: " + student.getEnrollment()
+                    )
+            );
 
-            doc.add(new Paragraph(
-                    "Grupo: " + student.getGrupo()));
+            doc.add(
+                    new Paragraph(
+                            "Grupo: " + student.getGroup()
+                    )
+            );
 
-            doc.add(new Paragraph("Año: " + student.getAnio()));
+            doc.add(
+                    new Paragraph(
+                            "Año: " + student.getYear()
+                    )
+            );
 
             doc.add(new Paragraph(" "));
 
             // MATERIAS
-            List<String> materias = repo.getMateriasPorAnio(student.getAnio());
+            List<String> subjects =
+                    qualificationRepository.getSubjectsByYear(
+                            student.getYear()
+                    );
 
-            float[] columnas = {5, 2};
+            float[] columns = {5, 2};
 
-            Table table = new Table(UnitValue.createPercentArray(columnas)).useAllAvailableWidth();
+            Table table = new Table(
+                    UnitValue.createPercentArray(columns)
+            ).useAllAvailableWidth();
 
-            table.addHeaderCell(crearHeader("Materia"));
-            table.addHeaderCell(crearHeader("Calificación"));
+            table.addHeaderCell(createHeader("Materia"));
+            table.addHeaderCell(createHeader("Calificación"));
 
-            double suma = 0;
+            double total = 0;
 
-            int contador = 0;
+            int counter = 0;
 
-            for (String materia : materias) {
+            for (String subject : subjects) {
 
-                Double calificacion = repo.obtenerCalificacion(student.getMatricula(),materia);
+                Double qualification =
+                        qualificationRepository.getQualification(
+                                student.getEnrollment(),
+                                subject
+                        );
 
-                table.addCell(new Cell().add(new Paragraph(materia)));
+                table.addCell(
+                        new Cell().add(new Paragraph(subject))
+                );
 
-                if (calificacion != null) {
+                if (qualification != null) {
 
-                    table.addCell( new Cell().add(new Paragraph(String.valueOf(calificacion))).setTextAlignment(TextAlignment.CENTER));
+                    table.addCell(
+                            new Cell()
+                            .add(new Paragraph(String.valueOf(qualification)))
+                            .setTextAlignment(TextAlignment.CENTER)
+                    );
 
-                    suma += calificacion;
+                    total += qualification;
 
-                    contador++;
+                    counter++;
 
                 } else {
 
-                    table.addCell(new Cell().add(new Paragraph("Sin calificación")).setTextAlignment(TextAlignment.CENTER));
+                    table.addCell(
+                            new Cell()
+                            .add(new Paragraph("Sin calificación"))
+                            .setTextAlignment(TextAlignment.CENTER)
+                    );
                 }
             }
 
@@ -400,25 +466,36 @@ public class PDFExporter {
 
             doc.add(new Paragraph(" "));
 
-            double promedio = 0;
+            double average = 0;
 
-            if (contador > 0) {
+            if (counter > 0) {
 
-                promedio = suma / contador;
+                average = total / counter;
             }
 
-            promedio = Math.round(promedio * 10.0) / 10.0;
+            average = Math.round(average * 10.0) / 10.0;
 
-            doc.add(new Paragraph("PROMEDIO FINAL: "+ promedio).setBold().setFontSize(16).setTextAlignment(TextAlignment.RIGHT));
+            doc.add(
+                    new Paragraph("PROMEDIO FINAL: " + average)
+                    .setBold()
+                    .setFontSize(16)
+                    .setTextAlignment(TextAlignment.RIGHT)
+            );
         }
     }
   //=================================================================================================================================================================
-    private Cell crearHeader(String texto) {
+    private Cell createHeader(String text) {
+
         Cell cell = new Cell();
-        cell.add(new Paragraph(texto));
+
+        cell.add(new Paragraph(text));
+
         cell.setBackgroundColor(new DeviceRgb(45, 111, 164));
+
         cell.setFontColor(DeviceGray.WHITE);
+
         cell.setTextAlignment(TextAlignment.CENTER);
+
         return cell;
     }
     

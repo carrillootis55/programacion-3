@@ -20,7 +20,7 @@ public class FormTeacherController {
     private TeacherForm view;
     private TeacherRepository repository;
 
-    private boolean editando = false;
+    private boolean editing = false;
 
     public FormTeacherController(TeacherForm view) {
 
@@ -32,54 +32,65 @@ public class FormTeacherController {
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog( view, "Error de conexión con la base de datos");
+            JOptionPane.showMessageDialog(view, "Error de conexión con la base de datos");
         }
 
         assignListeners();
-
-        bloquearGruposOcupados();
     }
-  //=================================================================================================================================================================
-    public void setModoEdicion() {
 
-        this.editando = true;
+  //=================================================================================================================================================================
+    public void setEditMode() {
+
+        this.editing = true;
 
         //Bloquear año
-        view.getRb1().setEnabled(false);
-        view.getRb2().setEnabled(false);
-        view.getRb3().setEnabled(false);
+        view.getRbFirstYear().setEnabled(false);
+        view.getRbSecondYear().setEnabled(false);
+        view.getRbThirdYear().setEnabled(false);
 
         //Bloquear grupo
         view.getRbA().setEnabled(false);
         view.getRbB().setEnabled(false);
     }
+
   //=================================================================================================================================================================
     private void assignListeners() {
 
-        view.getTxtNombre().getDocument().addDocumentListener(
+        view.getTxtName().getDocument().addDocumentListener(
                 new DocumentListener() {
 
             public void insertUpdate(DocumentEvent e) {
-                validateNombre();
+                validateName();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                validateNombre();
+                validateName();
             }
 
             public void changedUpdate(DocumentEvent e) {
-                validateNombre();
+                validateName();
             }
         });
-        
-        view.getFechaNacimiento().getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-		    @Override
-		    public void insertUpdate(DocumentEvent e) { validateFechaNacimiento(); }
-		    @Override
-		    public void removeUpdate(DocumentEvent e) { validateFechaNacimiento(); }
-		    @Override
-		    public void changedUpdate(DocumentEvent e) { validateFechaNacimiento(); }
-		});
+
+        view.getTxtBirthDate().getDocument().addDocumentListener(
+                new javax.swing.event.DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validateBirthDate();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validateBirthDate();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validateBirthDate();
+            }
+        });
+
         view.getTxtEmail().getDocument().addDocumentListener(
                 new DocumentListener() {
 
@@ -112,307 +123,345 @@ public class FormTeacherController {
             }
         });
 
-
-        view.getTxtEdad().getDocument().addDocumentListener(
+        view.getTxtAge().getDocument().addDocumentListener(
                 new DocumentListener() {
 
             public void insertUpdate(DocumentEvent e) {
-                validateEdad();
+                validateAge();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                validateEdad();
+                validateAge();
             }
 
             public void changedUpdate(DocumentEvent e) {
-                validateEdad();
+                validateAge();
             }
         });
 
-
-        view.getTxtMaestria().getDocument().addDocumentListener(
+        view.getTxtMasterDegree().getDocument().addDocumentListener(
                 new DocumentListener() {
 
             public void insertUpdate(DocumentEvent e) {
-                validateMaestria();
+                validateMasterDegree();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                validateMaestria();
+                validateMasterDegree();
             }
 
             public void changedUpdate(DocumentEvent e) {
-                validateMaestria();
+                validateMasterDegree();
             }
         });
-        
-        view.getFechaNacimiento().addKeyListener(new KeyAdapter() {
 
-        @Override
-        public void keyTyped(KeyEvent e) {
+        view.getTxtBirthDate().addKeyListener(new KeyAdapter() {
 
-            char c = e.getKeyChar();
+            @Override
+            public void keyTyped(KeyEvent e) {
 
-            if (!Character.isDigit(c)&& c != '/'&& c != KeyEvent.VK_BACK_SPACE) {
-            	e.consume();
+                char character = e.getKeyChar();
+
+                if (!Character.isDigit(character)
+                        && character != '/'
+                        && character != KeyEvent.VK_BACK_SPACE) {
+
+                    e.consume();
+                }
             }
-        }
-    });
+        });
 
-
-
-        view.getRbHombre().addActionListener(
-                e -> validateSexo()
+        view.getRbMale().addActionListener(
+                e -> validateGender()
         );
 
-        view.getRbMujer().addActionListener(
-                e -> validateSexo()
+        view.getRbFemale().addActionListener(
+                e -> validateGender()
         );
 
-        view.getRb1().addActionListener(
-                e -> validateAnio()
+        view.getRbFirstYear().addActionListener(
+                e -> validateYear()
         );
 
-        view.getRb2().addActionListener(
-                e -> validateAnio()
+        view.getRbSecondYear().addActionListener(
+                e -> validateYear()
         );
 
-        view.getRb3().addActionListener(
-                e -> validateAnio()
+        view.getRbThirdYear().addActionListener(
+                e -> validateYear()
         );
 
         view.getRbA().addActionListener(
-                e -> validateGrupo()
+                e -> validateGroup()
         );
 
         view.getRbB().addActionListener(
-                e -> validateGrupo()
+                e -> validateGroup()
         );
 
-
-
-        view.getBtnGuardar().addActionListener(
-                e -> validarFormulario()
+        view.getBtnSave().addActionListener(
+                e -> validateForm()
         );
 
-
-
-        view.getTxtNombre().addKeyListener(
+        view.getTxtName().addKeyListener(
                 new KeyAdapter() {
 
             @Override
             public void keyTyped(KeyEvent e) {
 
-                char c = e.getKeyChar();
+                char character = e.getKeyChar();
 
-                if (!Character.isLetter(c)&& c != ' '&& c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE) {
+                if (!Character.isLetter(character)
+                        && character != ' '
+                        && character != KeyEvent.VK_BACK_SPACE
+                        && character != KeyEvent.VK_DELETE) {
 
                     e.consume();
 
-                    view.setErrorNombre("Solo se permiten letras");
+                    view.setNameError("Solo se permiten letras");
                 }
             }
         });
     }
+
   //=================================================================================================================================================================
-    private boolean validateNombre() {
+    private boolean validateName() {
 
-        if (view.getTxtNombre().getText().trim().isEmpty()) {
+        if (view.getTxtName().getText().trim().isEmpty()) {
 
-            view.setErrorNombre( "El nombre es obligatorio");
+            view.setNameError("El nombre es obligatorio");
 
             return false;
         }
 
-        view.setErrorNombre("");
+        view.setNameError("");
 
         return true;
     }
+
   //=================================================================================================================================================================
     private boolean validateEmail() {
 
-        String email =view.getTxtEmail().getText() .trim();
+        String email = view.getTxtEmail().getText().trim();
 
         if (email.isEmpty()) {
 
-            view.setErrorEmail("El email es obligatorio" );
+            view.setEmailError("El email es obligatorio");
 
             return false;
         }
 
         if (!email.contains("@")) {
-            view.setErrorEmail("Ingrese un email válido");
+
+            view.setEmailError("Ingrese un email válido");
 
             return false;
         }
 
-        view.setErrorEmail("");
+        view.setEmailError("");
 
         return true;
     }
+
   //=================================================================================================================================================================
     private boolean validatePassword() {
 
-        String password = new String(view.getTxtPassword() .getPassword());
+        String password = new String(view.getTxtPassword().getPassword());
 
         if (password.trim().isEmpty()) {
-            view.setErrorPassword( "La contraseña es obligatoria" );
+
+            view.setPasswordError("La contraseña es obligatoria");
 
             return false;
         }
 
         if (password.length() < 4) {
 
-            view.setErrorPassword("Mínimo 4 caracteres" );
+            view.setPasswordError("Mínimo 4 caracteres");
 
             return false;
         }
 
-        view.setErrorPassword("");
+        view.setPasswordError("");
 
         return true;
     }
 
   //=================================================================================================================================================================
-    private boolean validateEdad() {
+    private boolean validateAge() {
 
-        String edad =view.getTxtEdad().getText() .trim();
+        String age = view.getTxtAge().getText().trim();
 
-        if (edad.isEmpty()) {
-            view.setErrorEdad("La edad es obligatoria");
+        if (age.isEmpty()) {
+
+            view.setAgeError("La edad es obligatoria");
 
             return false;
         }
 
         try {
 
-            int e = Integer.parseInt(edad);
+            int parsedAge = Integer.parseInt(age);
 
-            if (e < 18) {
-                view.setErrorEdad("Debe ser mayor o igual a 18 años");
+            if (parsedAge < 18) {
+
+                view.setAgeError("Debe ser mayor o igual a 18 años");
+
                 return false;
             }
 
         } catch (NumberFormatException ex) {
 
-            view.setErrorEdad( "Solo se permiten números");
+            view.setAgeError("Solo se permiten números");
 
             return false;
         }
 
-        view.setErrorEdad("");
+        view.setAgeError("");
 
         return true;
     }
 
   //=================================================================================================================================================================
-    private boolean validateMaestria() {
+    private boolean validateMasterDegree() {
 
-        if (view.getTxtMaestria().getText().trim().isEmpty()) {
+        if (view.getTxtMasterDegree().getText().trim().isEmpty()) {
 
-            view.setErrorMaestria("La maestría es obligatoria");
+            view.setMasterDegreeError("La maestría es obligatoria");
 
             return false;
         }
-        view.setErrorMaestria("");
+
+        view.setMasterDegreeError("");
 
         return true;
     }
-    
+
     //LocalDate sirve para manejar fechas, dia, anio y mes sin hora  el parse(textp, formato) convierte el string en una fecha real)
-   	private boolean validateFechaNacimiento() {
-   	    String fecha = view.getFechaNacimiento().getText().trim();
+    private boolean validateBirthDate() {
 
-   	    if (fecha.isEmpty()) {
-   	        view.setErrorFechaNacimiento("Campo obligatorio");
-   	        return false;
-   	    }
-   	 // EXPRESIÓN REGULAR: VA A VALIDAR que el usuario SOLO escriba números y diagonales en orden
-   	    
-   	    String procesoEscribe = "^\\d{0,2}(/?\\d{0,2})?(/?\\d{0,4})?$";
-   	    
-   	    if (!fecha.matches(procesoEscribe)) {
-   	        view.setErrorFechaNacimiento("Formato invalido: DD/MM/AAAA");
-   	        return false;
-   	    }
+        String birthDate = view.getTxtBirthDate().getText().trim();
 
-   	    try {
-   	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
+        if (birthDate.isEmpty()) {
 
-   	        LocalDate.parse(fecha, formatter);
-   	        view.setErrorFechaNacimiento(""); 
-   	        return true;
-
-   	    } catch (Exception e) {
-   	        view.setErrorFechaNacimiento("Fecha irreal o inválida");
-   	        return false;
-   	    }
-   	}
-   	
-    
-  //=================================================================================================================================================================
-    private boolean validateSexo() {
-
-        if (!view.getRbHombre().isSelected()&& !view.getRbMujer().isSelected()) {
-
-            view.setErrorSexo( "Seleccione un sexo" );
+            view.setBirthDateError("Campo obligatorio");
 
             return false;
         }
 
-        view.setErrorSexo("");
+        // EXPRESIÓN REGULAR: VA A VALIDAR que el usuario SOLO escriba números y diagonales en orden
+        String typingProcess = "^\\d{0,2}(/?\\d{0,2})?(/?\\d{0,4})?$";
 
-        return true;
-    }
-  //=================================================================================================================================================================
-    private boolean validateAnio() {
+        if (!birthDate.matches(typingProcess)) {
 
-        if (!view.getRb1().isSelected()&& !view.getRb2().isSelected()&& !view.getRb3().isSelected()) {
-
-            view.setErrorAnio("Seleccione un año");
+            view.setBirthDateError("Formato invalido: DD/MM/AAAA");
 
             return false;
         }
-
-        view.setErrorAnio("");
-
-        return true;
-    }
-  //=================================================================================================================================================================
-    private boolean validateGrupo() {
-
-        if (!view.getRbA().isSelected()&& !view.getRbB().isSelected()) {
-
-            view.setErrorGrupo("Seleccione un grupo");
-
-            return false;
-        }
-
-        view.setErrorGrupo("");
-
-        return true;
-    }
-  //=================================================================================================================================================================
-    private boolean validarGrupoDisponible() {
-
-        String anio =view.getRb1().isSelected() ? "1": view.getRb2().isSelected() ? "2": "3";
-
-        String grupo =view.getRbA().isSelected() ? "A" : "B";
 
         try {
 
-            boolean ocupado =repository.existeMaestroEnGrupo(anio,grupo);
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("dd/MM/uuuu")
+                            .withResolverStyle(ResolverStyle.STRICT);
 
-            if (ocupado && !editando) {
+            LocalDate.parse(birthDate, formatter);
 
-                JOptionPane.showMessageDialog(view,"Ya existe un maestro asignado al grupo "+ anio + grupo);
+            view.setBirthDateError("");
+
+            return true;
+
+        } catch (Exception e) {
+
+            view.setBirthDateError("Fecha irreal o inválida");
+
+            return false;
+        }
+    }
+
+  //=================================================================================================================================================================
+    private boolean validateGender() {
+
+        if (!view.getRbMale().isSelected()
+                && !view.getRbFemale().isSelected()) {
+
+            view.setGenderError("Seleccione un sexo");
+
+            return false;
+        }
+
+        view.setGenderError("");
+
+        return true;
+    }
+
+  //=================================================================================================================================================================
+    private boolean validateYear() {
+
+        if (!view.getRbFirstYear().isSelected()
+                && !view.getRbSecondYear().isSelected()
+                && !view.getRbThirdYear().isSelected()) {
+
+            view.setYearError("Seleccione un año");
+
+            return false;
+        }
+
+        view.setYearError("");
+
+        return true;
+    }
+
+  //=================================================================================================================================================================
+    private boolean validateGroup() {
+
+        if (!view.getRbA().isSelected()
+                && !view.getRbB().isSelected()) {
+
+            view.setGroupError("Seleccione un grupo");
+
+            return false;
+        }
+
+        view.setGroupError("");
+
+        return true;
+    }
+
+  //=================================================================================================================================================================
+    private boolean validateAvailableGroup() {
+
+        String year =
+                view.getRbFirstYear().isSelected() ? "1"
+                : view.getRbSecondYear().isSelected() ? "2"
+                : "3";
+
+        String group =
+                view.getRbA().isSelected() ? "A"
+                : "B";
+
+        try {
+
+            boolean occupied =
+                    repository.teacherExistsInGroup(year, group);
+
+            if (occupied && !editing) {
+
+                JOptionPane.showMessageDialog(
+                        view,
+                        "Ya existe un maestro asignado al grupo "
+                                + year + group
+                );
 
                 return false;
             }
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog(view,"Error al validar grupo");
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al validar grupo"
+            );
 
             return false;
         }
@@ -421,136 +470,175 @@ public class FormTeacherController {
     }
 
   //=================================================================================================================================================================
-    private void bloquearGruposOcupados() {
+    private void validateForm() {
 
-        try {
+        boolean validation = true;
 
-            if (repository.existeMaestroEnGrupo("1", "A")) {
+        if (!validateName()) validation = false;
 
-                view.getRbA().setEnabled(false);
-            }
+        if (!validateEmail()) validation = false;
 
-            if (repository.existeMaestroEnGrupo("1", "B")) {
+        if (!validatePassword()) validation = false;
 
-                view.getRbB().setEnabled(false);
-            }
+        if (!validateBirthDate()) validation = false;
 
-        } catch (SQLException e) {
+        if (!validateAge()) validation = false;
 
-            JOptionPane.showMessageDialog(view, "Error al cargar grupos");
-        }
-    }
-    
-    
-  //=================================================================================================================================================================
-    private void validarFormulario() {
+        if (!validateMasterDegree()) validation = false;
 
-        boolean validacion = true;
+        if (!validateGender()) validation = false;
 
-        if (!validateNombre()) validacion = false;
+        if (!validateYear()) validation = false;
 
-        if (!validateEmail()) validacion = false;
+        if (!validateGroup()) validation = false;
 
-        if (!validatePassword()) validacion = false;
-        if (!validateFechaNacimiento()) validacion = false;
-
-        if (!validateEdad()) validacion = false;
-
-        if (!validateMaestria()) validacion = false;
-
-        if (!validateSexo()) validacion = false;
-
-        if (!validateAnio()) validacion = false;
-
-        if (!validateGrupo()) validacion = false;
-
-        if (!validacion) {
+        if (!validation) {
 
             return;
         }
 
         try {
 
-            if (repository.contarMaestros() >= 6 && !editando) {
+            if (repository.emailExists(
+                    view.getTxtEmail().getText().trim())) {
 
-                JOptionPane.showMessageDialog(view,"Ya existen los 6 maestros permitidos");
+                JOptionPane.showMessageDialog(
+                        view,
+                        "El correo ya está registrado"
+                );
 
                 return;
             }
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog( view, "Error al validar cantidad de maestros" );
-
-            return;
-        }
-
-        if (!validarGrupoDisponible()) {
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al validar correo"
+            );
 
             return;
         }
 
         try {
-        	
-        	 String fechaUsuario = view.getFechaNacimiento().getText().trim();
 
-             String fechaParaBD = "";
+            if (repository.countTeachers() >= 6 && !editing) {
 
-             try {
+                JOptionPane.showMessageDialog(
+                        view,
+                        "Ya existen los 6 maestros permitidos"
+                );
 
-                 DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/uuuu") .withResolverStyle(ResolverStyle.STRICT);
+                return;
+            }
 
-                 LocalDate fechaLocalDate =LocalDate.parse(fechaUsuario,formatoEntrada);
+        } catch (SQLException e) {
 
-                 fechaParaBD = fechaLocalDate.toString();
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al validar cantidad de maestros"
+            );
 
-             } catch (Exception ex) {
+            return;
+        }
 
-                 view.setErrorFechaNacimiento("Formato inválido (DD/MM/AAAA)" );
+        if (!validateAvailableGroup()) {
 
-                 return;
-             }
+            return;
+        }
+
+        try {
+
+            String userDate = view.getTxtBirthDate().getText().trim();
+
+            String databaseDate = "";
+
+            try {
+
+                DateTimeFormatter inputFormat =
+                        DateTimeFormatter.ofPattern("dd/MM/uuuu")
+                                .withResolverStyle(ResolverStyle.STRICT);
+
+                LocalDate localDate =
+                        LocalDate.parse(userDate, inputFormat);
+
+                databaseDate = localDate.toString();
+
+            } catch (Exception ex) {
+
+                view.setBirthDateError(
+                        "Formato inválido (DD/MM/AAAA)"
+                );
+
+                return;
+            }
 
             Teacher teacher = new Teacher();
 
-            teacher.setNombre(view.getTxtNombre().getText());
+            teacher.setName(
+                    view.getTxtName().getText()
+            );
 
-            teacher.setEmail( view.getTxtEmail().getText());
+            teacher.setEmail(
+                    view.getTxtEmail().getText()
+            );
 
-            teacher.setPassword( new String(view.getTxtPassword() .getPassword()) );
+            teacher.setPassword(
+                    new String(view.getTxtPassword().getPassword())
+            );
 
-            teacher.setEdad(Integer.parseInt(view.getTxtEdad().getText() ));
-            
-            teacher.setFechaNacimiento(fechaParaBD);
-            
-            teacher.setMaestria( view.getTxtMaestria().getText());
+            teacher.setAge(
+                    Integer.parseInt(view.getTxtAge().getText())
+            );
 
-            teacher.setSexo(view.getRbHombre().isSelected()? "H": "M");
+            teacher.setBirthDate(databaseDate);
 
-            teacher.setAnio( view.getRb1().isSelected() ? "1": view.getRb2().isSelected() ? "2": "3");
+            teacher.setMasterDegree(
+                    view.getTxtMasterDegree().getText()
+            );
 
-            teacher.setGrupo( view.getRbA().isSelected() ? "A": "B");
+            teacher.setGender(
+                    view.getRbMale().isSelected() ? "H" : "M"
+            );
+
+            teacher.setYear(
+                    view.getRbFirstYear().isSelected() ? "1"
+                    : view.getRbSecondYear().isSelected() ? "2"
+                    : "3"
+            );
+
+            teacher.setGroup(
+                    view.getRbA().isSelected() ? "A"
+                    : "B"
+            );
 
             teacher.setRole("MAESTRO");
 
+            if (editing) {
 
-            if (editando) {
-                repository.actualizar(teacher);
+                repository.update(teacher);
 
             } else {
 
-                repository.guardar(teacher);
+                repository.save(teacher);
             }
 
-            JOptionPane.showMessageDialog(view, editando? "Maestro actualizado correctamente": "Maestro registrado correctamente");
+            JOptionPane.showMessageDialog(
+                    view,
+                    editing
+                            ? "Maestro actualizado correctamente"
+                            : "Maestro registrado correctamente"
+            );
 
             view.dispose();
 
         } catch (Exception e) {
 
-            JOptionPane.showMessageDialog(view,"Error al registrar maestro: "+ e.getMessage());
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al registrar maestro: "
+                            + e.getMessage()
+            );
         }
     }
-    
-    
 }

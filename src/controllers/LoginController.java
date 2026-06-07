@@ -2,69 +2,79 @@ package controllers;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import utils.PasswordUtils;
+import java.sql.SQLException;
+
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import views.Form;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
 import models.Teacher;
+import repository.TeacherRepository;
+import utils.PasswordUtils;
+import views.Form;
 import views.LoginView;
 import views.MainView;
-import java.sql.SQLException;
-import repository.TeacherRepository;
-
 
 public class LoginController {
 
 	private LoginView view;
-	
+
 	public LoginController(LoginView view) {
+
 		this.view = view;
+
 		assignListeners();
-		
 	}
+
 	//=================================================================================================================================================================
+
 	private void assignListeners() {
 
         //Boton login
-        view.getBotonLogin().addActionListener(e -> login());
+        view.getBtnLogin().addActionListener(e -> login());
 
         //Enter usuario
-        view.getTextoUsuario().addActionListener(e -> login());
+        view.getTxtUsername().addActionListener(e -> login());
 
         //Enter contraseña
-        view.getContrasena().addActionListener(e -> login());
+        view.getTxtPassword().addActionListener(e -> login());
 
         //Usuario validacion tiempo real
-        view.getTextoUsuario().getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { validarUsuario(); }
-            public void removeUpdate(DocumentEvent e) { validarUsuario(); }
-            public void changedUpdate(DocumentEvent e) { validarUsuario(); }
-        });
+        view.getTxtUsername().getDocument().addDocumentListener(new DocumentListener() {
 
-        //Contraseña validacion tiempo real
-        view.getContrasena().getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { validarContrasena(); }
-            public void removeUpdate(DocumentEvent e) { validarContrasena(); }
-            public void changedUpdate(DocumentEvent e) { validarContrasena(); }
-        });
-      
-        view.getTextoUsuario().addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
+            public void insertUpdate(DocumentEvent e) {
+            	validateUser();
+            }
 
-                if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    login(); 
-                }
+            public void removeUpdate(DocumentEvent e) {
+            	validateUser();
+            }
 
-                System.out.println("Tecla que se presiono: " + e.getKeyChar());
+            public void changedUpdate(DocumentEvent e) {
+            	validateUser();
             }
         });
 
-        view.getContrasena().addKeyListener(new KeyAdapter() {
+        //Contraseña validacion tiempo real
+        view.getTxtPassword().getDocument().addDocumentListener(new DocumentListener() {
+
+            public void insertUpdate(DocumentEvent e) {
+            	validatePassword();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+            	validatePassword();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+            	validatePassword();
+            }
+        });
+
+        view.getTxtUsername().addKeyListener(new KeyAdapter() {
+
             @Override
             public void keyPressed(KeyEvent e) {
 
@@ -72,158 +82,236 @@ public class LoginController {
                     login();
                 }
 
-                System.out.println("Tecla que se presiono: " + e.getKeyChar());
+                System.out.println(
+                		"Tecla que se presiono: "
+                		+ e.getKeyChar()
+                );
             }
         });
-        
-  
+
+        view.getTxtPassword().addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    login();
+                }
+
+                System.out.println(
+                		"Tecla que se presiono: "
+                		+ e.getKeyChar()
+                );
+            }
+        });
     }
+
 	//=================================================================================================================================================================
+
 	//Login
 	private void login() {
 
-	    boolean valido = true;
+	    boolean isValid = true;
 
-	    if (!validarUsuario()) {
-	    	valido = false;
-	    }
-	    if (!validarContrasena()) {
-	    	valido = false;
+	    if (!validateUser()) {
+	    	isValid = false;
 	    }
 
-	    if (!valido) {
+	    if (!validatePassword()) {
+	    	isValid = false;
+	    }
+
+	    if (!isValid) {
 	    	return;
 	    }
 
-	    String usuario = view.getTextoUsuario().getText();
-	    String password = String.valueOf(view.getContrasena().getPassword());
+	    String userEmail =
+	    		view.getTxtUsername().getText();
+
+	    String password =
+	    		String.valueOf(
+	    				view.getTxtPassword().getPassword()
+	    		);
 
 	    try {
 
-	        if (validarCredenciales(usuario, password)) {
+	        if (validateCredentials(userEmail, password)) {
 
-	            JOptionPane.showMessageDialog(null, "Sesión iniciada correctamente");
-	            
-	            TeacherRepository repository = new TeacherRepository();
+	            JOptionPane.showMessageDialog(
+	            		null,
+	            		"Sesión iniciada correctamente"
+	            );
 
-                Teacher teacher =  repository.obtenerMaestroPorEmail(usuario);
-	            //new MainView();
-                
-	            MainView main = new MainView(teacher);
-	            
-	            main.configurarPermisos(teacher);
-	            
-	            new HomeController(main,teacher);
-	       
-	            main.showView(MainView.HOME);
-	            
+	            TeacherRepository repository =
+	            		new TeacherRepository();
+
+                Teacher teacher =
+                		repository.getTeacherByEmail(userEmail);
+
+	            MainView mainView =
+	            		new MainView(teacher);
+
+	            mainView.configurePermissions(teacher);
+
+	            new HomeController(mainView, teacher);
+
+	            mainView.showView(MainView.HOME);
+
 	            view.getWindow().dispose();
 	        }
 
 	    } catch (InvalidUserException e) {
-	        view.setErrorUsuario(e.getMessage());
+
+	        view.setUsernameError(e.getMessage());
 
 	    } catch (InvalidPasswordException e) {
-	        view.setErrorContrasena(e.getMessage());
-	    }catch (SQLException e) {
+
+	        view.setPasswordError(e.getMessage());
+
+	    } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(
                     null,
                     "Error al obtener maestro"
             );
         }
-	    
-	    
 	}
-	
+
 	//=================================================================================================================================================================
+
 	//Validacion usuario
-    private boolean validarUsuario() {
-        if (view.getTextoUsuario().getText().trim().isEmpty()) {
-            view.setErrorUsuario("*Usuario obligatorio");
+    private boolean validateUser() {
+
+        if (view.getTxtUsername().getText().trim().isEmpty()) {
+
+            view.setUsernameError("*Usuario obligatorio");
+
             return false;
         }
-        view.setErrorUsuario(" ");
-        
+
+        view.setUsernameError(" ");
+
         return true;
     }
-  //=================================================================================================================================================================
-    private void abrirRegistro() {
+
+    //=================================================================================================================================================================
+
+    private void openRegister() {
 
         Form form = new Form();
-        
+
         Teacher teacher = new Teacher();
 
-        teacher.setAnio("1");
-        teacher.setGrupo("A");
-        
+        teacher.setYear("1");
+        teacher.setGroup("A");
+
         //HomeController home = new HomeController(new MainView());
         new FormController(form, teacher);
-        
+
         form.setLocationRelativeTo(null);
         form.setVisible(true);
 
         //Cerrar login
         view.getWindow().dispose();
     }
-  //=================================================================================================================================================================
+
+    //=================================================================================================================================================================
+
     //Validacion contraseña
-    private boolean validarContrasena() {
-        if (String.valueOf(view.getContrasena().getPassword()).trim().isEmpty()) {
-            view.setErrorContrasena("*Contraseña obligatoria");
+    private boolean validatePassword() {
+
+        if (String.valueOf(
+        		view.getTxtPassword().getPassword()
+        	).trim().isEmpty()) {
+
+            view.setPasswordError("*Contraseña obligatoria");
+
             return false;
         }
-        view.setErrorContrasena(" ");
-        
-        return true;
 
+        view.setPasswordError(" ");
+
+        return true;
     }
-  //=================================================================================================================================================================
+
+    //=================================================================================================================================================================
+
     //Validar credenciales
-    private boolean validarCredenciales(String email, String password)
-            throws InvalidUserException, InvalidPasswordException {
+    private boolean validateCredentials(
+    		String email,
+    		String password
+    ) throws InvalidUserException,
+    		 InvalidPasswordException {
 
         if (email.trim().isEmpty()) {
-            throw new InvalidUserException("Usuario obligatorio");
+
+            throw new InvalidUserException(
+            		"Usuario obligatorio"
+            );
         }
 
         if (password.trim().isEmpty()) {
-            throw new InvalidPasswordException("Contraseña obligatoria");
+
+            throw new InvalidPasswordException(
+            		"Contraseña obligatoria"
+            );
         }
 
         if (password.contains(" ")) {
-            throw new InvalidPasswordException("La contraseña no debe tener espacios");
+
+            throw new InvalidPasswordException(
+            		"La contraseña no debe tener espacios"
+            );
         }
 
         try {
-            TeacherRepository repository = new TeacherRepository();
-            
+
+            TeacherRepository repository =
+            		new TeacherRepository();
+
             // Buscamos al maestro por su email
-            models.Teacher teacher = repository.buscarEmail(email);
-            
+            Teacher teacher =
+            		repository.findByEmail(email);
+
             if (teacher == null) {
-                throw new InvalidUserException("Email no registrado");
+
+                throw new InvalidUserException(
+                		"Email no registrado"
+                );
             }
 
             // Verificamos la contraseña
-            if (!PasswordUtils.checkPassword(password, teacher.getPassword())) {
-                throw new InvalidPasswordException("Datos invalidos");
+            if (!PasswordUtils.checkPassword(
+            		password,
+            		teacher.getPassword()
+            )) {
+
+                throw new InvalidPasswordException(
+                		"Datos invalidos"
+                );
             }
+
             System.out.println("Login exitoso:");
             System.out.println("ID: " + teacher.getId());
-            System.out.println("Nombre: " + teacher.getNombre());
+            System.out.println("Nombre: " + teacher.getName());
             System.out.println("Email: " + teacher.getEmail());
             System.out.println("ROL: " + teacher.getRole());
+
             //System.out.println("ROL RECIBIDO: -" + maestro.getRole() + "-");
+
             return true;
-	        } catch (SQLException e) {
-	        System.out.println("Error al conectar a la BD: " + e.getMessage());
-	        throw new InvalidUserException("Error de conexión a la BD: " + e.getMessage());
+
+	    } catch (SQLException e) {
+
+	        System.out.println(
+	        		"Error al conectar a la BD: "
+	        		+ e.getMessage()
+	        );
+
+	        throw new InvalidUserException(
+	        		"Error de conexión a la BD: "
+	        		+ e.getMessage()
+	        );
 	    }
 	}
-
-
-
-    
-	
 }

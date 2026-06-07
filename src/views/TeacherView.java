@@ -25,41 +25,41 @@ public class TeacherView extends JPanel{
 	
 	public TeacherView(Teacher teacher) {
 		this.teacher = teacher;
-		iniciarComponentes();
+		initializeComponents();
 	}
 
-	private void iniciarComponentes() {
+	private void initializeComponents() {
 		setLayout(new BorderLayout());
 		removeAll();
 		
-		JPanel panelImagenContenedor = new JPanel(new GridBagLayout());
-        panelImagenContenedor.setPreferredSize(new Dimension(400, 400));
-        panelImagenContenedor.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 10));
+		JPanel imageContainerPanel = new JPanel(new GridBagLayout());
+        imageContainerPanel.setPreferredSize(new Dimension(400, 400));
+        imageContainerPanel.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 10));
 
        
-        String rutaImagen;
+        String imagePath;
 
-        if(teacher.getSexo() != null &&teacher.getSexo().equalsIgnoreCase("M")) {
-            rutaImagen = "src/img/maestra.png";
+        if(teacher.getGender() != null && teacher.getGender().equalsIgnoreCase("M")) {
+            imagePath = "src/img/maestra.png";
 
         } else {
 
-            rutaImagen = "src/img/maestro.png";
+            imagePath = "src/img/maestro.png";
         }
 
 
-        ImageIcon originalIcon = new ImageIcon(rutaImagen);
+        ImageIcon originalIcon = new ImageIcon(imagePath);
 
-        Image imgEscalada = originalIcon.getImage()
+        Image scaledImage = originalIcon.getImage()
                 .getScaledInstance(300, 300, Image.SCALE_SMOOTH);
 
-        JLabel imageLabel = new JLabel(new ImageIcon(imgEscalada));
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
         
-	    panelImagenContenedor.add(imageLabel);
+	    imageContainerPanel.add(imageLabel);
 	    
 	    
-		JPanel panelDer = new JPanel(new GridBagLayout());
-		panelDer.setOpaque(false);
+		JPanel rightPanel = new JPanel(new GridBagLayout());
+		rightPanel.setOpaque(false);
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5,5,5,5); //ESPACIO ENTRE LINEAS DE TEXTO
@@ -67,45 +67,45 @@ public class TeacherView extends JPanel{
 		
 		
 		gbc.gridx = 0; gbc.gridy = 0;
-		panelDer.add(new JLabel("Nombre: "), gbc);
+		rightPanel.add(new JLabel("Nombre: "), gbc);
 		gbc.gridx = 1;
-		panelDer.add(new JLabel(teacher.getNombre() != null ? teacher.getNombre() : "No asignado"), gbc);
+		rightPanel.add(new JLabel(teacher.getName() != null ? teacher.getName() : "No asignado"), gbc);
 		
 		gbc.gridx = 0; gbc.gridy = 1;
-		panelDer.add(new JLabel("Edad: "), gbc);
+		rightPanel.add(new JLabel("Edad: "), gbc);
 		gbc.gridx = 1;
-		panelDer.add(new JLabel(String.valueOf(teacher.getEdad())), gbc);
+		rightPanel.add(new JLabel(String.valueOf(teacher.getAge())), gbc);
 		
 		
 		gbc.gridx = 0; gbc.gridy = 3;
-		panelDer.add(new JLabel("Maestria: "), gbc);
+		rightPanel.add(new JLabel("Maestria: "), gbc);
 		gbc.gridx = 1;
-		String maestriaText = teacher.getMaestria() != null ? teacher.getMaestria() : "N/A";
-		panelDer.add(new JLabel(maestriaText), gbc);
+		String masterDegreeText = teacher.getMasterDegree() != null ? teacher.getMasterDegree() : "N/A";
+		rightPanel.add(new JLabel(masterDegreeText), gbc);
 				
 		gbc.gridx = 0;
         gbc.gridy = 5;
-        panelDer.add(new JLabel("Año: "), gbc);
+        rightPanel.add(new JLabel("Año: "), gbc);
         gbc.gridx = 1;
-        panelDer.add(new JLabel(teacher.getAnio() != null? teacher.getAnio(): "No asignado"),gbc);
+        rightPanel.add(new JLabel(teacher.getYear() != null? teacher.getYear(): "No asignado"),gbc);
 
         
         gbc.gridx = 0;
         gbc.gridy = 6;
-        panelDer.add(new JLabel("Grupo: "), gbc);
+        rightPanel.add(new JLabel("Grupo: "), gbc);
         gbc.gridx = 1;
-        panelDer.add(new JLabel(teacher.getGrupo() != null? teacher.getGrupo(): "No asignado"), gbc);
+        rightPanel.add(new JLabel(teacher.getGroup() != null? teacher.getGroup(): "No asignado"), gbc);
 
 		
-        add(panelImagenContenedor, BorderLayout.WEST);
-        add(panelDer, BorderLayout.CENTER);
+        add(imageContainerPanel, BorderLayout.WEST);
+        add(rightPanel, BorderLayout.CENTER);
 		
 		
 	}
 	
-	public void updateMaestro(Teacher teacher) {
+	public void updateTeacher(Teacher teacher) {
 		this.teacher = teacher;
-		iniciarComponentes();
+		initializeComponents();
 		revalidate();
 		repaint();
 	}

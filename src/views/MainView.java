@@ -24,39 +24,39 @@ import java.awt.event.WindowEvent;
 import models.Teacher;
 
 public class MainView extends JFrame {
-	private Font fuente = new Font("Times New Roman", Font.ITALIC, 14);
+	private Font font = new Font("Times New Roman", Font.ITALIC, 14);
 	
-	public JMenuItem salir;
-    public JMenuItem mItemListaAlumnos;
-    public JMenuItem mItemPerfil;
-    public JMenuItem mItemCalificaciones;
-    public JMenu inicio;
+	public JMenuItem logoutItem;
+    public JMenuItem studentsListItem;
+    public JMenuItem profileItem;
+    public JMenuItem qualificationsItem;
+    public JMenu homeMenu;
     
-    public JMenu menuMaestro;
-    public JMenu menuAlumnos;
-    public JMenu menuCalificaciones;
+    public JMenu teacherMenu;
+    public JMenu studentsMenu;
+    public JMenu qualificationsMenu;
     
-    public JMenu admin;
-    public JMenuItem mItemAdminPerfil;
-    public JMenuItem mItemListaMaestros;
+    public JMenu adminMenu;
+    public JMenuItem adminProfileItem;
+    public JMenuItem teachersListItem;
     
 
     public static final String HOME = "HOME";
-    public static final String ALUMNOS = "ALUMNOS";
-    public static final String MAESTRO = "MAESTRO";
-    public static final String CALIFICACIONES = "CALIFICACIONES";
-    public static final String ADMIN_PERFIL = "ADMIN_PERFIL";
-	public static final String LISTA_MAESTROS = "LISTA_MAESTROS";
+    public static final String STUDENTS = "STUDENTS";
+    public static final String TEACHER = "TEACHER";
+    public static final String QUALIFICATIONS = "QUALIFICATIONS";
+    public static final String ADMIN_PROFILE = "ADMIN_PROFILE";
+	public static final String TEACHERS_LIST = "TEACHERS_LIST";
 
     private CardLayout cardLayout;
-    private JPanel container;
+    private JPanel containerPanel;
 
-    public StudentsView alumnosPanel;
-	public TeacherView maestroPanel;
-	public QualificationsView calificacionesPanel;
+    public StudentsView studentsPanel;
+	public TeacherView teacherPanel;
+	public QualificationsView qualificationsPanel;
 	
 	public AdminView adminPanel;
-	public TeacherListView listaMaestrosPanel;
+	public TeacherListView teachersListPanel;
 	
 	private Teacher teacher;
 	
@@ -73,7 +73,6 @@ public class MainView extends JFrame {
 		//setPanelInicio();
 		
 		createViews(); 
-		//CAMBIOS 15 MAYO
 		pack(); //Ajusta la ventana al contenido
 		setLocationRelativeTo(null); // Centra en pantalla
 		setResizable(true);//Aqui se podra ajustar el tamaño de la pantalla para que se aprecien mejor los datos de la tabla
@@ -84,24 +83,24 @@ public class MainView extends JFrame {
 	}
 	
 	public void setMenu() {
-		JMenuBar mb= new JMenuBar();
-		setJMenuBar(mb);
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 		
 		// MENU ARCHIVO
-		JMenu archivo = new JMenu("SESIÓN");
-		archivo.setFont(fuente);
-		mb.add(archivo);
+		JMenu sessionMenu = new JMenu("SESIÓN");
+		sessionMenu.setFont(font);
+		menuBar.add(sessionMenu);
 
 		
-		salir = new JMenuItem("Cerrar sesión");
-		salir.setFont(fuente);
+		logoutItem = new JMenuItem("Cerrar sesión");
+		logoutItem.setFont(font);
 
-		archivo.add(salir);
+		sessionMenu.add(logoutItem);
 		
 		//Inicio
-		inicio = new JMenu("INICIO");
-		inicio.setFont(fuente);
-		mb.add(inicio);
+		homeMenu = new JMenu("INICIO");
+		homeMenu.setFont(font);
+		menuBar.add(homeMenu);
 		 
 		//MAESTRO
 		/*JMenu maestro = new JMenu("MAESTRO");
@@ -112,12 +111,12 @@ public class MainView extends JFrame {
 		mItemPerfil.setFont(fuente);
 		maestro.add(mItemPerfil);*/
 		
-		menuMaestro = new JMenu("MAESTRO");
-        menuMaestro.setFont(fuente);
-        mb.add(menuMaestro);
-        mItemPerfil = new JMenuItem("Perfil");
-        mItemPerfil.setFont(fuente);
-        menuMaestro.add(mItemPerfil);
+		teacherMenu = new JMenu("MAESTRO");
+        teacherMenu.setFont(font);
+        menuBar.add(teacherMenu);
+        profileItem = new JMenuItem("Perfil");
+        profileItem.setFont(font);
+        teacherMenu.add(profileItem);
 
 		//ALUMNOS
 		/*JMenu alumnos = new JMenu("ALUMNOS");
@@ -128,12 +127,12 @@ public class MainView extends JFrame {
         mItemListaAlumnos.setFont(fuente);
         alumnos.add(mItemListaAlumnos);*/
         
-        menuAlumnos = new JMenu("ALUMNOS");
-        menuAlumnos.setFont(fuente);
-        mb.add(menuAlumnos);
-        mItemListaAlumnos = new JMenuItem("Lista de alumnos");
-        mItemListaAlumnos.setFont(fuente);
-        menuAlumnos.add(mItemListaAlumnos);
+        studentsMenu = new JMenu("ALUMNOS");
+        studentsMenu.setFont(font);
+        menuBar.add(studentsMenu);
+        studentsListItem = new JMenuItem("Lista de alumnos");
+        studentsListItem.setFont(font);
+        studentsMenu.add(studentsListItem);
 
 		//CALIFICACIONES
         /*JMenu menuCalificaciones = new JMenu("CALIFICACIONES");
@@ -144,25 +143,25 @@ public class MainView extends JFrame {
 		mItemCalificaciones.setFont(fuente);
 		menuCalificaciones.add(mItemCalificaciones);*/
         
-        menuCalificaciones = new JMenu("CALIFICACIONES");
-        menuCalificaciones.setFont(fuente);
-        mb.add(menuCalificaciones);
-        mItemCalificaciones = new JMenuItem("Calificaciones");
-        mItemCalificaciones.setFont(fuente);
-        menuCalificaciones.add(mItemCalificaciones);
+        qualificationsMenu = new JMenu("CALIFICACIONES");
+        qualificationsMenu.setFont(font);
+        menuBar.add(qualificationsMenu);
+        qualificationsItem = new JMenuItem("Calificaciones");
+        qualificationsItem.setFont(font);
+        qualificationsMenu.add(qualificationsItem);
 		
 		//ADMIN
-		admin = new JMenu("ADMIN");
-		admin.setFont(fuente);
-		mb.add(admin);
-		mItemAdminPerfil = new JMenuItem("Perfil");
-		mItemAdminPerfil.setFont(fuente);
-		admin.add(mItemAdminPerfil);
-		mItemListaMaestros = new JMenuItem("Lista Maestros");
-		mItemListaMaestros.setFont(fuente);
-		admin.add(mItemListaMaestros);
+		adminMenu = new JMenu("ADMIN");
+		adminMenu.setFont(font);
+		menuBar.add(adminMenu);
+		adminProfileItem = new JMenuItem("Perfil");
+		adminProfileItem.setFont(font);
+		adminMenu.add(adminProfileItem);
+		teachersListItem = new JMenuItem("Lista Maestros");
+		teachersListItem.setFont(font);
+		adminMenu.add(teachersListItem);
 		
-		admin.setVisible(false);
+		adminMenu.setVisible(false);
 		 
 	}
 	
@@ -185,24 +184,24 @@ public class MainView extends JFrame {
 		}
 	}*/
 	
-	public void configurarPermisos(Teacher teacher) {
+	public void configurePermissions(Teacher teacher) {
 
 	    //Obtener rol seguro
-	    String rol = teacher.getRole();
+	    String role = teacher.getRole();
 
 	    //Verificar si es ADMIN
-	    if (rol != null && rol.trim().equalsIgnoreCase("ADMIN")) {
+	    if (role != null && role.trim().equalsIgnoreCase("ADMIN")) {
 
-	        admin.setVisible(true);
-	        menuMaestro.setVisible(false);
-	        menuAlumnos.setVisible(false);
-	        menuCalificaciones.setVisible(false);
+	        adminMenu.setVisible(true);
+	        teacherMenu.setVisible(false);
+	        studentsMenu.setVisible(false);
+	        qualificationsMenu.setVisible(false);
 
 	    } else {
-	        admin.setVisible(false);
-	        menuMaestro.setVisible(true);
-	        menuAlumnos.setVisible(true);
-	        menuCalificaciones.setVisible(true);
+	        adminMenu.setVisible(false);
+	        teacherMenu.setVisible(true);
+	        studentsMenu.setVisible(true);
+	        qualificationsMenu.setVisible(true);
 	    }
 	}
 	
@@ -215,7 +214,7 @@ public class MainView extends JFrame {
         );
     }
 
-	private JPanel setPanelInicio() {
+	private JPanel setHomePanel() {
 
 	    JPanel panel = new JPanel();
 	    panel.setBackground(Color.WHITE);
@@ -223,23 +222,23 @@ public class MainView extends JFrame {
 	    
 	    panel.setPreferredSize(new Dimension(800, 500));//tamaño de la ventana
 
-	    JPanel contenido = new JPanel();
-	    contenido.setBackground(Color.WHITE);
-	    contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
+	    JPanel contentPanel = new JPanel();
+	    contentPanel.setBackground(Color.WHITE);
+	    contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
-	    JLabel titulo = new JLabel("¡Bienvenido al Sistema de Calificaciones!");
-	    titulo.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-	    titulo.setFont(new Font("Times New Roman", Font.BOLD, 24));
+	    JLabel titleLabel = new JLabel("¡Bienvenido al Sistema de Calificaciones!");
+	    titleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	    titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
 
-	    JLabel mensaje = new JLabel("Seleccione una opción del menú superior para continuar");
-	    mensaje.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-	    mensaje.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+	    JLabel messageLabel = new JLabel("Seleccione una opción del menú superior para continuar");
+	    messageLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	    messageLabel.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 
-	    contenido.add(titulo);
+	    contentPanel.add(titleLabel);
 	    //contenido.add(Box.createVerticalStrut(20)); // espacio entre texto
-	    contenido.add(mensaje);
+	    contentPanel.add(messageLabel);
 
-	    panel.add(contenido);
+	    panel.add(contentPanel);
 
 	    //add(panel, BorderLayout.CENTER);
 	    
@@ -249,38 +248,37 @@ public class MainView extends JFrame {
 	private void createViews() {
 
 	    cardLayout = new CardLayout();
-	    container = new JPanel(cardLayout);
+	    containerPanel = new JPanel(cardLayout);
 
-	    JPanel homePanel = setPanelInicio();
+	    JPanel homePanel = setHomePanel();
 
-	    alumnosPanel = new StudentsView();
+	    studentsPanel = new StudentsView();
 	    //maestroPanel = new MaestroView(new Maestro());
-	    maestroPanel = new TeacherView(teacher);
-	    calificacionesPanel = new QualificationsView();
+	    teacherPanel = new TeacherView(teacher);
+	    qualificationsPanel = new QualificationsView();
 	    
 	    //adminPanel = new AdminView(new Maestro());s
 	    adminPanel = new AdminView(teacher);
 
-		listaMaestrosPanel = new TeacherListView();
+		teachersListPanel = new TeacherListView();
 	    
-	    container.add(homePanel, HOME);
-	    container.add(alumnosPanel, ALUMNOS);
-	    container.add(maestroPanel, MAESTRO);
-	    container.add(calificacionesPanel, CALIFICACIONES);
+	    containerPanel.add(homePanel, HOME);
+	    containerPanel.add(studentsPanel, STUDENTS);
+	    containerPanel.add(teacherPanel, TEACHER);
+	    containerPanel.add(qualificationsPanel, QUALIFICATIONS);
 	    
-	    container.add(adminPanel, ADMIN_PERFIL);
+	    containerPanel.add(adminPanel, ADMIN_PROFILE);
 
-		container.add(listaMaestrosPanel, LISTA_MAESTROS);
+		containerPanel.add(teachersListPanel, TEACHERS_LIST);
 	    
-	    add(container, BorderLayout.CENTER);
+	    add(containerPanel, BorderLayout.CENTER);
 	}
 	
 	
 	public void showView(String view) {
-	    cardLayout.show(container, view);
-	    //CAMBIOS 15 MAYO
+	    cardLayout.show(containerPanel, view);
 	    //Vista completa para alumnos y calificaciones
-	    if(view.equals(ALUMNOS)|| view.equals(CALIFICACIONES) || view.equals(LISTA_MAESTROS)) {
+	    if(view.equals(STUDENTS)|| view.equals(QUALIFICATIONS) || view.equals(TEACHERS_LIST)) {
 	        setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    }else {
 

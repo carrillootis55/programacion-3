@@ -26,12 +26,12 @@ import lib.SpringUtilities;
 
 public class StudentsRateView extends JFrame{
 	
-	private List<JTextField> camposCalificaciones;
-	private List<JLabel> labelsError;
+	private List<JTextField> gradeFields;
+	private List<JLabel> errorLabels;
 	
-	public JButton btnGuardar = new JButton("Guardar");
+	public JButton btnSave = new JButton("Guardar");
 	
-	public StudentsRateView(Student student,List<String> materias) {
+	public StudentsRateView(Student student, List<String> subjects) {
 
 	    setTitle("Calificaciones");
 
@@ -39,84 +39,96 @@ public class StudentsRateView extends JFrame{
 
 	    setLayout(new BorderLayout());
 
-	    camposCalificaciones = new ArrayList<>();
+	    gradeFields = new ArrayList<>();
 
-	    labelsError = new ArrayList<>();
+	    errorLabels = new ArrayList<>();
 
-	    JLabel lblAlumno =new JLabel( "Alumno: " + student.getNombre() + " " + student.getApellidoPaterno() );
+	    JLabel lblStudent = new JLabel(
+	            "Alumno: " + student.getName() + " " + student.getFatherLastName()
+	    );
 
-	    lblAlumno.setHorizontalAlignment(SwingConstants.CENTER );
+	    lblStudent.setHorizontalAlignment(SwingConstants.CENTER);
 
-	    add(lblAlumno, BorderLayout.NORTH);
+	    add(lblStudent, BorderLayout.NORTH);
 
-	    JPanel panelCentro = new JPanel();
+	    JPanel centerPanel = new JPanel();
 
-	    panelCentro.setLayout(new BoxLayout( panelCentro,BoxLayout.Y_AXIS));
-	    panelCentro.setBorder(BorderFactory .createEmptyBorder(10, 10, 10, 10) );
+	    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+	    centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-	    for (String materia : materias) {
-	        JPanel fila = new JPanel(new GridBagLayout());
+	    for (String subject : subjects) {
+	        
+	        JPanel rowPanel = new JPanel(new GridBagLayout());
+	        
 	        GridBagConstraints gbc = new GridBagConstraints();
 
-	        JLabel lblMateria = new JLabel(materia + ": ");
-	        JTextField txtCalificacion = new JTextField(5);
+	        JLabel lblSubject = new JLabel(subject + ": ");
+	        
+	        JTextField txtGrade = new JTextField(5);
 	        
 	        JLabel lblError = new JLabel(" ");
 	        lblError.setForeground(Color.RED);
 
-	        camposCalificaciones.add(txtCalificacion);
-	        labelsError.add(lblError);
+	        gradeFields.add(txtGrade);
+	        errorLabels.add(lblError);
 
 	        gbc.gridx = 0;
 	        gbc.gridy = 0;
 	        gbc.anchor = GridBagConstraints.LINE_END; // Alínea el texto a la derecha de su celda
 	        gbc.weightx = 0.5;                        // Empuja hacia el centro
-	        gbc.insets = new Insets(5, 5, 5, 15);     
-	        fila.add(lblMateria, gbc);
+	        gbc.insets = new Insets(5, 5, 5, 15);
+	        
+	        rowPanel.add(lblSubject, gbc);
 
 	        gbc.gridx = 1;
 	        gbc.gridy = 0;
 	        gbc.anchor = GridBagConstraints.LINE_START; // Alínea el input al inicio de su celda
 	        gbc.weightx = 0.5;                          // Empuja hacia el centro
 	        gbc.insets = new Insets(5, 0, 5, 5);
-	        fila.add(txtCalificacion, gbc);
+	        
+	        rowPanel.add(txtGrade, gbc);
 
 	        gbc.gridx = 2;
 	        gbc.gridy = 0;
 	        gbc.anchor = GridBagConstraints.LINE_START;
-	        gbc.weightx = 0.0; 
+	        gbc.weightx = 0.0;
 	        gbc.insets = new Insets(5, 5, 5, 5);
-	        fila.add(lblError, gbc);
+	        
+	        rowPanel.add(lblError, gbc);
 
-	        panelCentro.add(fila);
+	        centerPanel.add(rowPanel);
 	    }
 	   
-	    add(panelCentro, BorderLayout.CENTER);
+	    add(centerPanel, BorderLayout.CENTER);
 
-	    JPanel panelBoton = new JPanel();
+	    JPanel buttonPanel = new JPanel();
 
-	    panelBoton.add(btnGuardar);
+	    buttonPanel.add(btnSave);
 
-	    add(panelBoton, BorderLayout.SOUTH);
+	    add(buttonPanel, BorderLayout.SOUTH);
 
 	    setDefaultCloseOperation(
 	            JFrame.DISPOSE_ON_CLOSE
 	    );
 	}
-	 public void cargarCalificaciones(List<Double> calificaciones) {
+	
+	public void loadGrades(List<Double> grades) {
 
-	        for (int i = 0; i < calificaciones.size(); i++) {
-	        	camposCalificaciones.get(i).setText(String.valueOf(calificaciones.get(i)));
-	        }
-	    }
+        for (int i = 0; i < grades.size(); i++) {
+        	gradeFields.get(i).setText(String.valueOf(grades.get(i)));
+        }
+    }
 
 
-    public List<JTextField> getCamposCalificaciones() {
-        return camposCalificaciones;
+    public List<JTextField> getGradeFields() {
+        return gradeFields;
     }
     
-    public List<JLabel> getLabelsError() {
-        return labelsError;
+    public List<JLabel> getErrorLabels() {
+        return errorLabels;
     }
 	
+    public JButton getBtnSave() {
+        return btnSave;
+    }
 }

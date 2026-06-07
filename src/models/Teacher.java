@@ -6,59 +6,61 @@ public class Teacher {
 	private int id;
 	private String password;
 	private String email;
-	private String nombre;
-	private String sexo;
-	private int edad;
-	private String maestria;
-	private String anio;
-	private String grupo;
-	private List<String> materias;
+	private String name;
+	private String gender;
+	private int age;
+	private String masterDegree;
+	private String year;
+	private String group;
+	private List<String> subjects;
 	private String role;
-	private String fechaNacimiento;
+	private String birthDate;
+	
 	public Teacher() {
 		
 	}
 
-	public Teacher(String nombre, int edad, String maestria) {
-	    this.nombre = nombre;
-	    this.edad = edad;
-	    this.maestria = maestria;
+	public Teacher(String name, int age, String masterDegree) {
+	    this.name = name;
+	    this.age = age;
+	    this.masterDegree = masterDegree;
 	}
 	
-	public Teacher(int id, String nombre, String email,String password, String role) {
+	public Teacher(int id, String name, String email,String password, String role) {
 		 this.id = id;
-		 this.nombre = nombre;
+		 this.name = name;
 		 this.email = email;
 		 this.password = password;
 		 this.role = role;
 	}
 
-	public Teacher(String nombre, String fechaNacimiento, String email, String password, String sexo, int edad, String maestria, String anio, String grupo) {
-		 this.nombre = nombre;
-		 this.fechaNacimiento = fechaNacimiento;
+	public Teacher(String name, String birthDate, String email, String password, String gender, int age, String masterDegree, String year, String group) {
+		 this.name = name;
+		 this.birthDate = birthDate;
 		 this.email = email;
 		 this.password = password;
-		 this.sexo = sexo;
-		 this.edad = edad;
-		 this.maestria = maestria;
-		 this.anio = anio;
-		 this.grupo = grupo;
+		 this.gender = gender;
+		 this.age = age;
+		 this.masterDegree = masterDegree;
+		 this.year = year;
+		 this.group = group;
 	}	
-	public Teacher(int id, String nombre, String email, String password) {
+	
+	public Teacher(int id, String name, String email, String password) {
 		 this.id = id;
-		 this.nombre = nombre;
+		 this.name = name;
 		 this.email = email;
 		 this.password = password;
 	}
 	
-	public Teacher(String nombre, String email, String password,String sexo, int edad, String maestria, List<String> materias, String role) {
-		 this.nombre = nombre;
+	public Teacher(String name, String email, String password,String gender, int age, String masterDegree, List<String> subjects, String role) {
+		 this.name = name;
 		 this.email = email;
 		 this.password = password;
-		 this.sexo = sexo;
-		 this.edad = edad;
-		 this.maestria = maestria;
-		 this.materias = materias;
+		 this.gender = gender;
+		 this.age = age;
+		 this.masterDegree = masterDegree;
+		 this.subjects = subjects;
 		 this.role = role;
 	}
 	
@@ -87,58 +89,69 @@ public class Teacher {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getNombre() {
-		return nombre;
-	}
-	public String getFechaNacimiento() {
-		return fechaNacimiento;
-	}
-
-	public void setFechaNacimiento(String fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	
+	public String getName() {
+		return name;
 	}
 	
-	public String getSexo() {
-		return sexo;
+	public String getBirthDate() {
+		return birthDate;
 	}
 
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
-	}
-
-	public int getEdad() {
-		return edad;
-	}
-
-	public void setEdad(int edad) {
-		this.edad = edad;
-	}
-
-	public String getMaestria() {
-		return maestria;
-	}
-
-	public void setMaestria(String maestria) {
-		this.maestria = maestria;
+	public void setBirthDate(String birthDate) {
+		this.birthDate = birthDate;
 	}
 	
-	public String getAnio() {
-	    return anio;
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getGender() {
+		return gender;
 	}
 
-	public void setAnio(String anio) {
-	    this.anio = anio;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
-	public String getGrupo() {
-	    return grupo;
+	public int getAge() {
+		return age;
 	}
 
-	public void setGrupo(String grupo) {
-	    this.grupo = grupo;
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getMasterDegree() {
+		return masterDegree;
+	}
+
+	public void setMasterDegree(String masterDegree) {
+		this.masterDegree = masterDegree;
+	}
+	
+	public String getYear() {
+	    return year;
+	}
+
+	public void setYear(String year) {
+	    this.year = year;
+	}
+
+	public String getGroup() {
+	    return group;
+	}
+
+	public void setGroup(String group) {
+	    this.group = group;
+	}
+	
+	public List<String> getSubjects() {
+		return subjects;
+	}
+
+	public void setSubjects(List<String> subjects) {
+		this.subjects = subjects;
 	}
 	
 	public String getRole() {
@@ -152,15 +165,12 @@ public class Teacher {
 	@Override
 	public String toString() {
 		return "Descripcion del maestro:\n" + 
-				"Nombre: " + nombre + "\n" +
-				"Fecha de nacimiento: " + fechaNacimiento + "\n" +
-				"Sexo: " + sexo + "\n" +
-				"Edad: " + edad + "\n" +
-				"Maestria: " + maestria + "\n" +
-	            "Año: " + anio + "\n" +
-	            "Grupo: " + grupo;
+				"Nombre: " + name + "\n" +
+				"Fecha de nacimiento: " + birthDate + "\n" +
+				"Sexo: " + gender + "\n" +
+				"Edad: " + age + "\n" +
+				"Maestria: " + masterDegree + "\n" +
+	            "Año: " + year + "\n" +
+	            "Grupo: " + group;
 	}
-
-
-	
 }

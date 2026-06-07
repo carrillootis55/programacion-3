@@ -24,95 +24,104 @@ import utils.ConfigManager;
 
 public class StudentsView extends JPanel {
 	
-	private JTable tabla;
-	private JButton btnAgregar;
-	private JButton btnEditar;
-	private JButton btnEliminar;
+	private JTable table;
+	private JButton btnAdd;
+	private JButton btnEdit;
+	private JButton btnDelete;
 	private JButton btnPdf;
 	
-	private JButton btnCalificar;
-	private JButton btnDetallesA;
-	private JButton btnBoleta;
-	private JButton btnEditarCalificaciones;
+	private JButton btnRate;
+	private JButton btnStudentDetails;
+	private JButton btnReportCard;
+	private JButton btnEditGrades;
 	
 	
     public StudentsView() {
         setLayout(new BorderLayout());
 
-        tabla = new JTable();
+        table = new JTable();
         styleTable();
 
-        btnAgregar = new JButton ("Agregar");
-        btnEditar = new JButton ("Editar");
-        btnEliminar = new JButton ("Eliminar");
+        btnAdd = new JButton ("Agregar");
+        btnEdit = new JButton ("Editar");
+        btnDelete = new JButton ("Eliminar");
         btnPdf = new JButton("Exportar PDF");
-        btnCalificar = new JButton("Calificar");
-        btnDetallesA = new JButton ("Vista alumno");
-        btnBoleta = new JButton("Boleta PDF");
-        btnEditarCalificaciones = new JButton("Editar calificaciones");
-        JPanel panelBotones = new JPanel();
-        panelBotones.add(btnAgregar);
-        panelBotones.add(btnEditar);
-        panelBotones.add(btnEliminar);
+        btnRate = new JButton("Calificar");
+        btnStudentDetails = new JButton ("Vista alumno");
+        btnReportCard = new JButton("Boleta PDF");
+        btnEditGrades = new JButton("Editar calificaciones");
         
-        panelBotones.add(new JSeparator(SwingConstants.VERTICAL));
-        panelBotones.add(btnCalificar);
-        panelBotones.add(btnPdf);
-        panelBotones.add(btnDetallesA);
-        panelBotones.add(btnEditarCalificaciones);
-        panelBotones.add(btnBoleta);
+        JPanel buttonPanel = new JPanel();
+        
+        buttonPanel.add(btnAdd);
+        buttonPanel.add(btnEdit);
+        buttonPanel.add(btnDelete);
+        
+        buttonPanel.add(new JSeparator(SwingConstants.VERTICAL));
+        
+        buttonPanel.add(btnRate);
+        buttonPanel.add(btnPdf);
+        buttonPanel.add(btnStudentDetails);
+        buttonPanel.add(btnEditGrades);
+        buttonPanel.add(btnReportCard);
 
-        add(panelBotones, BorderLayout.NORTH);
-        add(new JScrollPane(tabla), BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.NORTH);
+        add(new JScrollPane(table), BorderLayout.CENTER);
         
         
     }
 
-    public JButton getBtnAgregar() {
-		return btnAgregar;
+    public JButton getBtnAdd() {
+		return btnAdd;
 	}
 
-	public JButton getBtnEditar() {
-		return btnEditar;
+	public JButton getBtnEdit() {
+		return btnEdit;
 	}
 
-	public JButton getBtnEliminar() {
-		return btnEliminar;
+	public JButton getBtnDelete() {
+		return btnDelete;
 	}
 	
 	public JButton getBtnPdf(){
 		return btnPdf; 
 	} 
 
-	public JButton getBtnCalificar() {
-	    return btnCalificar;
+	public JButton getBtnRate() {
+	    return btnRate;
 	}
-	public JButton getBtnDetallesA() {
-		return btnDetallesA;
+	
+	public JButton getBtnStudentDetails() {
+		return btnStudentDetails;
 	}
-    public JTable getTabla() {
-        return tabla;
+    
+    public JTable getTable() {
+        return table;
     }
-    public JButton getBtnBoleta() {
-        return btnBoleta;
+    
+    public JButton getBtnReportCard() {
+        return btnReportCard;
     }
 
-    public JButton getBtnEditarCalificaciones() {
-        return btnEditarCalificaciones;
+    public JButton getBtnEditGrades() {
+        return btnEditGrades;
     }
     
     public File selectPdfFile() {
 
         JFileChooser chooser = new JFileChooser();
+        
         try {
-        	String last = ConfigManager.loadLastDirectory();
         	
-        	if(last !=null) {
-        		chooser.setCurrentDirectory(new File(last));
+        	String lastDirectory = ConfigManager.loadLastDirectory();
+        	
+        	if(lastDirectory != null) {
+        		chooser.setCurrentDirectory(new File(lastDirectory));
         	}
+        	
         } catch(Exception e) {}
+        
         chooser.setSelectedFile(new File("reporte-alumnos.pdf"));
-
 
         int option = chooser.showSaveDialog(this);
 
@@ -124,7 +133,7 @@ public class StudentsView extends JPanel {
 
         try {
         	ConfigManager.saveLastDirectory(file.getParent());
-        }catch(Exception e) {}
+        } catch(Exception e) {}
 
         return file;
     }
@@ -132,27 +141,28 @@ public class StudentsView extends JPanel {
     
     private void styleTable() {
 
-        tabla.setRowHeight(35);
-        tabla.setShowGrid(true);
-        tabla.setGridColor(new Color(230, 230, 230));
-        tabla.setBackground(Color.WHITE);
-        tabla.setForeground(Color.BLACK);
-        tabla.setFont(AppFont.normal());
+        table.setRowHeight(35);
+        table.setShowGrid(true);
+        table.setGridColor(new Color(230, 230, 230));
+        table.setBackground(Color.WHITE);
+        table.setForeground(Color.BLACK);
+        table.setFont(AppFont.normal());
 
-        tabla.setSelectionBackground(new Color(52, 152, 219));
-        tabla.setSelectionForeground(Color.WHITE);
+        table.setSelectionBackground(new Color(52, 152, 219));
+        table.setSelectionForeground(Color.WHITE);
         
         //Seleccionar solo una fila
-        tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JTableHeader header = tabla.getTableHeader();
+        JTableHeader header = table.getTableHeader();
+        
         header.setBackground(new Color(44, 62, 80));
         header.setForeground(Color.WHITE);
         header.setFont(AppFont.bold());
         header.setPreferredSize(new Dimension(0, 40));
         header.setReorderingAllowed(false);
 
-        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
 
             @Override
             public Component getTableCellRendererComponent(
@@ -163,107 +173,110 @@ public class StudentsView extends JPanel {
                     int row,
                     int column) {
 
-                Component c = super.getTableCellRendererComponent(
+                Component component = super.getTableCellRendererComponent(
                         table, value, isSelected, hasFocus, row, column);
 
                 if (!isSelected) {
+                    
                     if (row % 2 == 0) {
-                        c.setBackground(Color.WHITE);
+                        component.setBackground(Color.WHITE);
                     } else {
-                        c.setBackground(new Color(245, 245, 245));
+                        component.setBackground(new Color(245, 245, 245));
                     }
 
-                    c.setForeground(Color.BLACK);
+                    component.setForeground(Color.BLACK);
                 }
 
                 if (column == 0) {
-                    c.setFont(AppFont.bold());
+                    
+                    component.setFont(AppFont.bold());
+                    
                     if (!isSelected) {
-                        c.setForeground(new Color(41, 128, 185));
+                        component.setForeground(new Color(41, 128, 185));
                     }
+                    
                 } else {
-                    c.setFont(AppFont.normal());
+                    component.setFont(AppFont.normal());
                 }
 
-                return c;
+                return component;
             }
         });
     }
     
     
     public void setTableModel(StudentsTableModels model) {
-        tabla.setModel(model);
+        
+        table.setModel(model);
         
         //Tamaño de columnas
-        if (tabla.getColumnCount() >= 1) {
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
+        if (table.getColumnCount() >= 1) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(80);
         }
 
-        if (tabla.getColumnCount() >= 2) {
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(80);
+        if (table.getColumnCount() >= 2) {
+            table.getColumnModel().getColumn(1).setPreferredWidth(80);
         }
 
-        if (tabla.getColumnCount() >= 3) {
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(80);
+        if (table.getColumnCount() >= 3) {
+            table.getColumnModel().getColumn(2).setPreferredWidth(80);
         }
         
-        if (tabla.getColumnCount() >= 4) {
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(80);
+        if (table.getColumnCount() >= 4) {
+            table.getColumnModel().getColumn(3).setPreferredWidth(80);
         }
 
-        if (tabla.getColumnCount() >= 5) {
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(50);
+        if (table.getColumnCount() >= 5) {
+            table.getColumnModel().getColumn(4).setPreferredWidth(50);
         }
 
-        if (tabla.getColumnCount() >= 6) {
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(50);
+        if (table.getColumnCount() >= 6) {
+            table.getColumnModel().getColumn(5).setPreferredWidth(50);
         }
       
-        if (tabla.getColumnCount() >= 7) {
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(50);
+        if (table.getColumnCount() >= 7) {
+            table.getColumnModel().getColumn(6).setPreferredWidth(50);
         }
 
-        if (tabla.getColumnCount() >= 8) {
-            tabla.getColumnModel().getColumn(7).setPreferredWidth(80);
+        if (table.getColumnCount() >= 8) {
+            table.getColumnModel().getColumn(7).setPreferredWidth(80);
         }
 
-        if (tabla.getColumnCount() >= 9) {
-            tabla.getColumnModel().getColumn(8).setPreferredWidth(80);
+        if (table.getColumnCount() >= 9) {
+            table.getColumnModel().getColumn(8).setPreferredWidth(80);
         }
 
-        if (tabla.getColumnCount() >= 10) {
-            tabla.getColumnModel().getColumn(9).setPreferredWidth(80);
+        if (table.getColumnCount() >= 10) {
+            table.getColumnModel().getColumn(9).setPreferredWidth(80);
         }
 
-        if (tabla.getColumnCount() >= 11) {
-            tabla.getColumnModel().getColumn(10).setPreferredWidth(80);
+        if (table.getColumnCount() >= 11) {
+            table.getColumnModel().getColumn(10).setPreferredWidth(80);
         
         }
+        
         //Centrar
-        DefaultTableCellRenderer center = new DefaultTableCellRenderer();
-        center.setHorizontalAlignment(SwingConstants.CENTER);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         
         //Centrar columna sexo
-        if (tabla.getColumnCount() >= 5) {
-            tabla.getColumnModel().getColumn(4).setCellRenderer(center);
+        if (table.getColumnCount() >= 5) {
+            table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         }
         
         //Central columna grupo
-        if (tabla.getColumnCount() >= 6) {
-            tabla.getColumnModel().getColumn(5).setCellRenderer(center);
+        if (table.getColumnCount() >= 6) {
+            table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
         }
         
-        if (tabla.getColumnCount() >= 7) {
-            tabla.getColumnModel().getColumn(6).setCellRenderer(center);
+        if (table.getColumnCount() >= 7) {
+            table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
         }
         
     }
     
     
     public int getSelectedRow() {
-        return tabla.getSelectedRow();
+        return table.getSelectedRow();
     }
-    
-    
-
 }

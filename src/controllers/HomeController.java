@@ -1,160 +1,272 @@
 package controllers;
 
+import java.awt.Desktop;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
+
 import models.Teacher;
 import models.Subject;
 import models.Student;
+
 import repository.StudentsRepository;
 import services.PDFExporter;
+
 import tablemodels.StudentsTableModels;
 import tablemodels.QualificationTableModel;
+
 import repository.QualificationRepository;
 import repository.SubjectRepository;
+
 import views.Form;
 import views.LoginWindow;
 import views.MainView;
+
 import config.Config;
 
 public class HomeController {
 
     private MainView view;
-    private Teacher maestroActual;
+    private Teacher currentTeacher;
 
     public HomeController(MainView view, Teacher teacher) {
+
         this.view = view;
-        this.maestroActual = teacher;
-        new StudentController(view.alumnosPanel, teacher);
-        
-        new ListTeachersController( view.listaMaestrosPanel);
+        this.currentTeacher = teacher;
+
+        new StudentController(view.studentsPanel, teacher);
+
+        new ListTeachersController(view.teachersListPanel);
+
         registerListeners();
     }
 
     private void registerListeners() {
 
         //Salir
-        view.salir.addActionListener(e -> handleClose());
-       
+        view.logoutItem.addActionListener(e -> handleClose());
+
         view.addWindowListener(new WindowAdapter() {
+
             @Override
             public void windowClosing(WindowEvent e) {
+
                 handleClose();
             }
         });
 
         //Mostrar Alumnos
-        view.mItemListaAlumnos.addActionListener(e -> mostrarAlumnos());
-        view.mItemPerfil.addActionListener(e -> mostrarMaestro());
+        view.studentsListItem.addActionListener(e -> showStudents());
+
+        view.profileItem.addActionListener(e -> showTeacher());
 
         //Inicio
-        view.inicio.addMouseListener(new java.awt.event.MouseAdapter() {
+        view.homeMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+
             public void mouseClicked(java.awt.event.MouseEvent e) {
+
                 view.showView(MainView.HOME);
             }
         });
-        view.mItemCalificaciones.addActionListener(e -> mostrarCalificaciones());
-        
-        view.listaMaestrosPanel.getBtnPdf().addActionListener(
-                e -> exportMaestrosPDF()
+
+        view.qualificationsItem.addActionListener(
+                e -> showQualifications()
         );
-        view.mItemAdminPerfil.addActionListener( e -> mostrarAdmin());
-        
-        view.mItemListaMaestros.addActionListener( e -> mostrarListaMaestros() );
-        
-        view.calificacionesPanel.getBtnPdf().addActionListener(e -> exportarCalificacionesPdf());
-         
-        
+
+        view.teachersListPanel.getBtnPdf().addActionListener(
+                e -> exportTeachersPDF()
+        );
+
+        view.adminProfileItem.addActionListener(
+                e -> showAdmin()
+        );
+
+        view.teachersListItem.addActionListener(
+                e -> showTeachersList()
+        );
+
+        view.qualificationsPanel.getExportPdfButton().addActionListener(
+                e -> exportQualificationsPdf()
+        );
     }
-    
-    private void exportarCalificacionesPdf() {
 
-        File file =view.calificacionesPanel.selectPdfFile();
+    private void exportQualificationsPdf() {
 
-        if (file == null)
+        File file = view.qualificationsPanel.selectPdfFile();
+
+        // Si el usuario canceló
+        if (file == null) {
+
             return;
+        }
 
         try {
 
-            StudentsRepository repo = new StudentsRepository();
+            StudentsRepository repository =
+                    new StudentsRepository();
 
-            List<Student> students = repo.getAlumnosPorGrupo( maestroActual.getAnio(), maestroActual.getGrupo());
+            List<Student> students =
+                    repository.getStudentsByGroup(
+                            currentTeacher.getYear(),
+                            currentTeacher.getGroup()
+                    );
 
-            SubjectRepository materiaRepo = new SubjectRepository();
+            // Validar alumnos
+            if (students == null || students.isEmpty()) {
 
-            List<Subject> listaMaterias = materiaRepo.getMateriasPorAnio( maestroActual.getAnio()  );
+                JOptionPane.showMessageDialog(
+                        view,
+                        "No hay alumnos registrados"
+                );
 
-            List<String> materias = new ArrayList<>();
-
-            for (Subject subject : listaMaterias) {
-
-                materias.add( subject.getNombre());
+                return;
             }
 
-            PDFExporter exporter = new PDFExporter();
+            SubjectRepository subjectRepository =
+                    new SubjectRepository();
 
-            exporter.exportCalificaciones(students, materias, file );
+            List<Subject> subjectsList =
+                    subjectRepository.getSubjectsByYear(
+                            currentTeacher.getYear()
+                    );
 
-            JOptionPane.showMessageDialog( view,"PDF exportado correctamente" );
+            // Validar materias
+            if (subjectsList == null || subjectsList.isEmpty()) {
+
+                JOptionPane.showMessageDialog(
+                        view,
+                        "No hay materias registradas"
+                );
+
+                return;
+            }
+
+            List<String> subjects =
+                    new ArrayList<>();
+
+            for (Subject subject : subjectsList) {
+
+                subjects.add(subject.getName());
+            }
+
+            // Agregar extensión .pdf automáticamente
+            if (!file.getName().toLowerCase().endsWith(".pdf")) {
+
+                file = new File(
+                        file.getAbsolutePath() + ".pdf"
+                );
+            }
+
+            PDFExporter exporter =
+                    new PDFExporter();
+
+            exporter.exportQualifications(
+                    students,
+                    subjects,
+                    file
+            );
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "PDF exportado correctamente"
+            );
+
+            // Abrir PDF automáticamente
+            if (Desktop.isDesktopSupported()) {
+
+                Desktop.getDesktop().open(file);
+            }
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error de archivo o permisos:\n"
+                            + e.getMessage()
+            );
 
         } catch (Exception e) {
 
             e.printStackTrace();
 
-            JOptionPane.showMessageDialog(view, "Error al exportar PDF");
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al exportar PDF:\n"
+                            + e.getMessage()
+            );
         }
     }
-    
+
     //Exportar maestros
-    private void exportMaestrosPDF() {
+    private void exportTeachersPDF() {
 
-     // Seleccionar archivo
-     File file = view.listaMaestrosPanel.selectPdfFile();
+        // Seleccionar archivo
+        File file = view.teachersListPanel.selectPdfFile();
 
-     if (file == null) {
-         return;
-     }
+        if (file == null) {
 
-     try {
-
-         // Obtener maestros
-         repository.TeacherRepository repo =new repository.TeacherRepository();
-
-         List<Teacher> teachers =repo.obtenerSoloMaestros();
-
-         // Validar lista vacía
-         if (teachers == null || teachers.isEmpty()) {
-
-             JOptionPane.showMessageDialog(view,"No hay maestros registrados");
-
-             return;
-         }
-
-         // Exportar PDF
-         PDFExporter exporter = new PDFExporter();
-
-         exporter.exportMaestros(teachers, file);
-
-         JOptionPane.showMessageDialog(view,"PDF exportado correctamente");
-
-     } catch (Exception e) {
-
-         e.printStackTrace();
-
-         JOptionPane.showMessageDialog( view, "Error al exportar PDF" );
-     }
- }
-    
-
-    private void mostrarAlumnos() {
-
-        StudentsRepository repository = new StudentsRepository();
+            return;
+        }
 
         try {
+
+            // Obtener maestros
+            repository.TeacherRepository repository =
+                    new repository.TeacherRepository();
+
+            List<Teacher> teachers =
+                    repository.getOnlyTeachers();
+
+            // Validar lista vacía
+            if (teachers == null || teachers.isEmpty()) {
+
+                JOptionPane.showMessageDialog(
+                        view,
+                        "No hay maestros registrados"
+                );
+
+                return;
+            }
+
+            // Exportar PDF
+            PDFExporter exporter =
+                    new PDFExporter();
+
+            exporter.exportTeachers(
+                    teachers,
+                    file
+            );
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "PDF exportado correctamente"
+            );
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al exportar PDF"
+            );
+        }
+    }
+
+    private void showStudents() {
+
+        StudentsRepository repository =
+                new StudentsRepository();
+
+        try {
+
             /*List<Alumno> alumnos = repository.getAlumnos();
 
             if (alumnos == null || alumnos.isEmpty()) {
@@ -170,68 +282,81 @@ public class HomeController {
             new AlumnoController(view.alumnosPanel);
 
             view.showView(MainView.ALUMNOS);*/
-        	List<Student> students =
-                    repository.getAlumnosPorGrupo(
-                            maestroActual.getAnio(),
-                            maestroActual.getGrupo()
+
+            List<Student> students =
+                    repository.getStudentsByGroup(
+                            currentTeacher.getYear(),
+                            currentTeacher.getGroup()
                     );
 
-            StudentsTableModels modelAlumnos = new StudentsTableModels(students);
+            StudentsTableModels studentsModel =
+                    new StudentsTableModels(students);
 
-            view.alumnosPanel.setTableModel(modelAlumnos);
+            view.studentsPanel.setTableModel(
+                    studentsModel
+            );
+
             //new AlumnoController(view.alumnosPanel);
 
-            view.showView(MainView.ALUMNOS);
+            view.showView(MainView.STUDENTS);
 
             if (students == null || students.isEmpty()) {
-                JOptionPane.showMessageDialog(view,
-                        "No hay alumnos registrados");
+
+                JOptionPane.showMessageDialog(
+                        view,
+                        "No hay alumnos registrados"
+                );
             }
 
         } catch (Exception e) {
+
             JOptionPane.showMessageDialog(
                     view,
-                    "Error al cargar alumnos: " + e.getMessage()
+                    "Error al cargar alumnos: "
+                            + e.getMessage()
             );
         }
     }
-    
-    private void mostrarMaestro() {
-    	view.maestroPanel.updateMaestro(
-                maestroActual
-        );
-    	view.showView(MainView.MAESTRO);
-    }
-    
-    private void mostrarCalificaciones() {
-    	try {
 
-            StudentsRepository repo =
+    private void showTeacher() {
+
+        view.teacherPanel.updateTeacher(
+                currentTeacher
+        );
+
+        view.showView(MainView.TEACHER);
+    }
+
+    private void showQualifications() {
+
+        try {
+
+            StudentsRepository repository =
                     new StudentsRepository();
 
             // Obtener alumnos del grupo
             List<Student> students =
-                    repo.getAlumnosPorGrupo(
-                            maestroActual.getAnio(),
-                            maestroActual.getGrupo()
+                    repository.getStudentsByGroup(
+                            currentTeacher.getYear(),
+                            currentTeacher.getGroup()
                     );
 
-            // Obtener materias 
-            SubjectRepository materiaRepo =
+            // Obtener materias
+            SubjectRepository subjectRepository =
                     new SubjectRepository();
 
-            List<Subject> listaMaterias =
-                    materiaRepo.getMateriasPorAnio(
-                            maestroActual.getAnio()
+            List<Subject> subjectsList =
+                    subjectRepository.getSubjectsByYear(
+                            currentTeacher.getYear()
                     );
 
             // Convertir Materia a String
-            List<String> materias =
+            List<String> subjects =
                     new ArrayList<>();
 
-            for (Subject subject : listaMaterias) {
+            for (Subject subject : subjectsList) {
 
-                materias.add(subject.getNombre());
+                subjects.add(subject.getName());
             }
 
             if (students == null || students.isEmpty()) {
@@ -245,13 +370,19 @@ public class HomeController {
             }
 
             // Crear modelo
-            QualificationTableModel model =new QualificationTableModel(students,materias);
+            QualificationTableModel qualificationModel =
+                    new QualificationTableModel(
+                            students,
+                            subjects
+                    );
 
             // Asignar tabla
-            view.calificacionesPanel.setTableModel(model);
+            view.qualificationsPanel.setTableModel(
+                    qualificationModel
+            );
 
             // Mostrar panel
-            view.showView(MainView.CALIFICACIONES);
+            view.showView(MainView.QUALIFICATIONS);
 
         } catch (Exception e) {
 
@@ -263,22 +394,22 @@ public class HomeController {
                             + e.getMessage()
             );
         }
-	}
- 
-    private void mostrarAdmin() {
+    }
+
+    private void showAdmin() {
 
         //Actualizar datos admin
         view.adminPanel.updateAdmin(
-                maestroActual
+                currentTeacher
         );
 
         //Mostrar panel admin
-        view.showView( MainView.ADMIN_PERFIL);
+        view.showView(MainView.ADMIN_PROFILE);
     }
-    
-    private void mostrarListaMaestros() {
 
-        view.showView( MainView.LISTA_MAESTROS);
+    private void showTeachersList() {
+
+        view.showView(MainView.TEACHERS_LIST);
     }
 
     private void handleClose() {
@@ -286,9 +417,11 @@ public class HomeController {
         int option = view.confirmExit();
 
         if (option == JOptionPane.YES_OPTION) {
+
             new LoginWindow();
+
             //view.dispose();
-            
+
             /*LoginWindow ventana = new LoginWindow();
             ventana.setLocationRelativeTo(null);
             ventana.setVisible(true);*/
@@ -297,13 +430,11 @@ public class HomeController {
             login.setLocationRelativeTo(null);
             login.setVisible(true);*/
 
-
             view.dispose();
         }
     }
-    
-    
-    private void volverLogin() {
+
+    private void returnToLogin() {
 
         int option = JOptionPane.showConfirmDialog(
                 view,
@@ -314,8 +445,11 @@ public class HomeController {
 
         if (option == JOptionPane.YES_OPTION) {
 
-            LoginWindow login = new LoginWindow();
+            LoginWindow login =
+                    new LoginWindow();
+
             login.setLocationRelativeTo(null);
+
             login.setVisible(true);
 
             view.dispose();

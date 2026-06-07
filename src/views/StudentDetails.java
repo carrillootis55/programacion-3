@@ -3,6 +3,8 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -34,73 +36,94 @@ public class StudentDetails extends JFrame {
 
         Font font = new Font("Times New Roman", Font.PLAIN, 16);
 
-        JLabel titulo = new JLabel("INFORMACIÓN DEL ALUMNO");
-        titulo.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        JLabel title = new JLabel("INFORMACIÓN DEL ALUMNO");
+        title.setFont(new Font("Times New Roman", Font.BOLD, 18));
 
-        panel.add(titulo);
+        panel.add(title);
 
-        JLabel lblMatricula =
-                new JLabel("Matrícula: " + student.getMatricula());
+        JLabel lblEnrollment =
+                new JLabel("Matrícula: " + student.getEnrollment());
 
-        JLabel lblNombre =
-                new JLabel("Nombre: " + student.getNombre());
+        JLabel lblName =
+                new JLabel("Nombre: " + student.getName());
 
-        JLabel lblApellidoP =
+        JLabel lblLastNameP =
                 new JLabel("Apellido Paterno: " +
-                        student.getApellidoPaterno());
+                        student.getFatherLastName());
 
-        JLabel lblApellidoM =
+        JLabel lblLastNameM =
                 new JLabel("Apellido Materno: " +
-                        student.getApellidoMaterno());
+                        student.getMotherLastName());
+        
+        String formattedDate = student.getBirthDate();
 
-        JLabel lblSexo =
-                new JLabel("Sexo: " + student.getSexo());
+        try {
+            
+            LocalDate date =
+                    LocalDate.parse(formattedDate);
 
-        JLabel lblGrupo =
-                new JLabel("Grupo: " + student.getGrupo());
+            formattedDate =
+                    date.format(
+                            DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    );
+                    
+        } catch (Exception e) {
+          
+        }
 
-        JLabel lblAnio =
-                new JLabel("Año: " + student.getAnio());
+        JLabel lblBirthDate =
+                new JLabel("Fecha de Nacimiento: " + formattedDate);
 
-        JLabel lblContacto =
+        JLabel lblGender =
+                new JLabel("Sexo: " + student.getGender());
+
+        JLabel lblGroup =
+                new JLabel("Grupo: " + student.getGroup());
+
+        JLabel lblYear =
+                new JLabel("Año: " + student.getYear());
+
+        JLabel lblEmergencyContact =
                 new JLabel("Contacto Emergencia: " +
-                        student.getContactoEmergencia());
+                        student.getEmergencyContact());
 
-        JLabel lblNumero =
+        JLabel lblEmergencyNumber =
                 new JLabel("Número Emergencia: " +
-                        student.getNumeroEmergencia());
+                        student.getEmergencyNumber());
 
-        JLabel lblParentesco =
+        JLabel lblRelationship =
                 new JLabel("Parentesco: " +
-                        student.getParentesco());
+                        student.getRelationship());
 
-        JLabel lblDomicilio =
+        JLabel lblAddress =
                 new JLabel("Domicilio: " +
-                        student.getDomicilio());
+                        student.getAddress());
 
-        lblMatricula.setFont(font);
-        lblNombre.setFont(font);
-        lblApellidoP.setFont(font);
-        lblApellidoM.setFont(font);
-        lblSexo.setFont(font);
-        lblGrupo.setFont(font);
-        lblAnio.setFont(font);
-        lblContacto.setFont(font);
-        lblNumero.setFont(font);
-        lblParentesco.setFont(font);
-        lblDomicilio.setFont(font);
+        lblEnrollment.setFont(font);
+        lblName.setFont(font);
+        lblLastNameP.setFont(font);
+        lblLastNameM.setFont(font);
+        lblBirthDate.setFont(font);
+        lblGender.setFont(font);
+        lblGroup.setFont(font);
+        lblYear.setFont(font);
+        lblEmergencyContact.setFont(font);
+        lblEmergencyNumber.setFont(font);
+        lblRelationship.setFont(font);
+        lblAddress.setFont(font);
 
-        panel.add(lblMatricula);
-        panel.add(lblNombre);
-        panel.add(lblApellidoP);
-        panel.add(lblApellidoM);
-        panel.add(lblSexo);
-        panel.add(lblGrupo);
-        panel.add(lblAnio);
-        panel.add(lblContacto);
-        panel.add(lblNumero);
-        panel.add(lblParentesco);
-        panel.add(lblDomicilio);
+        panel.add(lblEnrollment);
+        panel.add(lblName);
+        panel.add(lblLastNameP);
+        panel.add(lblLastNameM);
+        panel.add(lblBirthDate);
+        panel.add(lblGender);
+        panel.add(lblGroup);
+        panel.add(lblYear);
+        panel.add(lblEmergencyContact);
+        panel.add(lblEmergencyNumber);
+        panel.add(lblRelationship);
+        panel.add(lblAddress);
 
         add(panel, BorderLayout.CENTER);
     }

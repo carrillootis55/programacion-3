@@ -1,17 +1,8 @@
 package repository;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +13,7 @@ public class StudentsRepository {
 	
 	//=================================================================================================================================================================
 	public void save(Student student) throws Exception {
+		
         String sql = """
             INSERT INTO alumno(
                 matricula,
@@ -43,25 +35,26 @@ public class StudentsRepository {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setString(1, student.getMatricula());
-        ps.setString(2, student.getNombre());
-        ps.setString(3, student.getApellidoPaterno());
-        ps.setString(4, student.getApellidoMaterno());
-        ps.setString(5, student.getFechaNacimiento()); 
-        ps.setString(6, String.valueOf(student.getSexo()));
-        ps.setInt(7, Integer.parseInt(student.getAnio()));
-        ps.setInt(8, student.getGrupo().equals("A") ? 1 : 2);
-        ps.setString(9, student.getContactoEmergencia());
-        ps.setString(10, student.getNumeroEmergencia());
-        ps.setString(11, student.getParentesco());
-        ps.setString(12, student.getDomicilio());
+        ps.setString(1, student.getEnrollment());
+        ps.setString(2, student.getName());
+        ps.setString(3, student.getFatherLastName());
+        ps.setString(4, student.getMotherLastName());
+        ps.setString(5, student.getBirthDate()); 
+        ps.setString(6, String.valueOf(student.getGender()));
+        ps.setInt(7, Integer.parseInt(student.getYear()));
+        ps.setInt(8, student.getGroup().equals("A") ? 1 : 2);
+        ps.setString(9, student.getEmergencyContact());
+        ps.setString(10, student.getEmergencyNumber());
+        ps.setString(11, student.getRelationship());
+        ps.setString(12, student.getAddress());
 
         ps.executeUpdate();
         ps.close();
     }
 	
 	//=================================================================================================================================================================
-	public void updateAlumno(Student student) throws Exception {
+	public void updateStudent(Student student) throws Exception {
+		
         String sql = """
             UPDATE alumno
             SET
@@ -82,18 +75,18 @@ public class StudentsRepository {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setString(1, student.getNombre());
-        ps.setString(2, student.getApellidoPaterno());
-        ps.setString(3, student.getApellidoMaterno());
-        ps.setString(4, student.getFechaNacimiento()); 
-        ps.setString(5, String.valueOf(student.getSexo()));
-        ps.setInt(6, Integer.parseInt(student.getAnio()));
-        ps.setInt(7, student.getGrupo().equals("A") ? 1 : 2);
-        ps.setString(8, student.getContactoEmergencia());
-        ps.setString(9, student.getNumeroEmergencia());
-        ps.setString(10, student.getParentesco());
-        ps.setString(11, student.getDomicilio());
-        ps.setString(12, student.getMatricula()); // 
+        ps.setString(1, student.getName());
+        ps.setString(2, student.getFatherLastName());
+        ps.setString(3, student.getMotherLastName());
+        ps.setString(4, student.getBirthDate()); 
+        ps.setString(5, String.valueOf(student.getGender()));
+        ps.setInt(6, Integer.parseInt(student.getYear()));
+        ps.setInt(7, student.getGroup().equals("A") ? 1 : 2);
+        ps.setString(8, student.getEmergencyContact());
+        ps.setString(9, student.getEmergencyNumber());
+        ps.setString(10, student.getRelationship());
+        ps.setString(11, student.getAddress());
+        ps.setString(12, student.getEnrollment());
 
         ps.executeUpdate();
         ps.close();
@@ -101,23 +94,24 @@ public class StudentsRepository {
 	
 	//=================================================================================================================================================================
     //Eliminar alumno
-	public void delete(String matricula) throws Exception {
+	public void delete(String enrollment) throws Exception {
 
         String sql = "DELETE FROM alumno WHERE matricula=?";
 
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setString(1, matricula);
+        ps.setString(1, enrollment);
 
         ps.executeUpdate();
         ps.close();
     }
     
 	//=================================================================================================================================================================
-	public List<Student> getAlumnos() {
+	public List<Student> getStudents() {
 
         System.out.println("Conectado");
+        
         List<Student> students = new ArrayList<>();
         
         String sql = """
@@ -139,6 +133,7 @@ public class StudentsRepository {
         ) {
 
             while (rs.next()) {
+            	
                 Student student = new Student(
                     rs.getString("matricula"),
                     rs.getString("nombre"),
@@ -165,7 +160,7 @@ public class StudentsRepository {
     }
 
 	//=================================================================================================================================================================
-	public List<Student> getAlumnosPorGrupo(String anio, String grupo) {
+	public List<Student> getStudentsByGroup(String year, String group) {
 
         List<Student> students = new ArrayList<>();
 
@@ -188,11 +183,13 @@ public class StudentsRepository {
             PreparedStatement ps = conn.prepareStatement(sql)
         ) {
 
-            ps.setString(1, anio);
-            ps.setString(2, grupo);
+            ps.setString(1, year);
+            ps.setString(2, group);
+            
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
+            	
                 Student student = new Student(
                     rs.getString("matricula"),
                     rs.getString("nombre"),
@@ -219,7 +216,7 @@ public class StudentsRepository {
     }
 	 
 	//=================================================================================================================================================================
-	public boolean existeMatricula(String matricula) {
+	public boolean enrollmentExists(String enrollment) {
 
 	    String sql = "SELECT matricula FROM alumno WHERE matricula = ?";
 
@@ -228,8 +225,10 @@ public class StudentsRepository {
 	        PreparedStatement ps = conn.prepareStatement(sql)
 	    ) {
 
-	        ps.setString(1, matricula);
+	        ps.setString(1, enrollment);
+	        
 	        ResultSet rs = ps.executeQuery();
+	        
 	        return rs.next();
 
 	    } catch (Exception e) {
@@ -238,7 +237,10 @@ public class StudentsRepository {
 
 	    return false;
 	}
-	public int contarAlumnosPorGrupo(String anio, String grupo) {
-        return getAlumnosPorGrupo(anio, grupo).size();
+	
+	//=================================================================================================================================================================
+	public int countStudentsByGroup(String year, String group) {
+		
+        return getStudentsByGroup(year, group).size();
     }
 }

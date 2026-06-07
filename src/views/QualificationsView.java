@@ -1,162 +1,254 @@
 package views;
 
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-import java.io.File;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
+
 import tablemodels.QualificationTableModel;
 import utils.AppFont;
 import utils.ConfigManager;
 
-public class QualificationsView extends JPanel{
-	
-	private JTable tabla;
-	private JButton btnPdf;
-	private JButton btnEditarCalificaciones;
-	private JButton btnBoleta;
-	
-	public QualificationsView() {
-		setLayout(new BorderLayout());
-		
-		tabla = new JTable();
-		btnPdf = new JButton("Exportar a PDF");
-        
-        
-		JPanel panelBoton = new JPanel();
-		panelBoton.add(btnPdf);
+public class QualificationsView extends JPanel {
 
-		styleTable();
-		
-		add(panelBoton, BorderLayout.NORTH);
-		add(new JScrollPane(tabla), BorderLayout.CENTER);
-	}
-	
-	public void setTableModel(QualificationTableModel model) {
-        tabla.setModel(model);
+    private JTable qualificationsTable;
+
+    private JButton exportPdfButton;
+    private JButton editQualificationsButton;
+    private JButton reportCardButton;
+
+    public QualificationsView() {
+
+        setLayout(new BorderLayout());
+
+        qualificationsTable = new JTable();
+
+        exportPdfButton = new JButton("Exportar a PDF");
+
+        JPanel buttonPanel = new JPanel();
+
+        buttonPanel.add(exportPdfButton);
+
+        styleTable();
+
+        add(buttonPanel, BorderLayout.NORTH);
+
+        add(new JScrollPane(qualificationsTable), BorderLayout.CENTER);
     }
-	
-	
-	public JButton getBtnPdf() {
-	    return btnPdf;
-	
-	}
-	public JButton getBtnEditarCalificaciones() {
-	    return btnEditarCalificaciones;
-	}
 
-	public JButton getBtnBoletaPdf() {
-	    return btnBoleta;
-	}
-	
-	public File selectPdfFile() {
+    public void setTableModel(QualificationTableModel tableModel) {
 
-        JFileChooser chooser = new JFileChooser();
+        qualificationsTable.setModel(tableModel);
+    }
+
+    public JButton getExportPdfButton() {
+
+        return exportPdfButton;
+    }
+
+    public JButton getEditQualificationsButton() {
+
+        return editQualificationsButton;
+    }
+
+    public JButton getReportCardButton() {
+
+        return reportCardButton;
+    }
+
+    public File selectPdfFile() {
+
+        JFileChooser fileChooser = new JFileChooser();
+
+        fileChooser.setDialogTitle("Guardar PDF");
+
+        fileChooser.setFileFilter(
+                new FileNameExtensionFilter(
+                        "Archivos PDF",
+                        "pdf"
+                )
+        );
+
         try {
-        	String last = ConfigManager.loadLastDirectory();
-        	
-        	if(last !=null) {
-        		chooser.setCurrentDirectory(new File(last));
-        	}
-        } catch(Exception e) {}
-        chooser.setSelectedFile(new File("reporte-calificaciones.pdf"));
 
+            String lastDirectory =
+                    ConfigManager.loadLastDirectory();
 
-        int option = chooser.showSaveDialog(this);
+            if (lastDirectory != null) {
+
+                fileChooser.setCurrentDirectory(
+                        new File(lastDirectory)
+                );
+            }
+
+        } catch (Exception exception) {
+
+            exception.printStackTrace();
+        }
+
+        fileChooser.setSelectedFile(
+                new File("reporte-calificaciones.pdf")
+        );
+
+        int option =
+                fileChooser.showSaveDialog(this);
 
         if (option != JFileChooser.APPROVE_OPTION) {
+
             return null;
         }
 
-        File file = chooser.getSelectedFile();
+        File selectedFile =
+                fileChooser.getSelectedFile();
+
+        if (!selectedFile.getName()
+                .toLowerCase()
+                .endsWith(".pdf")) {
+
+            selectedFile =
+                    new File(
+                            selectedFile.getAbsolutePath()
+                                    + ".pdf"
+                    );
+        }
 
         try {
-        	ConfigManager.saveLastDirectory(file.getParent());
-        }catch(Exception e) {}
 
-        return file;
+            ConfigManager.saveLastDirectory(
+                    selectedFile.getParent()
+            );
+
+        } catch (Exception exception) {
+
+            exception.printStackTrace();
+        }
+
+        return selectedFile;
     }
-	
-	
-	private void styleTable() {
-		tabla.setRowHeight(35);
-        tabla.setShowGrid(true);
-        tabla.setGridColor(new Color(230,230,230));
 
-        tabla.setBackground(Color.WHITE);
-        tabla.setForeground(Color.BLACK);
-        tabla.setFont(AppFont.normal());
+    private void styleTable() {
 
-        tabla.setSelectionBackground(new Color(52,152,219));
-        tabla.setSelectionForeground(Color.WHITE);
+        qualificationsTable.setRowHeight(35);
 
-        tabla.setSelectionMode(
-                ListSelectionModel.SINGLE_SELECTION);
+        qualificationsTable.setShowGrid(true);
 
-        JTableHeader header = tabla.getTableHeader();
-
-        header.setBackground(new Color(44,62,80));
-        header.setForeground(Color.WHITE);
-        header.setFont(AppFont.bold());
-        header.setPreferredSize(new Dimension(0,40));
-        header.setReorderingAllowed(false);
-
-        tabla.setDefaultRenderer(
-            Object.class,
-            new DefaultTableCellRenderer() {
-
-                @Override
-                public Component getTableCellRendererComponent(
-                        JTable table,
-                        Object value,
-                        boolean isSelected,
-                        boolean hasFocus,
-                        int row,
-                        int column) {
-
-                    Component c =
-                            super.getTableCellRendererComponent(
-                                    table,
-                                    value,
-                                    isSelected,
-                                    hasFocus,
-                                    row,
-                                    column);
-
-                    if (!isSelected) {
-                        if (row % 2 == 0) {
-                            c.setBackground(Color.WHITE);
-                        } else {
-                            c.setBackground(
-                               new Color(245,245,245));
-                        }
-                        c.setForeground(Color.BLACK);
-                    }
-
-                    if (column == 0) {
-                        c.setFont(AppFont.bold());
-                        if (!isSelected) {
-                            c.setForeground(
-                               new Color(41,128,185));
-                        }
-                    } else {
-                        c.setFont(AppFont.normal());
-                    }
-
-                    return c;
-                }
-            }
+        qualificationsTable.setGridColor(
+                new Color(230, 230, 230)
         );
-	}
+
+        qualificationsTable.setBackground(Color.WHITE);
+
+        qualificationsTable.setForeground(Color.BLACK);
+
+        qualificationsTable.setFont(AppFont.normal());
+
+        qualificationsTable.setSelectionBackground(
+                new Color(52, 152, 219)
+        );
+
+        qualificationsTable.setSelectionForeground(
+                Color.WHITE
+        );
+
+        qualificationsTable.setSelectionMode(
+                ListSelectionModel.SINGLE_SELECTION
+        );
+
+        JTableHeader tableHeader =
+                qualificationsTable.getTableHeader();
+
+        tableHeader.setBackground(
+                new Color(44, 62, 80)
+        );
+
+        tableHeader.setForeground(Color.WHITE);
+
+        tableHeader.setFont(AppFont.bold());
+
+        tableHeader.setPreferredSize(
+                new Dimension(0, 40)
+        );
+
+        tableHeader.setReorderingAllowed(false);
+
+        qualificationsTable.setDefaultRenderer(
+                Object.class,
+                new DefaultTableCellRenderer() {
+
+                    @Override
+                    public Component getTableCellRendererComponent(
+                            JTable table,
+                            Object value,
+                            boolean isSelected,
+                            boolean hasFocus,
+                            int row,
+                            int column
+                    ) {
+
+                        Component component =
+                                super.getTableCellRendererComponent(
+                                        table,
+                                        value,
+                                        isSelected,
+                                        hasFocus,
+                                        row,
+                                        column
+                                );
+
+                        if (!isSelected) {
+
+                            if (row % 2 == 0) {
+
+                                component.setBackground(
+                                        Color.WHITE
+                                );
+
+                            } else {
+
+                                component.setBackground(
+                                        new Color(245, 245, 245)
+                                );
+                            }
+
+                            component.setForeground(
+                                    Color.BLACK
+                            );
+                        }
+
+                        if (column == 0) {
+
+                            component.setFont(
+                                    AppFont.bold()
+                            );
+
+                            if (!isSelected) {
+
+                                component.setForeground(
+                                        new Color(41, 128, 185)
+                                );
+                            }
+
+                        } else {
+
+                            component.setFont(
+                                    AppFont.normal()
+                            );
+                        }
+
+                        return component;
+                    }
+                }
+        );
+    }
 }

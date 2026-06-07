@@ -1,17 +1,18 @@
 package models;
 
 public class Subject {
+	
 	private int id;
-    private String nombre;
-    private String anio;
+    private String name;
+    private String year;
 
     public Subject() {
     }
 
-    public Subject(int id, String nombre, String anio) {
+    public Subject(int id, String name, String year) {
         this.id = id;
-        this.nombre = nombre;
-        this.anio = anio;
+        this.name = name;
+        this.year = year;
     }
 
     public int getId() {
@@ -22,20 +23,20 @@ public class Subject {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAnio() {
-        return anio;
+    public String getYear() {
+        return year;
     }
 
-    public void setAnio(String anio) {
-        this.anio = anio;
+    public void setYear(String year) {
+        this.year = year;
     }
 
 }

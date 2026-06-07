@@ -23,24 +23,34 @@ public class ListTeachersController {
 
             repository = new TeacherRepository();
 
-            cargarTabla();
+            loadTable();
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog(view, "Error al conectar con la base de datos");
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al conectar con la base de datos"
+            );
         }
 
-        asignarEventos();
+        assignEvents();
     }
-  //=================================================================================================================================================================
-    private void asignarEventos() {
-    	view.getBtnAgregar().addActionListener(e -> {
+
+    //=================================================================================================================================================================
+
+    private void assignEvents() {
+
+    	view.getBtnAdd().addActionListener(e -> {
 
     	    try {
-    	        // Validar que no existan más de 6 maestros
-    	        if (repository.contarMaestros() >= 6) {
 
-    	            JOptionPane.showMessageDialog( view,"Ya existen los 6 maestros permitidos" );
+    	        // Validar que no existan más de 6 maestros
+    	        if (repository.countTeachers() >= 6) {
+
+    	            JOptionPane.showMessageDialog(
+    	            		view,
+    	            		"Ya existen los 6 maestros permitidos"
+    	            );
 
     	            return;
     	        }
@@ -49,14 +59,18 @@ public class ListTeachersController {
     	        TeacherForm form = new TeacherForm();
 
     	        // Crear controller
-    	        FormTeacherController controller = new FormTeacherController(form);
+    	        FormTeacherController controller =
+    	        		new FormTeacherController(form);
 
     	        // Actualizar tabla al cerrar
     	        form.addWindowListener(new java.awt.event.WindowAdapter() {
 
     	            @Override
-    	            public void windowClosed(java.awt.event.WindowEvent e) {
-    	                cargarTabla();
+    	            public void windowClosed(
+    	            		java.awt.event.WindowEvent e
+    	            ) {
+
+    	                loadTable();
     	            }
     	        });
 
@@ -65,41 +79,51 @@ public class ListTeachersController {
 
     	    } catch (SQLException ex) {
 
-    	        JOptionPane.showMessageDialog( view,"Error al validar cantidad de maestros"
+    	        JOptionPane.showMessageDialog(
+    	        		view,
+    	        		"Error al validar cantidad de maestros"
     	        );
     	    }
     	});
 
-
-        view.getBtnEditar().addActionListener(e -> editarMaestro() );
-
-        
-        view.getBtnEliminar().addActionListener(
-                e -> eliminarMaestro()
+        view.getBtnEdit().addActionListener(
+                e -> editTeacher()
         );
-        
+
+        view.getBtnDelete().addActionListener(
+                e -> deleteTeacher()
+        );
     }
-  //=================================================================================================================================================================
-    private void cargarTabla() {
+
+    //=================================================================================================================================================================
+
+    private void loadTable() {
 
         try {
 
-            TeacherTableModel model =new TeacherTableModel(repository.obtenerSoloMaestros() );
+            TeacherTableModel model =
+                    new TeacherTableModel(
+                            repository.getOnlyTeachers()
+                    );
 
             view.setTableModel(model);
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog(view, "Error al cargar maestros");
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Error al cargar maestros"
+            );
         }
     }
 
-    
-    private void eliminarMaestro() {
+    //=================================================================================================================================================================
 
-        int fila = view.getSelectedRow();
+    private void deleteTeacher() {
 
-        if (fila == -1) {
+        int row = view.getSelectedRow();
+
+        if (row == -1) {
 
             JOptionPane.showMessageDialog(
                     view,
@@ -111,26 +135,26 @@ public class ListTeachersController {
 
         TeacherTableModel model =
                 (TeacherTableModel)
-                        view.getTabla().getModel();
+                        view.getTable().getModel();
 
-        int id = model.getMaestro(fila).getId();
+        int id = model.getTeacher(row).getId();
 
-        int opcion = JOptionPane.showConfirmDialog(
+        int option = JOptionPane.showConfirmDialog(
                 view,
                 "¿Desea eliminar este maestro?"
         );
 
-        if (opcion != JOptionPane.YES_OPTION) {
+        if (option != JOptionPane.YES_OPTION) {
 
             return;
         }
 
         try {
 
-            boolean eliminado =
-                    repository.eliminar(id);
+            boolean deleted =
+                    repository.delete(id);
 
-            if (eliminado) {
+            if (deleted) {
 
                 JOptionPane.showMessageDialog(
                         view,
@@ -146,7 +170,7 @@ public class ListTeachersController {
                 );
             }
 
-            cargarTabla();
+            loadTable();
 
         } catch (SQLException e) {
 
@@ -156,51 +180,59 @@ public class ListTeachersController {
             );
         }
     }
-   
-  //=================================================================================================================================================================
-    private void editarMaestro() {
 
-        int fila = view.getSelectedRow();
+    //=================================================================================================================================================================
+
+    private void editTeacher() {
+
+        int row = view.getSelectedRow();
 
         // Validar selección
-        if (fila == -1) {
+        if (row == -1) {
 
-            JOptionPane.showMessageDialog( view,"Seleccione un maestro" );
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Seleccione un maestro"
+            );
 
             return;
         }
 
         // Obtener modelo
-        TeacherTableModel model =(TeacherTableModel)view.getTabla().getModel();
+        TeacherTableModel model =
+                (TeacherTableModel)
+                        view.getTable().getModel();
 
         // Obtener maestro seleccionado
-        Teacher teacher =model.getMaestro(fila);
+        Teacher teacher =
+                model.getTeacher(row);
 
         // Crear formulario
-        TeacherForm formulario =new TeacherForm();
+        TeacherForm form = new TeacherForm();
 
         // Cargar datos
-        formulario.cargarDatos(teacher);
+        form.loadData(teacher);
 
         // Crear controller
-        FormTeacherController controller =new FormTeacherController(formulario);
+        FormTeacherController controller =
+                new FormTeacherController(form);
 
         // Activar modo edición
-        controller.setModoEdicion();
+        controller.setEditMode();
 
         // Mostrar ventana
-        formulario.setVisible(true);
+        form.setVisible(true);
 
         // Actualizar tabla cuando cierre
-        formulario.addWindowListener(new java.awt.event.WindowAdapter() {
+        form.addWindowListener(new java.awt.event.WindowAdapter() {
 
             @Override
-            public void windowClosed( java.awt.event.WindowEvent e) {
-                cargarTabla();
+            public void windowClosed(
+                    java.awt.event.WindowEvent e
+            ) {
+
+                loadTable();
             }
         });
     }
-    
-    
-    
 }

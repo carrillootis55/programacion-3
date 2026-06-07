@@ -10,7 +10,7 @@ public class TeacherTableModel extends AbstractTableModel {
 
     private List<Teacher> teachers;
 
-    private final String[] columnas = {
+    private final String[] columns = {
         "ID",
         "Nombre",
         "Email",
@@ -35,13 +35,13 @@ public class TeacherTableModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
 
-        return columnas.length;
+        return columns.length;
     }
 
     @Override
     public String getColumnName(int column) {
 
-        return columnas[column];
+        return columns[column];
     }
 
     @Override
@@ -55,32 +55,32 @@ public class TeacherTableModel extends AbstractTableModel {
                 return teacher.getId();
 
             case 1:
-                return teacher.getNombre();
+                return teacher.getName();
 
             case 2:
                 return teacher.getEmail();
 
             case 3:
-                return teacher.getSexo();
+                return teacher.getGender();
 
             case 4:
-                return teacher.getEdad();
+                return teacher.getAge();
 
             case 5:
-                return teacher.getMaestria();
+                return teacher.getMasterDegree();
 
             case 6:
-                return teacher.getAnio();
+                return teacher.getYear();
 
             case 7:
-                return teacher.getGrupo();
+                return teacher.getGroup();
 
             default:
                 return null;
         }
     }
 
-    public Teacher getMaestro(int row) {
+    public Teacher getTeacher(int row) {
 
         return teachers.get(row);
     }
